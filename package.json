@@ -1,0 +1,43 @@
+{
+  "name": "react-habitat",
+  "version": "1.0.0",
+  "description": "A React DOM  Bootstrapper designed to harmonise a hybrid application",
+  "main": "dist/index.js",
+  "scripts": {
+    "postinstall": "./node_modules/.bin/typings install",
+    "test": "karma start",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@hub.deloittedigital.com.au:7999/fed/reactbootstrapper.git"
+  },
+  "keywords": [
+    "react",
+    "bootstrapper",
+    "hybrid",
+    "mix",
+    "mixed",
+    "standalone"
+  ],
+  "author": {
+    "name": "Jenna Salau",
+    "email": "jsalau@deloitte.com.au"
+  },
+  "contributors": [],
+
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "karma": "^0.13.22",
+    "karma-jasmine": "^1.0.2",
+    "karma-webpack": "^1.7.0",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "webpack": "^1.13.0"
+  },
+  "dependencies": {
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2"
+  }
+}
