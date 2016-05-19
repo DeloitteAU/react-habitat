@@ -3,14 +3,14 @@ import {IContainer}               from './interfaces/IContainer';
 import {DOMUtils}                 from './utils/DOMUtils';
 import {ReactFactory}             from './factories/ReactFactory';
 
-export abstract class Bootstrapper implements IBootstrapper {
+export class Bootstrapper implements IBootstrapper {
 
     // Note for es5 support we cannot have the private accessor here
     _componentSelector: string;
 
     _container: IContainer;
 
-    firstClassElements:NodeListOf<Element>;
+    firstClassElements: NodeListOf<Element>;
 
     
     /**

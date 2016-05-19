@@ -4,7 +4,6 @@
   "description": "A React DOM  Bootstrapper designed to harmonise a hybrid application",
   "main": "dist/index.js",
   "scripts": {
-    "postinstall": "./node_modules/.bin/typings install",
     "test": "karma start",
     "build": "tsc"
   },
@@ -25,11 +24,12 @@
     "email": "jsalau@deloitte.com.au"
   },
   "contributors": [],
-
   "license": "ISC",
   "devDependencies": {
     "babel": "^6.5.2",
+    "babel-cli": "^6.9.0",
     "karma": "^0.13.22",
+    "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.0.2",
     "karma-webpack": "^1.7.0",
     "ts-loader": "^0.8.2",
