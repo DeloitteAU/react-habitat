@@ -52,15 +52,8 @@ We recommend you use something like WebPack or Browserify when using this framew
 Install with Node Package Manager (NPM)
 
 ```
-npm install --save-dev git+:ssh://git@hub.deloittedigital.com.au:7999/fed/react-habitat.git#v0.1.0
+npm install --save-dev git+ssh://git@hub.deloittedigital.com.au:7999/fed/react-habitat.git#v0.1.2
 ```
-
-https
-```
-npm install --save-dev git+https://jsalau@hub.deloittedigital.com.au/stash/scm/fed/react-habitat.git#v0.1.0
-
-```
-
 
 ## Getting Started
 
