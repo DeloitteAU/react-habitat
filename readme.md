@@ -112,7 +112,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
         // Create a new container builder
         var container = new ReactHabitat.Container();
 
-        // Register your component(s)
+        // Register your top level component(s) (ie mini/child apps)
         container.register('SomeReactComponent', SomeReactComponent);
         container.register('AnotherReactComponent', AnotherReactComponent);
 
