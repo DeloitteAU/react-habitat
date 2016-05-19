@@ -3,8 +3,7 @@
 import {Bootstrapper}       from './Bootstrapper';
 import {Container}          from './Container';
 
-export var reactHabitat = {
+export var ReactHabitat = {
     Bootstrapper: Bootstrapper,
     Container: Container
 };
-
