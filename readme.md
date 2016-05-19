@@ -3,7 +3,7 @@
 ## React Habitat <3 Your CMS
 
 React Habitat is designed for integrating React with your CMS. It's based of some basic
-[container programming principles](https://en.wikipedia.org/wiki/Container_(abstract_data_type)) and brings peace and order to your DOM.
+[container programming principles](https://en.wikipedia.org/wiki/Container_(abstract_data_type) and brings peace and order to your DOM.
 This framework exists so you can get on with the fun stuff!
 
 ## When to use React Habitat
@@ -25,35 +25,35 @@ React Habitat works great with:
 
 ### When *not* to use it
 
-Typically if you're building a one page React app that yanks data from restful API's... then this framework isn't really going to bring much benefit to you.
-However you are definitely invited to use it if you want to render the root component like a boss! (Plus it has some neat features).
-
+Typically if you're building a full on one page React app that yanks data from restful API's... then this framework isn't really going to bring much benefit to you.
+However you are definitely invited to use it if you want to.
 
 ## Features
 
 - Simple and fast setup
 - Pass data (props) to your components from HTML attributes
 - Automatic data parsing
-- All satellite apps can still share the same components, stores, (They are all connected)
+- All page child apps can still share the same components, stores, events etc. (Everything is connected)
 - Implements an app lifecycle
 - Simple to swap out components for others (The beauty of IOC containers)
 - For advanced users, you can use different components for different build environments
 - 100% W3C HTML5 Valid
+- TypeScript definitions included
 
 ## Compatibility
 
 - Supports Browsers IE8+ and all the evergreens.
-- Requires ES6 or TypeScript.. ES5 support is coming. (Babel is encouraged though so you don't have to wait ;))
+- Requires ES6 (Babel is encouraged)
 
+We recommend you use something like WebPack or Browserify when using this framework.
 
 ## Installing
 
-*NOTE:*
-I am working with Deloitte on open sourcing this project. Once/If that happens then we can use a simple npm install. In the mean time obtaining the framework will have
-to be manual.
+Install with Node Package Manager (NPM)
 
-1. Download the contents of the 'dist/es6' folder if using ES6 or 'dist/ts' if you're using typescript.
-2. Put the contents of that folder in a 'lib' directory in your project. For instance `app/lib/react-habitat/**`
+```
+npm install --save-dev https://hub.deloittedigital.com.au/stash/scm/fed/react-habitat.git
+```
 
 
 ## Getting Started
@@ -96,17 +96,16 @@ In React Habitat, you'd register a component something like this
 
     // Finally, set the container
     this.setContainer(container);
-
 ```
 
-For our sample application we need to register all of our components (classes) to be exposed to the dom so things get wired up nicely.
+For our sample application we need to register all of our components (classes) to be exposed to the DOM so things get wired up nicely.
 
 ```javascript
-import ReactHabitat                 from '../lib/ReactHabitat/';
+import ReactHabitat                 from 'react-habitat';
 import SomeReactComponent           from './SomeReactComponent';
 import AnotherReactComponent        from './AnotherReactComponent';
 
-class ReactBootstrapper extends ReactHabitat.Bootstrapper {
+class MyApp extends ReactHabitat.Bootstrapper {
     constructor(){
         super();
 
@@ -122,8 +121,8 @@ class ReactBootstrapper extends ReactHabitat.Bootstrapper {
     }
 }
 
-// Always export a 'new' instance so immediately evokes
-export default new ReactBootstrapper();
+// Always export a 'new' instance so it immediately evokes
+export default new MyApp();
 ```
 
 
