@@ -1,6 +1,6 @@
 "use strict";
-var DOMUtils_1 = require('./utils/DOMUtils');
-var ReactFactory_1 = require('./factories/ReactFactory');
+var Habitat_1 = require('./Habitat');
+var ReactDOMFactory_1 = require('./factories/ReactDOMFactory');
 var Bootstrapper = (function () {
     /**
      * Constructor
@@ -10,6 +10,7 @@ var Bootstrapper = (function () {
         if (!window || (!window && !window.document)) {
             throw new Error('ReactBootstrapper requires a DOM but cannot see one :(');
         }
+        this.domFactory = new ReactDOMFactory_1.ReactDOMFactory();
         this._componentSelector = 'data-component';
         this.firstClassElements = window.document.querySelectorAll("[" + this.componentSelector + "]");
     }
@@ -44,10 +45,7 @@ var Bootstrapper = (function () {
                 console.warn("Cannot resolve component \"" + componentName + "\". Did you forget to register it in the container?");
                 continue;
             }
-            var props = DOMUtils_1.DOMUtils.parseProps(ele) || {};
-            var portal = DOMUtils_1.DOMUtils.openPortal(ele);
-            debugger;
-            ReactFactory_1.ReactFactory.inject(component, props, portal);
+            this.domFactory.inject(component, Habitat_1.Habitat.parseProps(ele), Habitat_1.Habitat.createHabitat(ele, this.domFactory.identifier()));
         }
     };
     return Bootstrapper;

@@ -1,7 +1,9 @@
 import {IBootstrapper}            from "./interfaces/IBootstrapper";
 import {IContainer}               from './interfaces/IContainer';
-import {DOMUtils}                 from './utils/DOMUtils';
-import {ReactFactory}             from './factories/ReactFactory';
+import {IDOMFactory}               from './interfaces/IDOMFactory';
+
+import {Habitat}                  from './Habitat';
+import {ReactDOMFactory}          from './factories/ReactDOMFactory';
 
 export class Bootstrapper implements IBootstrapper {
 
@@ -10,17 +12,22 @@ export class Bootstrapper implements IBootstrapper {
 
     _container: IContainer;
 
+    domFactory: IDOMFactory;
+
     firstClassElements: NodeListOf<Element>;
 
-    
+
     /**
      * Constructor
      */
     constructor() {
+
         // Sanity check
         if (!window || (!window && !window.document)) {
             throw new Error('ReactBootstrapper requires a DOM but cannot see one :(');
         }
+
+        this.domFactory = new ReactDOMFactory();
 
         this._componentSelector = 'data-component';
 
@@ -54,9 +61,7 @@ export class Bootstrapper implements IBootstrapper {
         for (var i = 0; i < this.firstClassElements.length; ++i) {
 
             var ele = this.firstClassElements[i],
-
                 componentName = ele.getAttribute(this._componentSelector),
-                
                 component = this._container.getComponent(componentName);
 
             if (!component) {
@@ -64,16 +69,12 @@ export class Bootstrapper implements IBootstrapper {
                 continue;
             }
 
-            var props = DOMUtils.parseProps(ele) || {};
-            var portal = DOMUtils.openPortal(ele);
-
-            debugger;
-
-            ReactFactory.inject(component, props, portal);
+            this.domFactory.inject(
+              component,
+              Habitat.parseProps(ele),
+              Habitat.createHabitat(ele, this.domFactory.identifier()));
         }
 
     }
 
 }
-
-

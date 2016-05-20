@@ -1,7 +1,7 @@
-import {DOMUtils}       from '../src/utils/DOMUtils';
+import {Habitat}       from '../src/Habitat';
 
 
-describe("Container suite", () => {
+describe("Habitat parse", () => {
 
     var node: HTMLElement;
 
@@ -14,15 +14,15 @@ describe("Container suite", () => {
         window.document.body.removeChild(node);
     });
 
+
     it("parse simple props", () => {
 
         node.setAttribute('data-prop-name', 'John Citizen');
 
-        var results = DOMUtils.parseProps(node);
+        var results = Habitat.parseProps(node);
 
         expect(results['name']).toEqual('John Citizen');
     });
-
 
 
     it("converts hyphen props to camel case", () => {
@@ -30,7 +30,7 @@ describe("Container suite", () => {
         node.setAttribute('data-prop-first-name', 'John');
         node.setAttribute('data-prop-first-name-initial', 'J');
 
-        var results = DOMUtils.parseProps(node);
+        var results = Habitat.parseProps(node);
 
         expect(results['firstName']).toEqual('John');
         expect(results['firstNameInitial']).toEqual('J');
@@ -49,7 +49,7 @@ describe("Container suite", () => {
         node.setAttribute('data-prop-is-active7', 'FalsE');
         node.setAttribute('data-prop-is-active8', 'FALSE');
 
-        var results = DOMUtils.parseProps(node);
+        var results = Habitat.parseProps(node);
 
         expect(results['isActive']).toEqual(true);
         expect(results['isActive2']).toEqual(true);
@@ -68,13 +68,13 @@ describe("Container suite", () => {
 
         node.setAttribute('data-prop-user', '{"name": "John Citizen", "isActive": true, "age": 22}');
 
-        var results = DOMUtils.parseProps(node);
+        var results = Habitat.parseProps(node);
 
         expect(results['user']).toBeDefined();
         expect(results['user']['name']).toEqual('John Citizen');
         expect(results['user']['isActive']).toEqual(true);
         expect(results['user']['age']).toEqual(22);
-      
+
     });
 
 });
