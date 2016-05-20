@@ -1,4 +1,7 @@
 import { IContainer } from './IContainer';
+/**
+ * The Bootstrapper interface
+ */
 export interface IBootstrapper {
     setContainer: (container: IContainer) => void;
     /**

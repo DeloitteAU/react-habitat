@@ -1,9 +1,12 @@
 "use strict";
+/**
+ * The Habitat class
+ */
 var Habitat = (function () {
     function Habitat() {
     }
     /**
-     *
+     * Returns a dictionary of properties and values defined on an element
      */
     Habitat.parseProps = function (ele) {
         // Default props with reference to the initiating node
@@ -39,7 +42,7 @@ var Habitat = (function () {
         return _props;
     };
     /**
-     *
+     * Creates a new habitat in the dom
      */
     Habitat.createHabitat = function (ele, type) {
         var tag;

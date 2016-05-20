@@ -1,5 +1,11 @@
 "use strict";
+/**
+ * The Container class
+ */
 var Container = (function () {
+    /**
+     * Constructor
+     */
     function Container() {
         this._components = {};
     }

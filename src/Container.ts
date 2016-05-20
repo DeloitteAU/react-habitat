@@ -1,10 +1,18 @@
 import {IContainer} from './interfaces/IContainer'
-import {Registration} from './models/Registration';
 
+/**
+ * The Container class
+ */
 export class Container implements IContainer {
 
+    /**
+     *  A dictionary to hold references to registered components
+     */
     _components: { [id: string] : any; };
 
+    /**
+     * Constructor
+     */
     constructor() {
         this._components = {};
     }

@@ -5,6 +5,9 @@ import {IDOMFactory}               from './interfaces/IDOMFactory';
 import {Habitat}                  from './Habitat';
 import {ReactDOMFactory}          from './factories/ReactDOMFactory';
 
+/**
+ *  Bootstrapper class
+ */
 export class Bootstrapper implements IBootstrapper {
 
     // Note for es5 support we cannot have the private accessor here
@@ -27,10 +30,13 @@ export class Bootstrapper implements IBootstrapper {
             throw new Error('ReactBootstrapper requires a DOM but cannot see one :(');
         }
 
+        // Set the DOM factory
         this.domFactory = new ReactDOMFactory();
 
+        // Set the selector name space
         this._componentSelector = 'data-component';
 
+        // Find all the elements in the dom with the component selector attribute
         this.firstClassElements = window.document.querySelectorAll(`[${this.componentSelector}]`);
     }
 
@@ -43,19 +49,23 @@ export class Bootstrapper implements IBootstrapper {
     }
 
     /**
-     * Set the react container
+     * Set the container
      * @param {IContainer} container - The container
      */
     setContainer(container: IContainer): void {
+
+        // Save the container
         this._container = container;
-        this._wireUpReactComponents();
+
+        // Wire up the components from the container
+        this._wireUpComponents();
     }
 
     /**
      * Wires up components inside the container
      * @private
      */
-    _wireUpReactComponents():void {
+    _wireUpComponents():void {
 
         // Iterate over component elements in the dom
         for (var i = 0; i < this.firstClassElements.length; ++i) {

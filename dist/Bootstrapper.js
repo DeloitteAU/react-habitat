@@ -1,6 +1,9 @@
 "use strict";
 var Habitat_1 = require('./Habitat');
 var ReactDOMFactory_1 = require('./factories/ReactDOMFactory');
+/**
+ *  Bootstrapper class
+ */
 var Bootstrapper = (function () {
     /**
      * Constructor
@@ -10,8 +13,11 @@ var Bootstrapper = (function () {
         if (!window || (!window && !window.document)) {
             throw new Error('ReactBootstrapper requires a DOM but cannot see one :(');
         }
+        // Set the DOM factory
         this.domFactory = new ReactDOMFactory_1.ReactDOMFactory();
+        // Set the selector name space
         this._componentSelector = 'data-component';
+        // Find all the elements in the dom with the component selector attribute
         this.firstClassElements = window.document.querySelectorAll("[" + this.componentSelector + "]");
     }
     Object.defineProperty(Bootstrapper.prototype, "componentSelector", {
@@ -26,18 +32,20 @@ var Bootstrapper = (function () {
         configurable: true
     });
     /**
-     * Set the react container
+     * Set the container
      * @param {IContainer} container - The container
      */
     Bootstrapper.prototype.setContainer = function (container) {
+        // Save the container
         this._container = container;
-        this._wireUpReactComponents();
+        // Wire up the components from the container
+        this._wireUpComponents();
     };
     /**
      * Wires up components inside the container
      * @private
      */
-    Bootstrapper.prototype._wireUpReactComponents = function () {
+    Bootstrapper.prototype._wireUpComponents = function () {
         // Iterate over component elements in the dom
         for (var i = 0; i < this.firstClassElements.length; ++i) {
             var ele = this.firstClassElements[i], componentName = ele.getAttribute(this._componentSelector), component = this._container.getComponent(componentName);

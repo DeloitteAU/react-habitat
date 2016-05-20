@@ -1,6 +1,9 @@
 import { IBootstrapper } from "./interfaces/IBootstrapper";
 import { IContainer } from './interfaces/IContainer';
 import { IDOMFactory } from './interfaces/IDOMFactory';
+/**
+ *  Bootstrapper class
+ */
 export declare class Bootstrapper implements IBootstrapper {
     _componentSelector: string;
     _container: IContainer;
@@ -16,7 +19,7 @@ export declare class Bootstrapper implements IBootstrapper {
      */
     componentSelector: string;
     /**
-     * Set the react container
+     * Set the container
      * @param {IContainer} container - The container
      */
     setContainer(container: IContainer): void;
@@ -24,5 +27,5 @@ export declare class Bootstrapper implements IBootstrapper {
      * Wires up components inside the container
      * @private
      */
-    _wireUpReactComponents(): void;
+    _wireUpComponents(): void;
 }

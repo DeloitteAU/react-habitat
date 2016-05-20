@@ -1,5 +1,7 @@
-import {IContainer} from '../src/interfaces/IContainer';
-import {Container} from '../src/Container';
+import {IContainer}         from '../src/interfaces/IContainer';
+import {Container}          from '../src/Container';
+import {MochComponent}      from './mochs/MochComponent';
+import {MochComponentTwo}   from './mochs/MochComponentTwo';
 
 describe("Container", () => {
 
@@ -16,38 +18,30 @@ describe("Container", () => {
 
     it("does register components", () => {
 
-        var mockComponent = (() => {return this;})();
-
-        container.registerComponent('aComponent', mockComponent);
+        container.registerComponent('aComponent', MochComponent);
 
         expect(container).toBeDefined();
-        expect(container.getComponent('aComponent')).toBe(mockComponent);
+        expect(container.getComponent('aComponent')).toBe(MochComponent);
     });
 
 
     it("does override registered components", () => {
 
-      var mockComponent = 'abc';
-      var mockComponent2 = 'cba';
-
-        container.registerComponent('aComponent', mockComponent);
-        container.registerComponent('aComponent', mockComponent2);
+        container.registerComponent('aComponent', MochComponent);
+        container.registerComponent('aComponent', MochComponentTwo);
 
         expect(container).toBeDefined();
-        expect(container.getComponent('aComponent')).toBe(mockComponent2);
+        expect(container.getComponent('aComponent')).toBe(MochComponentTwo);
     });
 
 
     it("does resolve distinct components", () => {
 
-      var mockComponent = 'abc';
-      var mockComponent2 = 'cba';
+      container.registerComponent('aComponent', MochComponent);
+      container.registerComponent('aComponent2', MochComponentTwo);
 
-      container.registerComponent('aComponent', mockComponent);
-      container.registerComponent('aComponent2', mockComponent2);
-
-      expect(container.getComponent('aComponent')).toBe(mockComponent);
-      expect(container.getComponent('aComponent2')).toBe(mockComponent2);
+      expect(container.getComponent('aComponent')).toBe(MochComponent);
+      expect(container.getComponent('aComponent2')).toBe(MochComponentTwo);
     });
 
 

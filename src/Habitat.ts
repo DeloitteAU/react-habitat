@@ -1,10 +1,12 @@
-
+/**
+ * The Habitat class
+ */
 export class Habitat {
 
     /**
-     *
+     * Returns a dictionary of properties and values defined on an element
      */
-    static parseProps(ele: Element): {} {
+    static parseProps(ele: Element): {[id: string]: any} {
 
         // Default props with reference to the initiating node
         var _props: {[id: string]: any} = {};
@@ -46,7 +48,7 @@ export class Habitat {
 
 
     /**
-     *
+     * Creates a new habitat in the dom
      */
     static createHabitat(ele: Element, type: string): Element {
 
