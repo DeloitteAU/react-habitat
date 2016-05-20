@@ -4,8 +4,7 @@
   "description": "A React DOM  Bootstrapper designed to harmonise a hybrid application",
   "main": "dist/index.js",
   "scripts": {
-    "postinstall": "./node_modules/.bin/typings install",
-    "test": "karma start",
+    "test": "karma start --single-run --browsers PhantomJS",
     "build": "tsc"
   },
   "repository": {
@@ -25,13 +24,17 @@
     "email": "jsalau@deloitte.com.au"
   },
   "contributors": [],
-
   "license": "ISC",
   "devDependencies": {
     "babel": "^6.5.2",
+    "babel-cli": "^6.9.0",
+    "jasmine-core": "^2.4.1",
     "karma": "^0.13.22",
+    "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.0.2",
+    "karma-phantomjs-launcher": "^1.0.0",
     "karma-webpack": "^1.7.0",
+    "phantomjs-prebuilt": "^2.1.7",
     "ts-loader": "^0.8.2",
     "typescript": "^1.8.10",
     "webpack": "^1.13.0"

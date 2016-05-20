@@ -1,6 +1,6 @@
 import { IBootstrapper } from "./interfaces/IBootstrapper";
 import { IContainer } from './interfaces/IContainer';
-export declare abstract class Bootstrapper implements IBootstrapper {
+export declare class Bootstrapper implements IBootstrapper {
     _componentSelector: string;
     _container: IContainer;
     firstClassElements: NodeListOf<Element>;

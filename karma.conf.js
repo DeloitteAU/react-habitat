@@ -1,7 +1,7 @@
 module.exports = function(config) {
     config.set({
 
-        browsers: ['Chrome'],
+        browsers: ['Chrome'],  // Use 'npm test' to run these tests in PhantomJS
 
         // frameworks to use
         frameworks: ['jasmine'],
@@ -59,10 +59,16 @@ module.exports = function(config) {
             noInfo: true
         },
 
+        phantomjsLauncher: {
+            // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
+            exitOnResourceError: true
+        },
+
         plugins: [
             "karma-jasmine",
             "karma-webpack",
-            "karma-chrome-launcher"
+            "karma-chrome-launcher",
+            "karma-phantomjs-launcher"
         ]
     });
 };

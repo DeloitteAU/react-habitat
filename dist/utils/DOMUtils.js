@@ -1,6 +1,8 @@
 "use strict";
-class DOMUtils {
-    static parseProps(ele) {
+var DOMUtils = (function () {
+    function DOMUtils() {
+    }
+    DOMUtils.parseProps = function (ele) {
         // Default props with reference to the initiating node
         var _props = {};
         // Save a reference to the original node
@@ -12,10 +14,10 @@ class DOMUtils {
                 continue;
             }
             // Convert prop name from hyphens to camel case
-            let name = a.name
+            var name_1 = a.name
                 .replace('data-prop-', '')
-                .replace(/-([a-z])/g, (g) => { return g[1].toUpperCase(); });
-            let value = a.value || '';
+                .replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+            var value = a.value || '';
             // Parse bool
             if (typeof value === 'string' && value.toLocaleLowerCase() === 'false') {
                 value = false;
@@ -29,15 +31,15 @@ class DOMUtils {
                 (value[0] === '[' && value[value.length - 1] === ']')) {
                 value = JSON.parse(value);
             }
-            _props[name] = value;
+            _props[name_1] = value;
         }
         return _props;
-    }
-    static openPortal(ele) {
+    };
+    DOMUtils.openPortal = function (ele) {
         //TODO: Check if ele is inline or not and render portal accordingly
-        let node = window.document.createElement('div');
-        let className = ele.getAttribute('data-fn-class') || '';
-        node.className = `fn-react-root ${className}`;
+        var node = window.document.createElement('div');
+        var className = ele.getAttribute('data-fn-class') || '';
+        node.className = "fn-react-root " + className;
         // inject
         if (ele === window.document.body) {
             document.body.appendChild(node);
@@ -49,6 +51,7 @@ class DOMUtils {
         //TODO: We might want to leave this in actually, especially if its a <input /> as we might want to pass data back
         ele.parentNode.removeChild(ele);
         return node;
-    }
-}
+    };
+    return DOMUtils;
+}());
 exports.DOMUtils = DOMUtils;

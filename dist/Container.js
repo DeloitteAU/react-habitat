@@ -1,6 +1,6 @@
 "use strict";
-class Container {
-    constructor() {
+var Container = (function () {
+    function Container() {
         this._components = {};
     }
     /**
@@ -8,16 +8,17 @@ class Container {
      * @param name
      * @param comp
      */
-    registerComponent(name, comp) {
+    Container.prototype.registerComponent = function (name, comp) {
         this._components['name'] = comp;
-    }
+    };
     /**
      * Returns a component for name
      * @param name
      * @returns {any}
      */
-    getComponent(name) {
+    Container.prototype.getComponent = function (name) {
         return this._components['name'];
-    }
-}
+    };
+    return Container;
+}());
 exports.Container = Container;
