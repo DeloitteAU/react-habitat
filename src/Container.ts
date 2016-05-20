@@ -1,10 +1,9 @@
 import {IContainer} from './interfaces/IContainer'
-import * as React from 'react';
+import {Registration} from './models/Registration';
 
 export class Container implements IContainer {
 
-    private _components: any;
-
+    _components: { [id: string] : any; };
 
     constructor() {
         this._components = {};
@@ -16,7 +15,7 @@ export class Container implements IContainer {
      * @param comp
      */
     registerComponent(name:string, comp: any) {
-        this._components['name'] = comp;
+      this._components[name] = comp;
     }
 
     /**
@@ -25,7 +24,7 @@ export class Container implements IContainer {
      * @returns {any}
      */
     getComponent(name:string) {
-        return this._components['name'];
+      return this._components[name];
     }
 
 }

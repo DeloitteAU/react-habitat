@@ -1,6 +1,8 @@
 import { IContainer } from './interfaces/IContainer';
 export declare class Container implements IContainer {
-    private _components;
+    _components: {
+        [id: string]: any;
+    };
     constructor();
     /**
      * Register a new component

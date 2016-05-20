@@ -1,9 +1,10 @@
-import {Container}  from '../src/Container';
-import {Bootstrapper} from '../src/Bootstrapper';
-import {MochComponent} from './mochs/MochComponent';
+import {Container}        from '../src/Container';
+import {Bootstrapper}     from '../src/Bootstrapper';
+import {MochComponent}    from './mochs/MochComponent';
+import {MochComponentTwo} from './mochs/MochComponentTwo';
 
 describe("Bootstrapper", () => {
-    
+
     class App extends Bootstrapper {
         constructor(container){
             super();
@@ -67,6 +68,29 @@ describe("Bootstrapper", () => {
     });
 
 
+    it("should render two different components", () => {
+
+        node.innerHTML = '<div data-component="IMochComponent"></div><div data-component="IMochComponentTwo"></div>';
+
+        // -- MOCH CONTAINER SET UP -- //
+        var container = new Container();
+        container.registerComponent('IMochComponent', MochComponent);
+        container.registerComponent('IMochComponentTwo', MochComponentTwo);
+        // --------------------------- //
+
+        var _ = new App(container),
+            componentLookup = node.innerHTML.match(/\[component MochComponent\]/g),
+            component2Lookup = node.innerHTML.match(/\[component MochComponentTwo\]/g);
+
+        expect(componentLookup).not.toEqual(null);
+        expect(componentLookup.length).toEqual(1);
+
+        expect(component2Lookup).not.toEqual(null);
+        expect(component2Lookup.length).toEqual(1);
+    });
+    
+
+
 
     it("should pass props", () => {
 
@@ -80,7 +104,7 @@ describe("Bootstrapper", () => {
         var _ = new App(container),
             componentLookup = node.innerHTML.match(/\[component MochComponent\]/g),
             propLookup = node.innerHTML.match(/title='test'/g);
-        
+
         expect(componentLookup).not.toEqual(null);
         expect(propLookup).not.toEqual(null);
         expect(componentLookup.length).toEqual(1);

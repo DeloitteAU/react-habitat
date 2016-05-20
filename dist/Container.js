@@ -9,7 +9,7 @@ var Container = (function () {
      * @param comp
      */
     Container.prototype.registerComponent = function (name, comp) {
-        this._components['name'] = comp;
+        this._components[name] = comp;
     };
     /**
      * Returns a component for name
@@ -17,7 +17,7 @@ var Container = (function () {
      * @returns {any}
      */
     Container.prototype.getComponent = function (name) {
-        return this._components['name'];
+        return this._components[name];
     };
     return Container;
 }());

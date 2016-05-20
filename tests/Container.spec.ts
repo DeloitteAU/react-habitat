@@ -1,7 +1,7 @@
 import {IContainer} from '../src/interfaces/IContainer';
 import {Container} from '../src/Container';
 
-describe("Container suite", () => {
+describe("Container", () => {
 
     var container: IContainer;
 
@@ -27,14 +27,27 @@ describe("Container suite", () => {
 
     it("does override registered components", () => {
 
-        var mockComponent = (() => {return this;})();
-        var mockComponent2 = (() => {return this;})();
+      var mockComponent = 'abc';
+      var mockComponent2 = 'cba';
 
         container.registerComponent('aComponent', mockComponent);
         container.registerComponent('aComponent', mockComponent2);
 
         expect(container).toBeDefined();
         expect(container.getComponent('aComponent')).toBe(mockComponent2);
+    });
+
+
+    it("does resolve distinct components", () => {
+
+      var mockComponent = 'abc';
+      var mockComponent2 = 'cba';
+
+      container.registerComponent('aComponent', mockComponent);
+      container.registerComponent('aComponent2', mockComponent2);
+
+      expect(container.getComponent('aComponent')).toBe(mockComponent);
+      expect(container.getComponent('aComponent2')).toBe(mockComponent2);
     });
 
 
