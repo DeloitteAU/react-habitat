@@ -1,6 +1,5 @@
 import {Habitat}       from '../src/Habitat';
 
-
 describe("Habitat parse", () => {
 
     var node: HTMLElement;
@@ -59,7 +58,6 @@ describe("Habitat parse", () => {
         expect(results['isActive6']).toEqual(false);
         expect(results['isActive7']).toEqual(false);
         expect(results['isActive8']).toEqual(false);
-
 
     });
 
