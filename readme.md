@@ -43,9 +43,9 @@ However you are definitely invited to use it if you want to.
 ## Compatibility
 
 - Supports Browsers IE8+ and all the evergreens.
-- Requires ES6 (Babel is encouraged)
+- ES5, ES6/7 & TypeScript
 
-We recommend you use something like WebPack or Browserify when using this framework.
+We recommend you use something like WebPack or Browserify when using this framework but not required.
 
 ## Installing
 
@@ -78,13 +78,26 @@ This document assumes you already know:
 
 #### 1. Create a bootstrapper class
 
-The class must extend `ReactHabitat.Bootstrapper` and is to be the *entry* point of your app. So if you're using something like webpack or browserify then
-this is file to point it to.
+The class must extend `ReactHabitat.Bootstrapper` and is to be the *entry* point of your app.
+So if you're using something like webpack or browserify then this is file to point it to.
 
-In the *constructor()* of the class you need to register your React components with it and then set the container. The container is later bound to the
-DOM automatically.
+In the *constructor()* of the class you need to register your React components with it and then set
+the container. The container is later bound to the DOM automatically.
 
 In React Habitat, you'd register a component something like this
+
+*ES5*
+
+```javascript
+    // Create a new container
+    createBootstrapper({
+      container: [
+        {register: 'SomeReactComponent', for: SomeReactComponent}
+      ]
+    });
+```
+
+*ES6*
 
 ```javascript
     // Create a new container builder
@@ -97,7 +110,38 @@ In React Habitat, you'd register a component something like this
     this.setContainer(container);
 ```
 
+
+
 For our sample application we need to register all of our components (classes) to be exposed to the DOM so things get wired up nicely.
+
+*ES5*
+
+```javascript
+var ReactHabitat = require('react-habitat');
+var SomeReactComponent = require('./SomeReactComponent');
+var AnotherReactComponent = require('./AnotherReactComponent');
+
+function MyApp() {
+
+  // Create a new react habitat bootstrapper
+  this.bootstrapper = ReactHabitat.createBootstrapper({
+
+    // Create a new container
+    container: [
+
+      // Register your top level component(s) (ie mini/child apps)
+      {register: 'SomeReactComponent', for: SomeReactComponent},
+      {register: 'AnotherReactComponent', for: AnotherReactComponent}
+    ]
+  });
+
+}
+
+// Always export a 'new' instance so it immediately evokes
+exports.MyApp = new MyApp();
+```
+
+*ES6*
 
 ```javascript
 import ReactHabitat                 from 'react-habitat';
@@ -125,6 +169,8 @@ export default new MyApp();
 ```
 
 
+
+
 #### 2. Application execution - render your components
 
 During the web application execution you will want to make use of the components you registered. You do this by *resolving* them in the DOM from a scope.
@@ -144,6 +190,16 @@ For instance:
 
 Will be resolved by the following registration.
 
+
+*es5*
+
+```javascript
+{register: 'SomeReactComponent', for: SomeReactComponent}
+```
+
+
+*es6*
+
 ```javascript
 container.register('SomeReactComponent', SomeReactComponent);
 ```
@@ -159,8 +215,8 @@ So, for our sample app we would do something like this
 </html>
 ```
 
-When you view this page you will see a instance of `SomeReactComponent` automatically rendered in the div's place. In fact, you can add as many as you like and it
-will render multiple instances.
+When you view this page you will see a instance of `SomeReactComponent` automatically rendered in the div's
+place. In fact, you can add as many as you like and it will render multiple instances.
 
 For example. This is perfectly valid.
 
@@ -208,7 +264,23 @@ Simple Example
 </div>
 ```
 
-Would expose as
+Would expose props as
+
+*es5*
+
+```javascript
+var SomeReactComponent = React.createClass({
+  render: function() {
+
+    // this.props.title === "A nice title";      //> true
+    // this.props.showTitle === true;            //> true
+
+    return <div></div>;
+  }
+});
+```
+
+*es6*
 
 ```javascript
 class SomeReactComponent extends React.Component {
@@ -232,6 +304,22 @@ JSON Example
 
 Would expose as
 
+*es5*
+
+```javascript
+var SomeReactComponent = React.createClass({
+  render: function() {
+
+    // this.props.person.name === "john";      //> true
+    // this.props.person.age === 22;           //> true
+
+    return <div></div>;
+  }
+});
+```
+
+*es6*
+
 ```javascript
 class MyReactComponent extends React.Component {
     constructor(props) {
@@ -243,11 +331,6 @@ class MyReactComponent extends React.Component {
 }
 ```
 
-## Options
-
-## Future
-
-I wish to investigate refactoring the React parsers to plugins and creating a 'polymer-habitat' plugin. PR welcome!
 
 ## Licence
 
