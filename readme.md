@@ -124,7 +124,7 @@ var AnotherReactComponent = require('./AnotherReactComponent');
 function MyApp() {
 
   // Create a new react habitat bootstrapper
-  this.bootstrapper = ReactHabitat.createBootstrapper({
+  this.domContainer = ReactHabitat.createBootstrapper({
 
     // Create a new container
     container: [
