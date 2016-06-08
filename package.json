@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@hub.deloittedigital.com.au:7999/fed/reactbootstrapper.git"
+    "url": "git@github.com:DeloitteDigitalAPAC/react-habitat.git"
   },
   "keywords": [
     "react",
@@ -23,7 +23,9 @@
     "name": "Jenna Salau",
     "email": "jsalau@deloitte.com.au"
   },
-  "contributors": [],
+  "contributors": [
+    
+  ],
   "license": "ISC",
   "devDependencies": {
     "babel": "^6.5.2",
