@@ -5,7 +5,7 @@
 ## React Habitat <3 Your CMS
 
 React Habitat is designed for integrating React with your CMS. It's based of some basic
-[container programming principles](https://en.wikipedia.org/wiki/Container_(abstract_data_type) and brings peace and order to your DOM.
+[container programming principles](https://en.wikipedia.org/wiki/Container_abstract_data_type) and brings peace and order to your DOM.
 This framework exists so you can get on with the fun stuff!
 
 ## When to use React Habitat
@@ -53,8 +53,7 @@ We recommend you use something like WebPack or Browserify when using this framew
 
 Install with Node Package Manager (NPM)
 
-`npm install --save-dev git+ssh://git@hub.deloittedigital.com.au:7999/fed/react-habitat.git#v0.1.4`
-
+`npm install --save-dev react-habitat`
 
 
 ## Getting Started
