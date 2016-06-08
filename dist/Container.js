@@ -1,27 +1,11 @@
 "use strict";
-/**
- * The Container class
- */
 var Container = (function () {
-    /**
-     * Constructor
-     */
     function Container() {
         this._components = {};
     }
-    /**
-     * Register a new component
-     * @param name
-     * @param comp
-     */
     Container.prototype.registerComponent = function (name, comp) {
         this._components[name] = comp;
     };
-    /**
-     * Returns a component for name
-     * @param name
-     * @returns {any}
-     */
     Container.prototype.getComponent = function (name) {
         return this._components[name];
     };
