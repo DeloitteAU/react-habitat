@@ -24,9 +24,9 @@
     "email": "jsalau@deloitte.com.au"
   },
   "contributors": [
-    
+
   ],
-  "license": "ISC",
+  "license": "BSD-3",
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-cli": "^6.9.0",
