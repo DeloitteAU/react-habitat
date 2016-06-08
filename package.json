@@ -2,7 +2,7 @@
   "name": "react-habitat",
   "version": "0.1.4",
   "description": "A React DOM  Bootstrapper designed to harmonise a hybrid application",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "karma start --single-run --browsers PhantomJS",
     "build": "tsc"

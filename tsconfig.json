@@ -1,9 +1,9 @@
 {
-  "version" : "1.8.10",
+  "version": "1.8.10",
   "compilerOptions": {
     "declaration": true,
     "module": "CommonJS",
-    "outDir": "dist/",
+    "outDir": "lib/",
     "noImplicitAny": false,
     "preserveConstEnums": true,
     "target": "es5",
@@ -14,6 +14,11 @@
   ],
   "exclude": [
     "dist",
+    "lib",
     "node_modules"
-  ]
+  ],
+  "compileOnSave": false,
+  "atom": {
+    "rewriteTsconfig": true
+  }
 }
