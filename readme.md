@@ -5,7 +5,7 @@
 ## React Habitat <3 Your CMS
 
 React Habitat is designed for integrating React with your CMS. It's based of some basic
-[container programming principles](https://en.wikipedia.org/wiki/Container_abstract_data_type) and brings peace and order to your DOM.
+[container programming principles](https://en.wikipedia.org/wiki/Container_(abstract_data_type)) and brings peace and order to your DOM.
 This framework exists so you can get on with the fun stuff!
 
 ## When to use React Habitat
