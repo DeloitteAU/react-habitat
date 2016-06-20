@@ -1,3 +1,11 @@
+/**
+ * Copyright 2016-present, Deloitte Digital.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-3-Clause license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 import {IBootstrapper}    from '../interfaces/IBootstrapper';
 import {Bootstrapper}     from '../Bootstrapper';
 import {Container}        from '../Container';
@@ -39,7 +47,7 @@ export class _Mixin extends Bootstrapper {
 }
 
 /*
-* 
+*
 */
 export var createBootstrapper = function(spec: {[id: string] : any}) {
     return new _Mixin(spec);
