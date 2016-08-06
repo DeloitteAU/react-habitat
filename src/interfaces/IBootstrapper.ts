@@ -8,12 +8,14 @@
  */
 
 import {IContainer} from './IContainer';
+import {IDOMFactory} from "./IDOMFactory";
 
 /**
  * The Bootstrapper interface
  */
 export interface IBootstrapper {
 
+    factory: IDOMFactory;
 
     setContainer:(container:IContainer) => void;
 

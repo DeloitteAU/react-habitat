@@ -23,6 +23,6 @@ export interface IContainer {
      * Get a registered component for a key
      * @param {string}      name        - The key name of the component that has been registered
      */
-    getComponent:(name:string) => any;
-
+    component:(name:string) => any;
+    
 }

@@ -30,7 +30,7 @@ describe("Container", () => {
         container.registerComponent('aComponent', MochComponent);
 
         expect(container).toBeDefined();
-        expect(container.getComponent('aComponent')).toBe(MochComponent);
+        expect(container.component('aComponent')).toBe(MochComponent);
     });
 
 
@@ -40,7 +40,7 @@ describe("Container", () => {
         container.registerComponent('aComponent', MochComponentTwo);
 
         expect(container).toBeDefined();
-        expect(container.getComponent('aComponent')).toBe(MochComponentTwo);
+        expect(container.component('aComponent')).toBe(MochComponentTwo);
     });
 
 
@@ -49,8 +49,8 @@ describe("Container", () => {
       container.registerComponent('aComponent', MochComponent);
       container.registerComponent('aComponent2', MochComponentTwo);
 
-      expect(container.getComponent('aComponent')).toBe(MochComponent);
-      expect(container.getComponent('aComponent2')).toBe(MochComponentTwo);
+      expect(container.component('aComponent')).toBe(MochComponent);
+      expect(container.component('aComponent2')).toBe(MochComponentTwo);
     });
 
 

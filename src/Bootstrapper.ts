@@ -18,14 +18,29 @@ import {ReactDOMFactory}          from './factories/ReactDOMFactory';
  *  Bootstrapper class
  */
 export class Bootstrapper implements IBootstrapper {
-
-    // Note for es5 support we cannot have the private accessor here
-    _componentSelector: string;
-
+    
+    /**
+     * The dom container
+     * Note for es5 support we cannot have the private accessor here
+     */
     _container: IContainer;
 
-    domFactory: IDOMFactory;
 
+    /**
+     * The component selector namespace
+     */
+    componentSelector: string = 'data-component';
+
+
+    /**
+     * The dom factory
+     * @type {ReactDOMFactory}
+     */
+    factory: IDOMFactory = new ReactDOMFactory();
+
+    /**
+     * The raw dom elements
+     */
     firstClassElements: NodeListOf<Element>;
 
 
@@ -39,22 +54,8 @@ export class Bootstrapper implements IBootstrapper {
             throw new Error('ReactBootstrapper requires a DOM but cannot see one :(');
         }
 
-        // Set the DOM factory
-        this.domFactory = new ReactDOMFactory();
-
-        // Set the selector name space
-        this._componentSelector = 'data-component';
-
         // Find all the elements in the dom with the component selector attribute
         this.firstClassElements = window.document.querySelectorAll(`[${this.componentSelector}]`);
-    }
-
-    /**
-     * Get's the component selector, this is used
-     * @returns {string}
-     */
-    get componentSelector():string {
-        return this._componentSelector;
     }
 
     /**
@@ -74,24 +75,24 @@ export class Bootstrapper implements IBootstrapper {
      * Wires up components inside the container
      * @private
      */
-    _wireUpComponents():void {
+    _wireUpComponents(): void {
 
         // Iterate over component elements in the dom
         for (var i = 0; i < this.firstClassElements.length; ++i) {
 
             var ele = this.firstClassElements[i],
-                componentName = ele.getAttribute(this._componentSelector),
-                component = this._container.getComponent(componentName);
+                componentName = ele.getAttribute(this.componentSelector),
+                component = this._container.component(componentName);
 
             if (!component) {
                 console.warn(`Cannot resolve component "${componentName}". Did you forget to register it in the container?`);
                 continue;
             }
 
-            this.domFactory.inject(
+            this.factory.inject(
               component,
               Habitat.parseProps(ele),
-              Habitat.createHabitat(ele, this.domFactory.identifier()));
+              Habitat.createHabitat(ele, this.factory.identifier()));
         }
 
     }

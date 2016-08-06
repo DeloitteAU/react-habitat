@@ -19,13 +19,14 @@ export class Container implements IContainer {
      */
     _components: { [id: string] : any; };
 
+
     /**
      * Constructor
      */
     constructor() {
         this._components = {};
     }
-
+    
     /**
      * Register a new component
      * @param name
@@ -40,7 +41,7 @@ export class Container implements IContainer {
      * @param name
      * @returns {any}
      */
-    getComponent(name:string) {
+    component(name:string) {
       return this._components[name];
     }
 
