@@ -11,6 +11,9 @@ import {Bootstrapper}     from '../src/Bootstrapper';
 import {MochComponent}    from './mochs/MochComponent';
 import {MochComponentTwo} from './mochs/MochComponentTwo';
 
+
+
+
 describe("Bootstrapper", () => {
 
     class App extends Bootstrapper {

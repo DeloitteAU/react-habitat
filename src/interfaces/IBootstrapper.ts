@@ -18,7 +18,6 @@ export interface IBootstrapper {
 
     setContainer:(container:IContainer) => void;
 
-
     //TODO: These are not implemented yet
 
     /**
@@ -40,6 +39,5 @@ export interface IBootstrapper {
      * Application will terminate event
      */
     appWillTerminate?:() => void;
-
 
 }
