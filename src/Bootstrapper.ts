@@ -8,10 +8,10 @@
 
 import {IBootstrapper}            from "./interfaces/IBootstrapper";
 import {IContainer}               from './interfaces/IContainer';
-import {IDOMFactory}              from './interfaces/IDOMFactory';
+import {IDomFactory}              from './interfaces/IDomFactory';
 
 import {Habitat}                  from './Habitat';
-import {ReactDOMFactory}          from './factories/ReactDOMFactory';
+import {ReactDomFactory}          from './factories/ReactDomFactory';
 
 /**
  *  Bootstrapper class
@@ -35,7 +35,7 @@ export class Bootstrapper implements IBootstrapper {
      * The dom factory
      * @type {ReactDOMFactory}
      */
-    factory: IDOMFactory = new ReactDOMFactory();
+    factory: IDomFactory = new ReactDomFactory();
 
     /**
      * The raw dom elements
@@ -54,7 +54,7 @@ export class Bootstrapper implements IBootstrapper {
         }
 
         // Find all the elements in the dom with the component selector attribute
-        this.firstClassElements = window.document.querySelectorAll(`[${this.componentSelector}]`);
+        this.firstClassElements = window.document.body.querySelectorAll(`[${this.componentSelector}]`);
     }
 
     /**

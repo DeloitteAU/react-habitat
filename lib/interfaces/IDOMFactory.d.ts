@@ -8,7 +8,7 @@
 /**
  * The DOM Factory
  */
-export interface IDOMFactory {
+export interface IDomFactory {
     /**
      * An identifier string for the type of components this injects
      */
@@ -19,5 +19,5 @@ export interface IDOMFactory {
      * @param {object}      props       - The components properties
      * @param {Element}     target      - The element to inject the component into
      */
-    inject?: (module: any, props: {}, target: Element) => void;
+    inject: (module: any, props: {}, target: Element) => void;
 }

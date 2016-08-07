@@ -1,10 +1,19 @@
 /// <reference path='../typings/main.d.ts'/>
+import { Bootstrapper }                 from './Bootstrapper';
+import { Container }                    from './Container';
+import { createBootstrapper, _Mixin }   from './classic/createBootstrapper';
 
-// Modern
+const ReactHabitat = {
 
-export {Bootstrapper}       from './Bootstrapper';
-export {Container}          from './Container';
+    // Modern
 
-// Classic
+    Bootstrapper: Bootstrapper,
+    Container: Container,
 
-export {createBootstrapper} from './classic/createBootstrapper';
+    // Classic
+    
+    createBoostrapper: createBootstrapper
+
+};
+
+export default ReactHabitat;

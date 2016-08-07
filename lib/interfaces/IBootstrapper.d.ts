@@ -6,10 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { IContainer } from './IContainer';
+import { IDomFactory } from "./IDomFactory";
 /**
  * The Bootstrapper interface
  */
 export interface IBootstrapper {
+    factory: IDomFactory;
     setContainer: (container: IContainer) => void;
     /**
      * Application did start event

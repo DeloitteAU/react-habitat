@@ -1,6 +1,6 @@
 {
   "name": "react-habitat",
-  "version": "0.1.6-beta",
+  "version": "0.1.6-beta3",
   "description": "A React DOM  Bootstrapper designed to harmonise a hybrid application",
   "main": "lib/index.js",
   "scripts": {

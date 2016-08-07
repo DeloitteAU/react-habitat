@@ -1,4 +1,12 @@
 /// <reference path="../typings/main.d.ts" />
-export { Bootstrapper } from './Bootstrapper';
-export { Container } from './Container';
-export { createBootstrapper } from './classic/createBootstrapper';
+import { Bootstrapper } from './Bootstrapper';
+import { Container } from './Container';
+import { _Mixin } from './classic/createBootstrapper';
+declare const ReactHabitat: {
+    Bootstrapper: typeof Bootstrapper;
+    Container: typeof Container;
+    createBoostrapper: (spec: {
+        [id: string]: any;
+    }) => _Mixin;
+};
+export default ReactHabitat;

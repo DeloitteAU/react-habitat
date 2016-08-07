@@ -9,12 +9,12 @@
 import * as React           from 'react';
 import * as ReactDOM        from 'react-dom';
 
-import {IDOMFactory}        from '../interfaces/IDOMFactory';
+import {IDomFactory}        from '../interfaces/IDomFactory';
 
-export class ReactDOMFactory implements IDOMFactory {
+export class ReactDomFactory implements IDomFactory {
 
     identifier() {
-      return 'React';
+      return 'react';
     }
 
     inject(module: any, props: {}, target: Element) {

@@ -31,5 +31,5 @@ export declare class Container implements IContainer {
      * @param name
      * @returns {any}
      */
-    getComponent(name: string): any;
+    component(name: string): any;
 }

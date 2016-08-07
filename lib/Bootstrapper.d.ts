@@ -7,24 +7,33 @@
  */
 import { IBootstrapper } from "./interfaces/IBootstrapper";
 import { IContainer } from './interfaces/IContainer';
-import { IDOMFactory } from './interfaces/IDOMFactory';
+import { IDomFactory } from './interfaces/IDomFactory';
 /**
  *  Bootstrapper class
  */
 export declare class Bootstrapper implements IBootstrapper {
-    _componentSelector: string;
+    /**
+     * The dom container
+     * Note for es5 support we cannot have the private accessor here
+     */
     _container: IContainer;
-    domFactory: IDOMFactory;
+    /**
+     * The component selector namespace
+     */
+    componentSelector: string;
+    /**
+     * The dom factory
+     * @type {ReactDOMFactory}
+     */
+    factory: IDomFactory;
+    /**
+     * The raw dom elements
+     */
     firstClassElements: NodeListOf<Element>;
     /**
      * Constructor
      */
     constructor();
-    /**
-     * Get's the component selector, this is used
-     * @returns {string}
-     */
-    componentSelector: string;
     /**
      * Set the container
      * @param {IContainer} container - The container

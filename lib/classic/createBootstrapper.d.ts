@@ -4,6 +4,6 @@ export declare class _Mixin extends Bootstrapper {
         [id: string]: any;
     });
 }
-export declare var createBootstrapper: (spec: {
+export declare const createBootstrapper: (spec: {
     [id: string]: any;
 }) => _Mixin;

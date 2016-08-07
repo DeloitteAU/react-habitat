@@ -9,7 +9,7 @@
 /**
  * The DOM Factory
  */
-export interface IDOMFactory {
+export interface IDomFactory {
 
     /**
      * An identifier string for the type of components this injects

@@ -32,7 +32,7 @@ export class _Mixin extends Bootstrapper {
       // Create a new container
       var container = new Container();
 
-      // Itterate the spec and register its components
+      // Iterate the spec and register its components
       for(var definition of spec['container']) {
         container.registerComponent(
           definition['register'],
@@ -49,6 +49,6 @@ export class _Mixin extends Bootstrapper {
 /*
 *
 */
-export var createBootstrapper = function(spec: {[id: string] : any}) {
+export const createBootstrapper = function(spec: {[id: string] : any}) {
     return new _Mixin(spec);
-}
+};
