@@ -18,7 +18,7 @@
 	 * @param {object}      props       - The components properties
 	 * @param {Element}     target      - The element to inject the component into
 	 */
-	inject?: (module: any, props: {}, target: Element) => void;
+	inject: (module: any, props: {}, target: Element) => void;
  }
 
  export interface IContainer {
