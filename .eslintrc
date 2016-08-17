@@ -1,0 +1,15 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "no-underscore-dangle": 0,
+    "padded-blocks": 0
+  },
+  "env": {
+    "browser": true,
+    "jasmine": true,
+    "node": true
+  },
+  "plugins": [
+    "jasmine"
+  ]
+}

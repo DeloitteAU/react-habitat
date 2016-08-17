@@ -32,7 +32,6 @@ However you are definitely invited to use it if you want to.
 
 ## Features
 
-- Simple and fast setup
 - Pass data (props) to your components from HTML attributes
 - Automatic data parsing
 - All page child apps can still share the same components, stores, events etc. (Everything is connected)
@@ -44,10 +43,10 @@ However you are definitely invited to use it if you want to.
 
 ## Compatibility
 
-- Supports Browsers IE8+ and all the evergreens.
+- Supports Browsers IE9+ and all the evergreens.
 - ES5, ES6/7 & TypeScript
 
-We recommend you use something like WebPack or Browserify when using this framework but not required.
+We highly recommend you use something like [WebPack](https://webpack.github.io/) or [Browserify](http://browserify.org/) when using this framework but not required.
 
 ## Installing
 
@@ -55,35 +54,33 @@ Install with Node Package Manager (NPM)
 
 `npm install --save-dev react-habitat`
 
+Alternatively you can manually install by downloading the `dist/react-habitat.min.js` file and including in your project.
 
 ## Getting Started
 
 The basic pattern for integrating React Habitat into your application is:
 
 - Structure your app with inversion of control (IoC) in mind.
-- Add React references.
 - At application startup...
 - Create a Container.
 - Register React components.
 - Set the container and store it for later use in the DOM.
 - During application execution...
-- Use the lifetime DOM scope to resolve instances of the components.
+- Use the DOM scope to resolve instances of the components.
 
 This getting started guide walks you through these steps for a simple React application.
 This document assumes you already know:
 
-- How to compile JSX
-- How to use es6 modules; and
+- How to compile JSX; and
 - How to bundle using something like webpack or browserify
-
 
 #### 1. Create a bootstrapper class
 
-The class must extend `ReactHabitat.Bootstrapper` and is to be the *entry* point of your app.
-So if you're using something like webpack or browserify then this is file to point it to.
+The class must extend `ReactHabitat.Bootstrapper` and is intended to be the *entry* point of your app.
+So if you're using something like webpack or browserify then this is file to point it to bundle from.
 
 In the *constructor()* of the class you need to register your React components with it and then set
-the container. The container is later bound to the DOM automatically.
+the container. The container is later bound to the DOM automatically so your React components self-initiate.
 
 In React Habitat, you'd register a component something like this
 
@@ -179,7 +176,7 @@ During the web application execution you will want to make use of the components
 When you resolve a component, a new instance of the object gets created (Resolving a component is roughly equivalent to calling 'new').
 
 To *resolve* new instances your components you need to attach a `data-component` attribute to a `div` or a `span` element in the HTML. These elements should always
-remain empty.
+remain empty. Any child components should be nested inside the React components themselves.
 
 Set the `data-component` value to equal a component name you have registered in the container.
 
