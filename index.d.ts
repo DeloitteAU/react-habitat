@@ -6,12 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
- export interface IDomFactory {
+export interface IDomFactory {
 
-	/**
-	 * An identifier string for the type of components this injects
-	 */
-	identifier: () => string;
 	/**
 	 * The inject method after a wire-up has been requested
 	 * @param {*}           module      - The component
@@ -19,28 +15,40 @@
 	 * @param {Element}     target      - The element to inject the component into
 	 */
 	inject: (module: any, props: {}, target: Element) => void;
+
+	/**
+	 * The dispose method
+	 * @param {Element}		target		- The element to dispose
+     */
+	dispose: (target: Element) => void;
  }
 
- export interface IContainer {
+export interface IContainer {
 	/**
 	 * Register a new component in the container
 	 * @param {string}      name        - The key that identifies this component
 	 * @param {*}           comp        - The component class
 	 */
 	registerComponent: (name: string, comp: any) => void;
+
 	/**
 	 * Get a registered component for a key
 	 * @param {string}      name        - The key name of the component that has been registered
 	 */
 	resolve: (name: string) => any;
- }
+
+	/**
+	* The container's unique id
+	*/
+	id: () => string;
+
+	/**
+	 * The containers dom factory
+	 */
+	domFactory: () => IDomFactory;
+}
 
  export interface IBootstrapper {
-
-	 /**
-	  * The dom factory
-	  */
-	factory: IDomFactory;
 
 	 /**
 	  * Set the container
@@ -48,18 +56,17 @@
       */
 	setContainer: (container: IContainer) => void;
 
+	 /**
+	  * Dispose of the container
+	  */
+	 dispose: () => void;
  }
 
 
 declare module ReactHabitat {
 
 	export class Bootstrapper implements IBootstrapper {
-
-		/**
-		 * The bootstrapping factory
-		 */
-		factory: IDomFactory;
-
+		
 		/**
 		 * Sets the container
 		 */
@@ -76,13 +83,17 @@ declare module ReactHabitat {
 		elements: NodeListOf<Element>;
 
 		/**
-		 * The container
-		 * @private
+		 * Disposes the container
 		 */
-		_container: IContainer;
+		dispose: () => void;
 	}
 
 	export class Container implements IContainer {
+
+		/**
+		 * The containers unique id
+		 */
+		id: () => string;
 
 		/**
 		 * Register a component
@@ -93,6 +104,11 @@ declare module ReactHabitat {
 		 * Resolve a component
 		 */
 		resolve: (name: string) => any;
+
+		/**
+		 * The containers dom factory
+		 */
+		domFactory: () => IDomFactory;
 	}
 
 }

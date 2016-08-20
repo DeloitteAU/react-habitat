@@ -6,47 +6,96 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import ReactDomFactory from './factories/ReactDomFactory';
+
+
+/**
+ * Creates a unique id
+ * Example 'C22'
+ * @returns {string}
+ */
+const assignId = (function idFactory() {
+	let _nextId = 0;
+
+	return function _assignId() {
+		_nextId++;
+		return `C${_nextId}`;
+	};
+}());
+
+
 /**
  * The Container class
  */
 export default class Container {
 
-  /**
-   * Constructor
-   */
-  constructor(comps = {}) {
-
-    if (typeof comps !== 'object') {
-      throw new Error('Unexpected initial container.', comps);
-    }
-
-    // TODO: need to make this private (eg use a WeakMap)
-    this._components = comps;
-  }
+	/**
+	* Constructor
+	*/
+	constructor() {
+		// TODO: need to make these private in a future version (eg use a WeakMap)
+		this._components = {};
+		this._id = assignId();
+	}
 
 	/**
-     * Register a component in the container
-     * @param {string}  name    - A unique component key
-     * @param {object}  comp    - The component
-     */
-  registerComponent(name, comp) {
-    if (typeof name !== 'string') {
-      throw new Error('Unexpected component key. Expects a string.', name);
-    }
-    this._components[name] = comp;
-  }
+	* The unique id for this container
+	* @returns {*}
+	*/
+	id() {
+		return this._id;
+	}
 
-  /**
-   * Resolve a component from the container
-   * @param {string}    name    - The unique component key
-   * @returns {object}
-   */
-  resolve(name) {
-    return this._components[name];
-  }
+	/**
+	* Register a component in the container
+	* @param {string}  name    - A unique component key
+	* @param {object}  comp    - The component
+	*/
+	registerComponent(name, comp) {
+		if (typeof name !== 'string') {
+			throw new Error('Unexpected component key. Expects a string.', name);
+		}
+		this._components[name] = comp;
+	}
 
-  getComponent(name) {
-    console.warn('getComponent is deprecated. Please use resolve() instead.');
-    return this.resolve(name);
-  }
+	/**
+	* Register multiple components to the container
+	* @param {object}  comps     - The components
+	*/
+	registerComponents(comps) {
+		if (typeof comps !== 'object') {
+			throw new Error('Unexpected components type. Expects type object', comps);
+		}
+
+		Object.assign(this._components, comps);
+	}
+
+	/**
+	* Resolve a component from the container
+	* @param {string}    name    - The unique component key
+	* @returns {object}
+	*/
+	resolve(name) {
+		return this._components[name];
+	}
+
+	/**
+	* Gets a component for key
+	* @param name
+	* @returns {Object}
+	* @deprecated
+	*/
+	getComponent(name) {
+		console.warn('getComponent is being deprecated. Please update to use "resolve()" instead.');
+		return this.resolve(name);
+	}
+
+	/**
+	* Returns the containers dom factory
+	* @returns {ReactDomFactory}
+	*/
+	domFactory() {
+		return ReactDomFactory;
+	}
+
 }

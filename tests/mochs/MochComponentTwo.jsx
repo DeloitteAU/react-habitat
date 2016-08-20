@@ -11,22 +11,22 @@ import React from 'react';
 
 class MochComponentTwo extends React.Component {
 
-  innerText() {
-    if (this.props.title !== null) {
-      return `[component MochComponentTwo](title='${this.props.title}')`;
-    }
+	innerText() {
+		if (this.props.title !== null) {
+			return `[component MochComponentTwo](title='${this.props.title}')`;
+		}
 
-    return '[component MochComponentTwo]';
-  }
+		return '[component MochComponentTwo]';
+	}
 
-  render() {
-    return <div>{this.innerText()}</div>;
-  }
+	render() {
+		return <div>{this.innerText()}</div>;
+	}
 
 }
 
 MochComponentTwo.propTypes = {
-  title: React.PropTypes.string,
+	title: React.PropTypes.string,
 };
 
 export default MochComponentTwo;

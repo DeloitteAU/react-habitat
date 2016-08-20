@@ -2,7 +2,9 @@
   "extends": "airbnb",
   "rules": {
     "no-underscore-dangle": 0,
-    "padded-blocks": 0
+    "padded-blocks": 0,
+    "indent": [2, "tab"],
+    "no-multi-spaces": [2, { "exceptions": { "ImportDeclaration": true } }]
   },
   "env": {
     "browser": true,

@@ -15,37 +15,37 @@ import Container from '../Container';
 */
 export class _Mixin extends Bootstrapper {
 
-  /*
-  * A Constructor that takes a spec
-  */
-  constructor(spec) {
-    super();
+	/*
+	* A Constructor that takes a spec
+	*/
+	constructor(spec) {
+		super();
 
-    // Check if a container spec was supplied
-    if (!spec.container) {
-      console.warn('"Container" property was not supplied');
-      return;
-    }
+		// Check if a container spec was supplied
+		if (!spec.container) {
+			console.warn('"Container" property was not supplied');
+			return;
+		}
 
-    // Create a new container
-    const container = new Container();
+		// Create a new container
+		const container = new Container();
 
-    // Map the components
-    for (let i = 0; i < spec.container.length; i++) {
-      container.registerComponent(
-          spec.container[i].register,
-          spec.container[i].for
-      );
-    }
+		// Map the components
+		for (let i = 0; i < spec.container.length; i++) {
+			container.registerComponent(
+				spec.container[i].register,
+				spec.container[i].for
+			);
+		}
 
-    // Finally, set the container
-    this.setContainer(container);
-  }
+		// Finally, set the container
+		this.setContainer(container);
+	}
 }
 
 /*
-*
+* The classic bootstrapper
 */
 export function createBootstrapper(spec) {
-  return new _Mixin(spec);
+	return new _Mixin(spec);
 }

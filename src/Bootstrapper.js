@@ -7,38 +7,40 @@
  */
 
 import Habitat from './Habitat';
-import ReactDomFactory from './factories/ReactDomFactory';
 
 const DEFAULT_HABITAT_SELECTOR = 'data-component';
 
 /**
  * Parses a container and populate components
- * @param {object}    factory               The dom factory
  * @param {array}     container             The container
  * @param {array}     elements              The elements to parse
  * @param {string}    componentSelector     The component selector
  * @param cb
  */
-function parseContainer(factory, container, elements, componentSelector, cb = null) {
-  // Iterate over component elements in the dom
-  for (let i = 0; i < elements.length; ++i) {
-    const ele = elements[i];
-    const componentName = ele.getAttribute(componentSelector);
-    const component = container.resolve(componentName);
+function parseContainer(container, elements, componentSelector, cb = null) {
 
-    if (component) {
-      factory.inject(
-        component,
-        Habitat.parseProps(ele),
-        Habitat.create(ele, factory.identifier()));
-    } else {
-      console.warn(`Cannot resolve component "${componentName}"`);
-    }
-  }
+	const factory = container.domFactory();
+	const id = container.id();
 
-  if (typeof cb === 'function') {
-    cb.call();
-  }
+	// Iterate over component elements in the dom
+	for (let i = 0; i < elements.length; ++i) {
+		const ele = elements[i];
+		const componentName = ele.getAttribute(componentSelector);
+		const component = container.resolve(componentName);
+
+		if (component) {
+			factory.inject(
+				component,
+				Habitat.parseProps(ele),
+				Habitat.create(ele, id));
+		} else {
+			console.warn(`Cannot resolve component "${componentName}"`);
+		}
+	}
+
+	if (typeof cb === 'function') {
+		cb.call();
+	}
 }
 
 /**
@@ -46,39 +48,76 @@ function parseContainer(factory, container, elements, componentSelector, cb = nu
  */
 export default class Bootstrapper {
 
-  /**
-   * Constructor
-   */
-  constructor() {
-    // Sanity check
-    if (!window || (!window && !window.document)) {
-      throw new Error('ReactBootstrapper requires a DOM but cannot see one :(');
-    }
+	/**
+	 * Constructor
+	 */
+	constructor() {
+		// Sanity check
+		if (!window || (!window && !window.document)) {
+			throw new Error('ReactBootstrapper requires a DOM but cannot see one :(');
+		}
 
-    // Set dom component selector
-    this.componentSelector = DEFAULT_HABITAT_SELECTOR;
+		// Set dom component selector
+		this.componentSelector = DEFAULT_HABITAT_SELECTOR;
 
-    // Set dom factory
-    this.factory = new ReactDomFactory();
+		// Find all the elements in the dom with the component selector attribute
+		this.elements = window.document.body.querySelectorAll(`[${this.componentSelector}]`);
 
-    // Find all the elements in the dom with the component selector attribute
-    this.elements = window.document.body.querySelectorAll(`[${this.componentSelector}]`);
-  }
+		// The container
+		this._container = null;
+	}
 
-  /**
-   * Set the container
-   * @param {object}    container   - The container
-   * @param {function}  [cb=null]   - Optional callback
-   */
-  setContainer(container, cb = null) {
-    // Wire up the components from the container
-    parseContainer(
-        this.factory,
-        container,
-        this.elements,
-        this.componentSelector,
-        cb
-    );
-  }
+	/**
+	 * Set the container
+	 * @param {object}    container   - The container
+	 * @param {function}  [cb=null]   - Optional callback
+	 */
+	setContainer(container, cb = null) {
 
+		if (this._container !== null) {
+			throw new Error(
+				'A container is already set. Please call dispose() before assigning a new one.'
+			);
+		}
+
+		this._container = container;
+
+		// Wire up the components from the container
+		parseContainer(
+			this._container,
+			this.elements,
+			this.componentSelector,
+			cb
+		);
+	}
+
+	/**
+	 * Dispose the container and destroy habitat instances
+	 * @param {function}	[cb=null]	- Optional callback
+	 */
+	dispose(cb = null) {
+
+		// get the container's factory
+		const factory = this._container.domFactory();
+
+		// Look up open habitats for this container in the dom
+		const habitats = window
+			.document
+			.body
+			.querySelectorAll(`[data-habitat="${this._container.id()}"]`);
+
+		// Clean up
+		for (let i = 0; i < habitats.length; ++i) {
+			factory.dispose(habitats[i]);
+			Habitat.destroy(habitats[i]);
+		}
+
+		// Reset and release container
+		this._container = null;
+
+		// Handle callback
+		if (typeof cb === 'function') {
+			cb.call();
+		}
+	}
 }

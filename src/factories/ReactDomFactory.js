@@ -10,22 +10,31 @@ import ReactDOM from 'react-dom';
 
 export default class ReactDomFactory {
 
-  /**
-   * The factory identifier
-   * @returns {string}
-   */
-  identifier() {
-    return 'react';
-  }
+	/**
+	* Injects a react component
+	* @param {object}			module		- The react component
+	* @param {object}			props		- Props to initiate component with
+	* @param {HTMLElement}		target		- The target element to inject to
+	*/
+	static inject(module, props = {}, target) {
+		if (target) {
+			ReactDOM.render(
+				React.createElement(module, props || {}),
+				target
+			);
+		} else {
+			console.warn('Target element is null or undefined. Cannot inject component');
+		}
+	}
 
-  inject(module, props = {}, target) {
-    if (target) {
-      ReactDOM.render(
-        React.createElement(module, props || {}),
-        target
-      );
-    } else {
-      console.warn('Target element is null or undefined. Cannot inject component');
-    }
-  }
+	/**
+	 *  Disposes a react component
+	 * @param {HTMLElement}		target		- The target element to dispose
+	 */
+	static dispose(target) {
+		if (target) {
+			ReactDOM.unmountComponentAtNode(target);
+		}
+	}
+
 }

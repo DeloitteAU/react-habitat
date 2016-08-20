@@ -12,15 +12,15 @@ import Container from '../src/Container';
 import { createBootstrapper, _Mixin } from '../src/classic/createBootstrapper';
 
 describe('Habitat API', () => {
-  it('resolves a bootstrapper', () => {
-    expect(ReactHabitat.Bootstrapper).toEqual(Bootstrapper);
-  });
+	it('resolves a bootstrapper', () => {
+		expect(ReactHabitat.Bootstrapper).toEqual(Bootstrapper);
+	});
 
-  it('resolves a container', () => {
-    expect(ReactHabitat.Container).toEqual(Container);
-  });
+	it('resolves a container', () => {
+		expect(ReactHabitat.Container).toEqual(Container);
+	});
 
-  it('resolves a classic mixin', () => {
-    expect(ReactHabitat.createBootstrapper).toEqual(createBootstrapper);
-  });
+	it('resolves a classic mixin', () => {
+		expect(ReactHabitat.createBootstrapper).toEqual(createBootstrapper);
+	});
 });
