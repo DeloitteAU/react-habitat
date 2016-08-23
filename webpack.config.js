@@ -17,6 +17,10 @@ var config = {
 		library: 'ReactHabitat',
 		libraryTarget: 'umd'
 	},
+	externals: {
+		'react': 'react',
+		'react-dom': 'ReactDOM'
+	},
 	plugins: [
 		{
 			apply: function apply(compiler) {

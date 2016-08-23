@@ -17,8 +17,9 @@ This framework exists so you can get on with the fun stuff!
 - [Compatibility](#compatibility)
 - [Installing](#installing)
 - [Getting Started](#getting-started)
-- []
-
+- [Options and Methods](#options-and-methods)
+- [Contribute](#want-to-contribute)
+- [License](#license-bsd-3-clause)
 
 ## When to use React Habitat
 
@@ -67,7 +68,7 @@ We highly recommend you use something like [WebPack](https://webpack.github.io/)
 
 Install with Node Package Manager (NPM)
 
-`npm install --save-dev react-habitat@0.2.0-beta4`
+`npm install --save-dev react-habitat`
 
 *Note* npm deprecated auto installing of peer dependencies since npm@3, you may additionally need to install:
 
@@ -78,7 +79,7 @@ Alternatively you can manually install by downloading the `dist/react-habitat.mi
 
 ## Getting Started
 
-**Using ES5?** Read the [ES5 version here](readme-in-es5.md).
+**Using ES6 or 7?** Read the [ES6 version here](readme.md).
 
 The basic pattern for integrating React Habitat into your application is:
 
@@ -106,34 +107,34 @@ the container. The container is later bound to the DOM automatically so your Rea
 In React Habitat, you'd register a component something like this
 
 ```javascript
-	container.register('SomeReactComponent', SomeReactComponent);
+	{	register: 'SomeReactComponent', for: SomeReactComponent }
 ```
 
 So for our sample application we need to register all of our components (classes) to be exposed to the DOM so things get wired up nicely.
 
 ```javascript
-import ReactHabitat                 from 'react-habitat';
-import SomeReactComponent           from './SomeReactComponent';
-import AnotherReactComponent        from './AnotherReactComponent';
+var ReactHabitat = require('react-habitat');
+var SomeReactComponent = require('./SomeReactComponent');
+var AnotherReactComponent = require('./AnotherReactComponent');
 
-class MyApp extends ReactHabitat.Bootstrapper {
-    constructor(){
-        super();
+function MyApp() {
 
-        // Create a new container builder
-        var container = new ReactHabitat.Container();
+  // Create a new react habitat bootstrapper
+  this.domContainer = ReactHabitat.createBootstrapper({
 
-        // Register your top level component(s) (ie mini/child apps)
-        container.register('SomeReactComponent', SomeReactComponent);
-        container.register('AnotherReactComponent', AnotherReactComponent);
+    // Create a new container
+    container: [
 
-        // Finally, set the container
-        this.setContainer(container);
-    }
+      // Register your top level component(s)
+      {register: 'SomeReactComponent', for: SomeReactComponent},
+      {register: 'AnotherReactComponent', for: AnotherReactComponent}
+    ]
+  });
+
 }
 
 // Always export a 'new' instance so it immediately evokes
-export default new MyApp();
+exports.MyApp = new MyApp();
 ```
 
 **If you are using Redux**
@@ -161,7 +162,7 @@ For instance:
 Will be resolved by the following registration.
 
 ```javascript
-container.register('SomeReactComponent', SomeReactComponent);
+{register: 'SomeReactComponent', for: SomeReactComponent}
 ```
 
 So, for our sample app we would do something like this
@@ -236,19 +237,15 @@ Simple Example
 Would expose props as
 
 ```javascript
-class SomeReactComponent extends React.Component {
+var SomeReactComponent = React.createClass({
+	render: function() {
 
-	constructor(props) {
-		super(props);
+		// this.props.title === "A nice title";      //> true
+		// this.props.showTitle === true;            //> true
 
-		// props.title === "A nice title";      //> true
-		// props.showTitle === true;            //> true
-	}
-
-	render() {
 		return <div>{ this.props.showTitle ? this.props.title : null }</div>;
 	}
-}
+});
 ```
 
 JSON Example
@@ -262,9 +259,8 @@ JSON Example
 Would expose as
 
 ```javascript
-class MyReactComponent extends React.Component {
-	constructor(props) {
-		super(props);
+var SomeReactComponent = React.createClass({
+	render: function() {
 
 		return (
 			<div>
@@ -272,13 +268,11 @@ class MyReactComponent extends React.Component {
 				Age: {this.props.person.age}
 			</div>
 		);
-	}
-}
+  }
+});
 ```
 
-## Options and Methods
-
-**Using ES5?** Read the [ES5 version here](readme-in-es5.md).
+## Options & Methods
 
 ### Changing the habitat query selector
 
@@ -292,12 +286,13 @@ It will accept any string containing one or more [CSS selectors](https://develop
 Example
 
 ```javascript
-class MyApp extends ReactHabitat.Bootstrapper {
-	constructor(){
-		super();
+function MyApp() {
 
-		this.componentSelector = '.myComponents';
-	}
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: '.myComponents'
+	});
+
 }
 ```
 
@@ -308,14 +303,15 @@ To unload the container and remove all React Habitat instances. Call the `dispos
 Example
 
 ```javascript
-class MyApp extends ReactHabitat.Bootstrapper {
-	constructor(){
-		super();
+function MyApp() {
 
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
 		...
+	});
 
-		this.dispose();
-	}
+	this.domContainer.dispose();
+
 }
 ```
 

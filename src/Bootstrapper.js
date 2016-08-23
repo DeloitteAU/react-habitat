@@ -8,7 +8,7 @@
 
 import Habitat from './Habitat';
 
-const DEFAULT_HABITAT_SELECTOR = 'data-component';
+const DEFAULT_HABITAT_SELECTOR = '[data-component]';
 
 /**
  * Parses a container and populate components
@@ -54,14 +54,11 @@ export default class Bootstrapper {
 	constructor() {
 		// Sanity check
 		if (!window || (!window && !window.document)) {
-			throw new Error('ReactBootstrapper requires a DOM but cannot see one :(');
+			throw new Error('React Habitat requires a window but cannot see one :(');
 		}
 
 		// Set dom component selector
 		this.componentSelector = DEFAULT_HABITAT_SELECTOR;
-
-		// Find all the elements in the dom with the component selector attribute
-		this.elements = window.document.body.querySelectorAll(`[${this.componentSelector}]`);
 
 		// The container
 		this._container = null;
@@ -79,6 +76,9 @@ export default class Bootstrapper {
 				'A container is already set. Please call dispose() before assigning a new one.'
 			);
 		}
+
+		// Find all the elements in the dom with the component selector attribute
+		this.elements = window.document.body.querySelectorAll(this.componentSelector);
 
 		this._container = container;
 

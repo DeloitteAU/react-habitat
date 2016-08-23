@@ -27,6 +27,11 @@ export class _Mixin extends Bootstrapper {
 			return;
 		}
 
+		// Set the component selector if defined
+		if (spec.componentSelector) {
+			this.componentSelector = spec.componentSelector;
+		}
+
 		// Create a new container
 		const container = new Container();
 
