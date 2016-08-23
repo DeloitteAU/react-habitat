@@ -21,6 +21,7 @@ This framework exists so you can get on with the fun stuff!
 - [Contribute](#want-to-contribute)
 - [License](#license-bsd-3-clause)
 
+
 ## When to use React Habitat
 
 You should use React Habitat any time there is a framework or CMS rendering your HTML and you want one or multiple
@@ -79,7 +80,7 @@ Alternatively you can manually install by downloading the `dist/react-habitat.mi
 
 ## Getting Started
 
-**Using ES6 or 7?** Read the [ES6 version here](readme.md).
+**Using ES6 or 7?** Read the [ES6 version here](readme.md#getting-started).
 
 The basic pattern for integrating React Habitat into your application is:
 
@@ -99,7 +100,7 @@ This document assumes you already know:
 
 #### 1. Create a bootstrapper class
 
-The class must extend `ReactHabitat.Bootstrapper` and is intended to a *[entry](https://webpack.github.io/docs/configuration.html#entry)* point of your bundled app. So if you're using something like webpack or browserify then this is file to point it too.
+The class must extend `ReactHabitat.Bootstrapper` and is intended to be a *[entry](https://webpack.github.io/docs/configuration.html#entry)* point of your bundled app. So if you're using something like webpack or browserify then this is file to point it too.
 
 In the *constructor()* of the class you need to register your React components with it and then set
 the container. The container is later bound to the DOM automatically so your React components self-initiate.
@@ -107,7 +108,7 @@ the container. The container is later bound to the DOM automatically so your Rea
 In React Habitat, you'd register a component something like this
 
 ```javascript
-	{	register: 'SomeReactComponent', for: SomeReactComponent }
+{	register: 'SomeReactComponent', for: SomeReactComponent }
 ```
 
 So for our sample application we need to register all of our components (classes) to be exposed to the DOM so things get wired up nicely.
@@ -139,7 +140,7 @@ exports.MyApp = new MyApp();
 
 **If you are using Redux**
 
-You will need to use a different container from the [react-habitat-redux library](https://github.com/DeloitteDigitalAPAC/react-habitat-rexux). Then you may continue with step 2 below.
+You will need to use a different container. Please install & configure the [react-habitat-redux library](https://github.com/DeloitteDigitalAPAC/react-habitat-rexux). Then continue with step 2 below.
 
 
 #### 2. Application execution - render your components
@@ -148,7 +149,7 @@ During the web application execution you will want to make use of the components
 
 When you resolve a component, a new instance of the object gets created (Resolving a component is roughly equivalent to calling 'new').
 
-To *resolve* new instances your components you need to attach a `data-component` attribute to a `div` or a `span` element in the HTML. These elements should always
+To *resolve* new instances of your components you need to attach a `data-component` attribute to a `div` or a `span` element in the HTML. These elements should always
 remain empty. Any child components should be nested inside the React components themselves.
 
 Set the `data-component` value to equal a component name you have registered in the container.
