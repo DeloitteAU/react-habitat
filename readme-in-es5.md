@@ -19,7 +19,7 @@ This framework exists so you can get on with the fun stuff!
 - [Getting Started](#getting-started)
 - [Options and Methods](#options-and-methods)
 - [Contribute](#want-to-contribute)
-- [License](#license-bsd-3-clause)
+- [License information](#license-bsd-3-clause)
 
 
 ## When to use React Habitat
