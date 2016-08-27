@@ -48,7 +48,7 @@ Typically if you're building a full-on one page React app that yanks data from r
 ## Features
 
 - Tiny code footprint (only 8KB)
-- **Redux** supported by including [react-habitat-redux](https://github.com/DeloitteDigitalAPAC/react-habitat-rexux)
+- **Redux** supported by including [react-habitat-redux](https://github.com/DeloitteDigitalAPAC/react-habitat-redux)
 - Pass data (props) to your components directly from HTML attributes and back again
 - Automatic data/JSON parsing
 - All page child apps can still share the same components, stores, events etc. (Everything is connected)
@@ -137,7 +137,7 @@ exports.MyApp = new MyApp();
 
 **If you are using Redux**
 
-You will need to use a different container. Please install & configure the [react-habitat-redux library](https://github.com/DeloitteDigitalAPAC/react-habitat-rexux). Then continue with step 2 below.
+You will need to use a different container. Please install & configure the [react-habitat-redux library](https://github.com/DeloitteDigitalAPAC/react-habitat-redux). Then continue with step 2 below.
 
 
 #### 2. Application execution - render your components
