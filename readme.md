@@ -76,7 +76,7 @@ Alternatively you can manually install by downloading the `dist/react-habitat.mi
 *Note* npm deprecated auto installing of peer dependencies since npm@3, you may additionally need to install:
 
 - React `npm install redux --save-dev`
-- React-Dom `npm install react-dom --save-dev`
+- React-dom `npm install react-dom --save-dev`
 
 ## Getting Started
 
@@ -281,6 +281,18 @@ class MyReactComponent extends React.Component {
 ## Options and Methods
 
 **Using ES5?** Read the [ES5 version here](readme-in-es5.md).
+
+### Setting the habitat's css class
+
+You can set a custom css class on the habitat element by setting the `data-habitat-class` attribute on the target element.
+
+Example
+
+`<div data-component="MyComponent" data-habitat-class="my-css-class"></div>`
+
+Which will result in the following being rendered
+
+`<div data-habitat="C1" class="my-css-class">...</div>`
 
 ### Changing the habitat query selector
 

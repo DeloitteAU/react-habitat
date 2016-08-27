@@ -18,7 +18,7 @@ module.exports = function(config) {
 			// karma watches the test entry points
 			// (you don't need to specify the entry option)
 			// webpack watches dependencies
-      
+
 			// webpack configuration
 			resolve: {
 				// Add `.ts` and `.tsx` as a resolvable extension.

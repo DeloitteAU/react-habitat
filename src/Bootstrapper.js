@@ -8,7 +8,7 @@
 
 import Habitat from './Habitat';
 
-const DEFAULT_HABITAT_SELECTOR = '[data-component]';
+const DEFAULT_HABITAT_SELECTOR = 'data-component';
 
 /**
  * Parses a container and populate components
@@ -33,8 +33,10 @@ function parseContainer(container, elements, componentSelector, cb = null) {
 				component,
 				Habitat.parseProps(ele),
 				Habitat.create(ele, id));
+		} else if (componentName === null || componentName === '' || componentName === undefined) {
+			console.warn(`Cannot read attribute value with '${componentSelector}' for element.`, ele);
 		} else {
-			console.warn(`Cannot resolve component "${componentName}"`);
+			console.warn(`Cannot resolve component "${componentName}" for`, ele);
 		}
 	}
 
@@ -60,6 +62,9 @@ export default class Bootstrapper {
 		// Set dom component selector
 		this.componentSelector = DEFAULT_HABITAT_SELECTOR;
 
+		// The target elements
+		this._elements = null;
+
 		// The container
 		this._container = null;
 	}
@@ -77,15 +82,16 @@ export default class Bootstrapper {
 			);
 		}
 
-		// Find all the elements in the dom with the component selector attribute
-		this.elements = window.document.body.querySelectorAll(this.componentSelector);
-
+		// Set the container
 		this._container = container;
+
+		// Find all the elements in the dom with the component selector attribute
+		this._elements = window.document.body.querySelectorAll(`[${this.componentSelector}]`);
 
 		// Wire up the components from the container
 		parseContainer(
 			this._container,
-			this.elements,
+			this._elements,
 			this.componentSelector,
 			cb
 		);
@@ -112,8 +118,9 @@ export default class Bootstrapper {
 			Habitat.destroy(habitats[i]);
 		}
 
-		// Reset and release container
+		// Reset and release
 		this._container = null;
+		this._elements = null;
 
 		// Handle callback
 		if (typeof cb === 'function') {

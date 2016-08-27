@@ -33,7 +33,6 @@ export default class Container {
 	* Constructor
 	*/
 	constructor() {
-		// TODO: need to make these private in a future version (eg use a WeakMap)
 		this._components = {};
 		this._id = assignId();
 	}

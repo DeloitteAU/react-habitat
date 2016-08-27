@@ -14,7 +14,9 @@ function firstLetterToUpper(input) {
  * The host id
  * @type {string}
  */
-const HABITAT_HOST_ID = 'data-habitat-host';
+const HABITAT_HOST_KEY = 'habitatHostElement';
+const HABITAT_NAMESPACE = 'data-habitat';
+const ACTIVE_HABITAT_FLAG = 'data-has-habitat';
 
 /**
  * Determine an elements computed display style
@@ -80,6 +82,12 @@ export default class Habitat {
 	* @returns {Element}
 	*/
 	static create(ele, id) {
+
+		if (window.document.body === ele || ele === null || ele === undefined) {
+			console.warn('Cannot open a habitat for ', ele);
+			return null;
+		}
+
 		let tag = 'span';
 
 		// If tag is a block level element, then replicate it with the portal
@@ -98,7 +106,7 @@ export default class Habitat {
 		}
 
 		// Keep references to habitats container id's
-		habitat.setAttribute('data-habitat', id);
+		habitat.setAttribute(HABITAT_NAMESPACE, id);
 
 		// Set habitat class name if any
 		if (className) {
@@ -106,11 +114,7 @@ export default class Habitat {
 		}
 
 		// inject habitat
-		if (ele === window.document.body) {
-			document.body.appendChild(habitat);
-		} else {
-			ele.parentNode.insertBefore(habitat, ele.nextSibling);
-		}
+		ele.parentNode.insertBefore(habitat, ele.nextSibling);
 
 		// Determine if we should keep host element in the dom
 		if (ele.tagName !== 'INPUT') {
@@ -133,23 +137,36 @@ export default class Habitat {
 				// But try to keep a reference to the host in-case destroy is ever called
 				// and we need to reinstate it back to how we found it
 				try {
-					habitat[HABITAT_HOST_ID] = host;
+					habitat[HABITAT_HOST_KEY] = host;
 				} catch (e) {
-					console.log(e);
+					// Expando is off
+					console.warn(
+						'Arbitrary properties are disabled ' +
+						'and Habitat may not dispose correctly.', e);
 				}
 			}
 
-		} else if (ele.getAttribute('type') !== 'hidden') {
+		} else {
 			// The element is an input, leave it in the
 			// dom to allow passing data back to the backend again
+			// // Set a flag so we know its been proccessed
+			ele.setAttribute(ACTIVE_HABITAT_FLAG, 'true');
 
 			// Set display none however if the input is not a hidden input
 			// TODO: Investigate what this does to accessibility
-
-			ele.setAttribute('style', 'display: none;');
+			if (ele.getAttribute('type') !== 'hidden') {
+				ele.setAttribute('style', 'display: none;');
+			}
 		}
 
 		return habitat;
+	}
+
+	/**
+	 * Checks if an element has a habitat
+	 */
+	static hasHabitat(ele) {
+		return ele.getAttribute(ACTIVE_HABITAT_FLAG) !== null;
 	}
 
 	/**
@@ -160,13 +177,14 @@ export default class Habitat {
 
 		// Attempt to reinstate any host objects
 		try {
-			if (typeof ele[HABITAT_HOST_ID] !== 'undefined') {
+			if (typeof ele[HABITAT_HOST_KEY] !== 'undefined') {
 				// Put back any hosts that where removed
-				ele.parentNode.insertBefore(ele[HABITAT_HOST_ID], ele);
+				ele.parentNode.insertBefore(ele[HABITAT_HOST_KEY], ele);
 			}
-		} catch (e) { console.log(e); }
-
-		// Remove the habitat element
-		ele.parentNode.removeChild(ele);
+		} finally {
+			// Remove the habitat element
+			ele.parentNode.removeChild(ele);
+		}
 	}
+
 }
