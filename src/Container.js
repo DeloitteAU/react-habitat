@@ -50,7 +50,7 @@ export default class Container {
 	* @param {string}  name    - A unique component key
 	* @param {object}  comp    - The component
 	*/
-	registerComponent(name, comp) {
+	register(name, comp) {
 		if (typeof name !== 'string') {
 			throw new Error('Unexpected component key. Expects a string.', name);
 		}
@@ -61,7 +61,7 @@ export default class Container {
 	* Register multiple components to the container
 	* @param {object}  comps     - The components
 	*/
-	registerComponents(comps) {
+	registerAll(comps) {
 		if (typeof comps !== 'object') {
 			throw new Error('Unexpected components type. Expects type object', comps);
 		}
@@ -79,6 +79,40 @@ export default class Container {
 	}
 
 	/**
+	* Returns the containers dom factory
+	* @returns {ReactDomFactory}
+	*/
+	domFactory() {
+		return ReactDomFactory;
+	}
+
+	/**
+	* Register a component in the container
+	* @param {string}  name    - A unique component key
+	* @param {object}  comp    - The component
+	* @deprecated
+	*/
+	registerComponent(name, comp) {
+		console.warn(
+			'registerComponent is being deprecated. ' +
+			'Please update to use "register()" instead.'
+		);
+		this.register(name, comp);
+	}
+
+	/**
+	* Register multiple components to the container
+	* @param {object}  comps     - The components
+	*/
+	registerComponents(comps) {
+		console.warn(
+			'registerComponents is being deprecated. ' +
+			'Please update to use "registerAll()" instead.'
+		);
+		this.registerAll(comps);
+	}
+
+	/**
 	* Gets a component for key
 	* @param name
 	* @returns {Object}
@@ -87,14 +121,6 @@ export default class Container {
 	getComponent(name) {
 		console.warn('getComponent is being deprecated. Please update to use "resolve()" instead.');
 		return this.resolve(name);
-	}
-
-	/**
-	* Returns the containers dom factory
-	* @returns {ReactDomFactory}
-	*/
-	domFactory() {
-		return ReactDomFactory;
 	}
 
 }

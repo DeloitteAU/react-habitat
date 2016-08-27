@@ -21,7 +21,7 @@ describe('Container', () => {
 	});
 
 	it('does register components', () => {
-		container.registerComponent('aComponent', MochComponent);
+		container.register('aComponent', MochComponent);
 
 		expect(container).toBeDefined();
 		expect(container.resolve('aComponent')).toBe(MochComponent);
@@ -30,7 +30,7 @@ describe('Container', () => {
 	it('does register multiple components', () => {
 
 		const testContainer = new Container();
-		testContainer.registerComponents({
+		testContainer.registerAll({
 			aComponent: MochComponent,
 			anotherComponent: MochComponentTwo,
 		});
@@ -42,8 +42,8 @@ describe('Container', () => {
 
 
 	it('does override registered components', () => {
-		container.registerComponent('aComponent', MochComponent);
-		container.registerComponent('aComponent', MochComponentTwo);
+		container.register('aComponent', MochComponent);
+		container.register('aComponent', MochComponentTwo);
 
 		expect(container).toBeDefined();
 		expect(container.resolve('aComponent')).toBe(MochComponentTwo);
@@ -51,8 +51,8 @@ describe('Container', () => {
 
 
 	it('does resolve distinct components', () => {
-		container.registerComponent('aComponent', MochComponent);
-		container.registerComponent('aComponent2', MochComponentTwo);
+		container.register('aComponent', MochComponent);
+		container.register('aComponent2', MochComponentTwo);
 
 		expect(container.resolve('aComponent')).toBe(MochComponent);
 		expect(container.resolve('aComponent2')).toBe(MochComponentTwo);

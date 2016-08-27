@@ -46,7 +46,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const container = new Container();
-		container.registerComponent('IMochComponent', MochComponent);
+		container.register('IMochComponent', MochComponent);
 		// --------------------------- //
 
 		const app = new App(container);
@@ -62,7 +62,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const container = new Container();
-		container.registerComponent('IMochComponent', MochComponent);
+		container.register('IMochComponent', MochComponent);
 		const mochCallbackHandler = jasmine.createSpy('My Method');
 		// --------------------------- //
 
@@ -82,7 +82,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const container = new Container();
-		container.registerComponent('IMochComponent', MochComponent);
+		container.register('IMochComponent', MochComponent);
 		// --------------------------- //
 
 		const app = new App(container);
@@ -101,8 +101,8 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const container = new Container();
-		container.registerComponent('IMochComponent', MochComponent);
-		container.registerComponent('IMochComponentTwo', MochComponentTwo);
+		container.register('IMochComponent', MochComponent);
+		container.register('IMochComponentTwo', MochComponentTwo);
 		// --------------------------- //
 
 		const app = new App(container);
@@ -121,7 +121,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const container = new Container();
-		container.registerComponent('IMochComponent', MochComponent);
+		container.register('IMochComponent', MochComponent);
 		// --------------------------- //
 
 		const app = new App(container);
@@ -156,7 +156,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const container = new Container();
-		container.registerComponent('IMochComponent', MochComponent);
+		container.register('IMochComponent', MochComponent);
 		// --------------------------- //
 
 		const app = new App(container);

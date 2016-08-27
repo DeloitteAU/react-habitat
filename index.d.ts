@@ -24,12 +24,19 @@ export interface IDomFactory {
  }
 
 export interface IContainer {
+
 	/**
 	 * Register a new component in the container
 	 * @param {string}      name        - The key that identifies this component
 	 * @param {*}           comp        - The component class
 	 */
-	registerComponent: (name: string, comp: any) => void;
+	register: (name: string, comp: any) => void;
+
+	/**
+	 * Register multiple components in the container
+	 * @param {object}      comps        - The components
+	 */
+	registerAll: (comps: {}) => void;
 
 	/**
 	 * Get a registered component for a key
@@ -66,7 +73,7 @@ export interface IContainer {
 declare module ReactHabitat {
 
 	export class Bootstrapper implements IBootstrapper {
-		
+
 		/**
 		 * Sets the container
 		 */
@@ -98,7 +105,12 @@ declare module ReactHabitat {
 		/**
 		 * Register a component
 		 */
-		registerComponent: (name: string, comp: any) => void;
+		register: (name: string, comp: any) => void;
+
+		/**
+		 * Register a component
+		 */
+		registerAll: (comps: {}) => void;
 
 		/**
 		 * Resolve a component

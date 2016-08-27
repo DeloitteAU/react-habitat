@@ -102,7 +102,7 @@ The class must extend `ReactHabitat.Bootstrapper` and is intended to be a *[entr
 In the *constructor()* of the class you need to register your React components with it and then set
 the container. The container is later bound to the DOM automatically so your React components self-initiate.
 
-In React Habitat, you'd register a component something like this
+In React Habitat, you'd register a component for a key something like this
 
 ```javascript
 container.register('SomeReactComponent', SomeReactComponent);
@@ -133,6 +133,15 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 // Always export a 'new' instance so it immediately evokes
 export default new MyApp();
+```
+
+You can also register multiple component's all at once with `registerAll` like this
+
+```javascript
+container.registerAll({
+	'SomeReactComponent', SomeReactComponent,
+	'AnotherReactComponent', AnotherReactComponent
+});
 ```
 
 **If you are using Redux**
