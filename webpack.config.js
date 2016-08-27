@@ -18,7 +18,7 @@ var config = {
 		libraryTarget: 'umd'
 	},
 	externals: {
-		'react': 'react',
+		'react': 'React',
 		'react-dom': 'ReactDOM'
 	},
 	plugins: [

@@ -71,12 +71,9 @@ Install with Node Package Manager (NPM)
 
 `npm install --save-dev react-habitat`
 
-*Note* npm deprecated auto installing of peer dependencies since npm@3, you may additionally need to install:
+This assumes that you’re using [npm](http://npmjs.com/) package manager with a module bundler like [Webpack](http://webpack.github.io) or [Browserify](http://browserify.org/).
 
-- React `npm install redux --save-dev`
-- React-dom `npm install react-dom --save-dev`
-
-Alternatively you can manually install by downloading the `dist/react-habitat.min.js` file and including in your project.
+If you don’t yet use [npm](http://npmjs.com/) or a modern module bundler, and would rather prefer a single-file [UMD](https://github.com/umdjs/umd) build that makes `ReactHabitat` available as a global object, you can grab a pre-built version from the dist folder.
 
 ## Getting Started
 
