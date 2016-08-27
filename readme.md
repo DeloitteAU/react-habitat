@@ -296,12 +296,12 @@ Which will result in the following being rendered
 
 ### Changing the habitat query selector
 
-*Default: '[data-component]'*
+*Default: 'data-component'*
 
 By default React Habitat will resolve components via the `data-component` attribute. You can configure this by assigning
 the `componentSelector` property in your constructor.
 
-It will accept any string containing one or more [CSS selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors) separated by commas.
+It will accept any string containing any valid attribute name.
 
 Example
 
@@ -310,7 +310,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
 	constructor(){
 		super();
 
-		this.componentSelector = '.myComponents';
+		this.componentSelector = 'data-myComponents';
 	}
 }
 ```
