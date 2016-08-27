@@ -290,7 +290,7 @@ Example
 
 `<div data-component="MyComponent" data-habitat-class="my-css-class"></div>`
 
-Which will result in the following being rendered
+Will result in the following being rendered
 
 `<div data-habitat="C1" class="my-css-class">...</div>`
 
