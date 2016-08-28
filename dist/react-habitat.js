@@ -310,8 +310,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  */
 
 		}, {
-			key: 'registerComponent',
-			value: function registerComponent(name, comp) {
+			key: 'register',
+			value: function register(name, comp) {
 				if (typeof name !== 'string') {
 					throw new Error('Unexpected component key. Expects a string.', name);
 				}
@@ -324,8 +324,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  */
 
 		}, {
-			key: 'registerComponents',
-			value: function registerComponents(comps) {
+			key: 'registerAll',
+			value: function registerAll(comps) {
 				if ((typeof comps === 'undefined' ? 'undefined' : _typeof(comps)) !== 'object') {
 					throw new Error('Unexpected components type. Expects type object', comps);
 				}
@@ -346,6 +346,43 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			/**
+	  * Returns the containers dom factory
+	  * @returns {ReactDomFactory}
+	  */
+
+		}, {
+			key: 'domFactory',
+			value: function domFactory() {
+				return _ReactDomFactory2.default;
+			}
+
+			/**
+	  * Register a component in the container
+	  * @param {string}  name    - A unique component key
+	  * @param {object}  comp    - The component
+	  * @deprecated
+	  */
+
+		}, {
+			key: 'registerComponent',
+			value: function registerComponent(name, comp) {
+				console.warn('registerComponent is being deprecated. ' + 'Please update to use "register()" instead.');
+				this.register(name, comp);
+			}
+
+			/**
+	  * Register multiple components to the container
+	  * @param {object}  comps     - The components
+	  */
+
+		}, {
+			key: 'registerComponents',
+			value: function registerComponents(comps) {
+				console.warn('registerComponents is being deprecated. ' + 'Please update to use "registerAll()" instead.');
+				this.registerAll(comps);
+			}
+
+			/**
 	  * Gets a component for key
 	  * @param name
 	  * @returns {Object}
@@ -357,17 +394,6 @@ return /******/ (function(modules) { // webpackBootstrap
 			value: function getComponent(name) {
 				console.warn('getComponent is being deprecated. Please update to use "resolve()" instead.');
 				return this.resolve(name);
-			}
-
-			/**
-	  * Returns the containers dom factory
-	  * @returns {ReactDomFactory}
-	  */
-
-		}, {
-			key: 'domFactory',
-			value: function domFactory() {
-				return _ReactDomFactory2.default;
 			}
 		}]);
 
