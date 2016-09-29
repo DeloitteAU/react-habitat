@@ -237,7 +237,7 @@ Simple Example
 ```html
 <div data-component="SomeReactComponent"
     data-prop-title="A nice title"
-    data-prop-showTitle="true">
+    data-prop-show-title="true">
 </div>
 ```
 

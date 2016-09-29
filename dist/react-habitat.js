@@ -114,7 +114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param cb
 	 */
 	function parseContainer(container, elements, componentSelector) {
-		var cb = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
+		var cb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
 
 		var factory = container.domFactory();
@@ -177,7 +177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		_createClass(Bootstrapper, [{
 			key: 'setContainer',
 			value: function setContainer(container) {
-				var cb = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+				var cb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
 
 				if (this._container !== null) {
@@ -202,7 +202,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}, {
 			key: 'dispose',
 			value: function dispose() {
-				var cb = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+				var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
 
 				// get the container's factory
@@ -243,7 +243,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016-present, Deloitte Digital.
@@ -666,7 +666,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			_classCallCheck(this, _Mixin);
 
 			// Check if a container spec was supplied
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(_Mixin).call(this));
+			var _this = _possibleConstructorReturn(this, (_Mixin.__proto__ || Object.getPrototypeOf(_Mixin)).call(this));
 
 			if (!spec.container) {
 				console.warn('"Container" property was not supplied');
@@ -750,7 +750,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  * @param {HTMLElement}		target		- The target element to inject to
 	  */
 			value: function inject(module) {
-				var props = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+				var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 				var target = arguments[2];
 
 				if (target) {
