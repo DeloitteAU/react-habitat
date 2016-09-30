@@ -33,9 +33,9 @@ function getDisplayType(ele) {
  */
 export default class Habitat {
 
-  /**
-   * Returns a dictionary of properties and values defined on an element
-   */
+	/**
+	 * Returns a dictionary of properties and values defined on an element
+	 */
 	static parseProps(ele) {
 		// Default props with reference to the initiating node
 		const props = {
@@ -55,14 +55,19 @@ export default class Habitat {
 				let value = a.value || '';
 
 				// Parse booleans
-				if (typeof value === 'string' && value.toLocaleLowerCase() === 'false') { value = false; }
-				if (typeof value === 'string' && value.toLocaleLowerCase() === 'true') { value = true; }
+				if (typeof value === 'string' && value.toLowerCase() === 'false') { value = false; }
+				if (typeof value === 'string' && value.toLowerCase() === 'true') { value = true; }
 
 				// Parse json strings
-				if (typeof value === 'string' && value.length > 2 &&
+				if (typeof value === 'string' && value.length >= 2 &&
 					((value[0] === '{' && value[value.length - 1] === '}') ||
 					(value[0] === '[' && value[value.length - 1] === ']'))) {
 					value = JSON.parse(value);
+				}
+
+				// Parse nulls
+				if (typeof value === 'string' && value.toLowerCase() === 'null') {
+					value = null;
 				}
 
 				props[name] = value;
