@@ -59,7 +59,7 @@ Typically if you're building a full-on one page React app that yanks data from r
 
 ## Compatibility
 
-- Supports Browsers IE9+ and all the evergreens.
+- Supports Browsers IE9+ and all the evergreens. (IE9-11 will require an "Object.assign" pollyfill)
 - ES5, ES6/7 & TypeScript
 - React v15 and up
 
@@ -97,7 +97,7 @@ This document assumes you already know:
 
 #### 1. Create a bootstrapper class
 
-The class must extend `ReactHabitat.Bootstrapper` and is intended to be a *[entry](https://webpack.github.io/docs/configuration.html#entry)* point of your bundled app. So if you're using something like webpack or browserify then this is file to point it too.
+The class must extend `ReactHabitat.Bootstrapper` and is intended to be an *[entry](https://webpack.github.io/docs/configuration.html#entry)* point of your bundled app. So if you're using something like webpack or browserify then this is file to point it too.
 
 In the *constructor()* of the class you need to register your React components with it and then set
 the container. The container is later bound to the DOM automatically so your React components self-initiate.
@@ -221,7 +221,7 @@ For example
 There are **two important things** to note when setting these attribute type properties:
 
 1. Hyphenated property names are converted to *camelCase*. Eg. `data-prop-my-title` would expose `myTitle` as a property in the component.
-2. *JSON* and *booleans* are automatically parsed. Eg `data-prop-my-bool="true"` would expose the value of `true`, NOT the string representation `"true"`.
+2. *JSON*, *booleans* & *null* are automatically parsed. Eg `data-prop-my-bool="true"` would expose the value of `true`, NOT the string representation `"true"`.
 
 Simple Example
 
@@ -238,8 +238,8 @@ Would expose props as
 var SomeReactComponent = React.createClass({
 	render: function() {
 
-		// this.props.title === "A nice title";      //> true
-		// this.props.showTitle === true;            //> true
+		this.props.title === "A nice title";      //> true
+		this.props.showTitle === true;            //> true
 
 		return <div>{ this.props.showTitle ? this.props.title : null }</div>;
 	}

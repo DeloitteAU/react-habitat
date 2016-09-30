@@ -127,11 +127,11 @@ export default class Habitat {
 			// Not an input so assumed we don't need to keep the target
 			// element around
 
-			// Check it is empty first
-			if (ele.innerHTML !== '') {
+			// Check it is empty first (ignoring white space and line breaks)
+			if (ele.innerHTML.replace(/( |\r\n|\n|\r)/g,'') !== '') {
 				throw new Error(
 					'React Habitat elements must be empty. ' +
-					'Any child components should be added inside React.'
+					'Any child components should be added inside the React component.'
 				);
 			}
 

@@ -116,6 +116,37 @@ describe('Bootstrapper', () => {
 		expect(component2Lookup.length).toEqual(1);
 	});
 
+	it('should not render to elements that have children', () => {
+		node.innerHTML =
+			'<div data-component="IMochComponent"><p>Child</p></div>';
+
+		// -- MOCH CONTAINER SET UP -- //
+		const container = new Container();
+		container.register('IMochComponent', MochComponent);
+		// --------------------------- //
+
+		expect(() => { return new App(container)}).toThrow();
+
+	});
+
+	it('should render to elements with white space and line breaks', () => {
+		node.innerHTML =
+			'<div data-component="IMochComponent">  \n   \n</div>';
+
+		// -- MOCH CONTAINER SET UP -- //
+		const container = new Container();
+		container.register('IMochComponent', MochComponent);
+		// --------------------------- //
+
+		const app = new App(container);
+		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+
+		expect(app).toBeDefined();
+		expect(componentLookup).not.toEqual(null);
+		expect(componentLookup.length).toEqual(1);
+
+	});
+
 	it('should pass props', () => {
 		node.innerHTML = '<div data-component="IMochComponent" data-prop-title="test"></div>';
 
