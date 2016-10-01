@@ -11,6 +11,7 @@ import Habitat from '../src/Habitat';
 let node = null;
 
 describe('Habitat parse', () => {
+
 	beforeEach(() => {
 		node = document.createElement('div');
 		window.document.body.appendChild(node);
@@ -127,6 +128,39 @@ describe('Habitat parse', () => {
 		expect(results.user.isActive).toEqual(true);
 		expect(results.user.age).toEqual(22);
 	});
+
+
+	it('parses numbers', () => {
+		node.setAttribute('data-n-prop-amount', '300');
+		node.setAttribute('data-n-prop-amount2', '300.43');
+		node.setAttribute('data-n-prop-amount3', 'abcd');
+
+		const results = Habitat.parseProps(node);
+
+		expect(results.amount).toBeDefined();
+		expect(results.amount2).toBeDefined();
+		expect(results.amount3).toBeDefined();
+		expect(results.amount).toEqual(300);
+		expect(results.amount2).toEqual(300.43);
+		expect(results.amount3).toEqual(NaN);
+	});
+
+
+	it('parses references', () => {
+
+		// Our global variable
+		var myStates = window.myStates = ['VIC','QLD','NT', 'NSW', 'ACT', 'WA', 'SA', 'TAS'];
+
+		// Pass it in by the reference attribute
+		node.setAttribute('data-r-prop-states', 'myStates');
+
+		const results = Habitat.parseProps(node);
+
+		expect(results.states).toBeDefined();
+		expect(results.states).toBe(myStates);
+	});
+
+
 });
 
 describe('Habitat create', () => {
@@ -156,14 +190,16 @@ describe('Habitat create', () => {
 
 	it('should throw non empty target error', () => {
 
+		spyOn(console, 'warn');
+
 		const testElement = window.document.createElement('div');
 		testElement.innerHTML = '<p>test</p>';
 
 		node.appendChild(testElement);
 
-		function test() { Habitat.create(testElement, 'C01'); }
+		Habitat.create(testElement, 'C01');
 
-		expect(test).toThrowError();
+		expect(console.warn).toHaveBeenCalled();
 
 	});
 

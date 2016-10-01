@@ -59,7 +59,7 @@ Typically if you're building a full-on one page React app that yanks data from r
 
 ## Compatibility
 
-- Supports Browsers IE9+ and all the evergreens. (IE9-11 will require an "Object.assign" pollyfill)
+- Supports Browsers IE9+ and all the evergreens. (IE9-11 will require an "Object.assign" [Pollyfill](https://babeljs.io/docs/usage/polyfill/))
 - ES5, ES6/7 & TypeScript
 - React v15 and up
 
@@ -211,9 +211,16 @@ Will render 3 instances of your component.
 Resolving and registering components alone is not all that special, but passing data to it via html attributes is pretty useful. This allows the backend to
 easily pass data to your components in a modular fashion.
 
-To set props you have two choices.
+To set props you have a few choices. You can use all of these or only some (they merge) so just use what's suits you best for setting properties.
 
-The first choice is to pass a JSON string to the `data-props` attribute.
+- `data-props` Use this for mapping in a JSON string.
+- `data-prop-` Use this for mapping in strings, booleans, null, array or JSON to a single prop.
+- `data-n-prop-` Use this for mapping in numbers and floats to a single prop.
+- `data-r-prop-` Use this for mapping in a reference to an object that already exists on the global scope (window).
+
+##### data-props 
+
+Set component props via a JSON string on the `data-props` attribute.
 
 For example
 
@@ -221,7 +228,9 @@ For example
 <div data-component="SomeReactComponent" data-props='{"title": "A nice title"}'></div>
 ```
 
-Additionally or alternatively you can set properties via prefixing attributes with `data-prop-`.
+##### data-prop- 
+
+Set an component prop via prefixing attributes with `data-prop-`.
 
 For example
 
@@ -283,6 +292,55 @@ class MyReactComponent extends React.Component {
 	}
 }
 ```
+
+##### data-n-prop-
+
+Set an component prop with type [number] via prefixing attributes with `data-n-prop-`.
+
+This is handy if you know that a property is always going to be a number or float.
+
+For example `data-n-prop-temperature="33.3"` would expose the float value of 33.3 and not the string representation '33.3'.
+
+See [data-prop-](#data-prop-) above for notes on defining property names.
+
+##### data-r-prop-
+
+Referenced a global variable in your component prop via prefixing attributes with `data-r-prop-`.
+
+This is handy if you need to share properties between habitats or you need to set JSON onto the page.
+
+For Example
+
+```html
+<script>
+    var foo = window.foo = 'bar';
+</script>
+
+<div data-component="SomeReactComponent" data-r-prop-foo="foo"></div>
+```
+ 
+See [data-prop-](#data-prop-) above for notes on defining property names.
+
+
+#### 4. Passing values back again
+
+It can be handy to pass values back again, particularly for inputs so the backend frameworks can see any changes or read data back.
+
+*Every* React Habitat instance is passed in a prop named `proxy`, this is a reference the original dom element. Please note however only inputs are left in the DOM.
+
+Given this we could use it to update the value of an input like so
+
+```html
+<input id="personId" type="hidden" data-component="personLookup" />
+```
+
+Somewhere inside the component
+
+```javascript
+this.props.proxy.value = '1234'
+```
+
+Sometimes you may additionally need to call `this.props.proxy.onChange()` if you have other scripts listening for this event.
 
 ## Options and Methods
 
@@ -348,8 +406,27 @@ Please don't hesitate to raise an issue through GitHub or open a pull request to
 
 ## Key Contributors
 
-### Deloitte Digital Australia
-* @jennasalau
+* @jenna_salau
+
+## Change log
+
+### [0.3.0]
+
+- Added 'data-n-prop' to parse in number type properties
+- Added 'data-r-prop' to parse in reference type properties
+- 'null' values will now parse in as a null object
+- Added safe logging
+- Warnings and Errors now only apply when NODE_ENV is not 'production'
+- Updated warning messages & added more details links
+- Non empty React Habitat component elements now log's a warning instead of throwing errors
+- Fixed issue with parsing empty object's and array's as strings. [#3](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/3)
+- Updated framework module exports so commonJS no longer needs ugly '.default' [#4](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/4)
+
+
+### [0.2.1]
+
+- Deprecated 'registerComponent' should now use 'register'
+- Deprecated 'registerComponents' should now use 'registerAll'
 
 ## Who is Deloitte Digital?
 
@@ -388,3 +465,4 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+

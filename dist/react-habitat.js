@@ -7,7 +7,7 @@
 		exports["ReactHabitat"] = factory(require("React"), require("ReactDOM"));
 	else
 		root["ReactHabitat"] = factory(root["React"], root["ReactDOM"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_7__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -60,15 +60,15 @@ return /******/ (function(modules) { // webpackBootstrap
 		value: true
 	});
 
-	var _Bootstrapper = __webpack_require__(1);
+	var _Bootstrapper = __webpack_require__(2);
 
 	var _Bootstrapper2 = _interopRequireDefault(_Bootstrapper);
 
-	var _Container = __webpack_require__(2);
+	var _Container = __webpack_require__(3);
 
 	var _Container2 = _interopRequireDefault(_Container);
 
-	var _createBootstrapper = __webpack_require__(4);
+	var _createBootstrapper = __webpack_require__(5);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -77,9 +77,109 @@ return /******/ (function(modules) { // webpackBootstrap
 		Container: _Container2.default,
 		createBootstrapper: _createBootstrapper.createBootstrapper
 	};
+	module.exports = exports['default'];
 
 /***/ },
 /* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * Copyright 2016-present, Deloitte Digital.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-3-Clause license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	var empty = function empty() {};
+	var log = empty;
+	var concatArgs = empty;
+	var WARN_DEFINITIONS_URL = 'http://tinyurl.com/jxryd3s';
+
+	// If not production update the stubs
+	if (true) {
+
+	    /**
+	     * Safely log to the console
+	     */
+	    log = function log(type, args) {
+
+	        if (typeof console !== 'undefined' && console[type]) {
+	            console[type].apply(undefined, args);
+	        }
+	    };
+
+	    /**
+	     * Concats the message and arguments into a single array
+	     */
+	    concatArgs = function concatArgs(msg, args) {
+	        var throwArgs = [msg];
+
+	        if (args && args.length > 2) {
+	            for (var i = 2; i < args.length; i++) {
+	                throwArgs.push(args[i]);
+	            }
+	        }
+
+	        return throwArgs;
+	    };
+	}
+
+	/**
+	 * Logger class for debugging React Habitat
+	 */
+
+	var Logger = function () {
+	    function Logger() {
+	        _classCallCheck(this, Logger);
+	    }
+
+	    _createClass(Logger, null, [{
+	        key: 'warn',
+
+
+	        /**
+	         * Log a warning
+	         * @param {string}  code    - The warning code
+	         * @param {string}  msg     - The warning message
+	         */
+	        value: function warn(code, msg) {
+	            var args = concatArgs('WARNING: ' + code + ' ' + msg + ' ' + WARN_DEFINITIONS_URL + '#' + code.toLowerCase(), arguments);
+	            log('warn', args);
+	        }
+
+	        /**
+	         * Log an error
+	         * @param {string}  code    - The warning code
+	         * @param {string}  msg     - The error message
+	         */
+
+	    }, {
+	        key: 'error',
+	        value: function error(code, msg) {
+	            var args = concatArgs('ERROR: ' + code + ' ' + msg + ' ' + WARN_DEFINITIONS_URL + '#' + code.toLowerCase(), arguments);
+	            log('error', args);
+	        }
+	    }]);
+
+	    return Logger;
+	}();
+
+	exports.default = Logger;
+	module.exports = exports['default'];
+
+/***/ },
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -96,9 +196,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LICENSE file in the root directory of this source tree.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
-	var _Habitat = __webpack_require__(3);
+	var _Habitat = __webpack_require__(4);
 
 	var _Habitat2 = _interopRequireDefault(_Habitat);
+
+	var _Logger = __webpack_require__(1);
+
+	var _Logger2 = _interopRequireDefault(_Logger);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -128,10 +232,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			if (component) {
 				factory.inject(component, _Habitat2.default.parseProps(ele), _Habitat2.default.create(ele, id));
-			} else if (componentName === null || componentName === '' || componentName === undefined) {
-				console.warn('Cannot read attribute value with \'' + componentSelector + '\' for element.', ele);
 			} else {
-				console.warn('Cannot resolve component "' + componentName + '" for', ele);
+				_Logger2.default.error('RHW04', 'Cannot resolve component "' + componentName + '" for element.', ele);
 			}
 		}
 
@@ -181,7 +283,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 				if (this._container !== null) {
-					throw new Error('A container is already set. Please call dispose() before assigning a new one.');
+					_Logger2.default.error('RHW02', 'A container is already set. ' + 'Please call dispose() before assigning a new one.');
+					return;
 				}
 
 				// Set the container
@@ -232,9 +335,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 	exports.default = Bootstrapper;
+	module.exports = exports['default'];
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -253,9 +357,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LICENSE file in the root directory of this source tree.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
-	var _ReactDomFactory = __webpack_require__(5);
+	var _ReactDomFactory = __webpack_require__(6);
 
 	var _ReactDomFactory2 = _interopRequireDefault(_ReactDomFactory);
+
+	var _Logger = __webpack_require__(1);
+
+	var _Logger2 = _interopRequireDefault(_Logger);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -366,7 +474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}, {
 			key: 'registerComponent',
 			value: function registerComponent(name, comp) {
-				console.warn('registerComponent is being deprecated. ' + 'Please update to use "register()" instead.');
+				_Logger2.default.warn('RHW03', 'registerComponent is being deprecated. Please use "register" instead.');
 				this.register(name, comp);
 			}
 
@@ -378,7 +486,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}, {
 			key: 'registerComponents',
 			value: function registerComponents(comps) {
-				console.warn('registerComponents is being deprecated. ' + 'Please update to use "registerAll()" instead.');
+				_Logger2.default.warn('RHW03', 'registerComponents is being deprecated. Please use "registerAll" instead.');
 				this.registerAll(comps);
 			}
 
@@ -392,7 +500,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}, {
 			key: 'getComponent',
 			value: function getComponent(name) {
-				console.warn('getComponent is being deprecated. Please update to use "resolve()" instead.');
+				_Logger2.default.warn('RHW03', 'getComponent is being deprecated. Please use "resolve" instead.');
 				return this.resolve(name);
 			}
 		}]);
@@ -401,10 +509,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 	exports.default = Container;
+	module.exports = exports['default'];
 
 /***/ },
-/* 3 */
-/***/ function(module, exports) {
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -412,38 +521,62 @@ return /******/ (function(modules) { // webpackBootstrap
 		value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016-present, Deloitte Digital.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * All rights reserved.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This source code is licensed under the BSD-3-Clause license found in the
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LICENSE file in the root directory of this source tree.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+
+	var _Logger = __webpack_require__(1);
+
+	var _Logger2 = _interopRequireDefault(_Logger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	/**
-	 * Copyright 2016-present, Deloitte Digital.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-3-Clause license found in the
-	 * LICENSE file in the root directory of this source tree.
-	 */
-
-	function firstLetterToUpper(input) {
-		return input[1].toUpperCase();
-	}
-
-	/**
-	 * The host id
-	 * @type {string}
-	 */
 	var HABITAT_HOST_KEY = 'habitatHostElement';
 	var HABITAT_NAMESPACE = 'data-habitat';
 	var ACTIVE_HABITAT_FLAG = 'data-has-habitat';
+	var HABITAT_PROP = 'data-prop-';
+	var HABITAT_JSON_PROP = 'data-props';
+	var HABITAT_NUMBER_PROP = 'data-n-prop-';
+	var HABITAT_REF_PROP = 'data-r-prop-';
+
+	var hasExpandoWarning = false;
 
 	/**
 	 * Determine an elements computed display style
+	 * @private
 	 * @param {HTMLElement}		ele		- The element to test
 	 * @returns {string}				- Returns 'block' or 'inline'
 	 */
 	function getDisplayType(ele) {
 		var cStyle = ele.currentStyle || window.getComputedStyle(ele, '');
 		return cStyle.display;
+	}
+
+	/**
+	 * Converts the first letter of a string to uppercase
+	 * @private
+	 * @param {string}		input		- The string to parse
+	 * @returns {string}				- Returns the parsed string
+	 */
+	function firstLetterToUpper(input) {
+		return input[1].toUpperCase();
+	}
+
+	/**
+	 * Converts a habitat hyphenated attribute name into camelCase
+	 * @param {string}		key			- The habitat pre attr
+	 * @param {string}		name		- The attribute name
+	 * @returns {string}				- The camel case value
+	 */
+	function getNameFor(key, name) {
+		return name.replace(key, '').replace(/-([a-z])/g, firstLetterToUpper);
 	}
 
 	/**
@@ -471,29 +604,59 @@ return /******/ (function(modules) { // webpackBootstrap
 				for (var i = 0; i < ele.attributes.length; i++) {
 					var a = ele.attributes[i];
 
-					if (a.name.indexOf('data-prop-') >= 0) {
+					if (a.name.indexOf(HABITAT_PROP) === 0) {
 						// Convert prop name from hyphens to camel case
-						var name = a.name.replace('data-prop-', '').replace(/-([a-z])/g, firstLetterToUpper);
+						var name = getNameFor(HABITAT_PROP, a.name);
 
 						var value = a.value || '';
 
 						// Parse booleans
-						if (typeof value === 'string' && value.toLocaleLowerCase() === 'false') {
+						if (typeof value === 'string' && value.toLowerCase() === 'false') {
 							value = false;
 						}
-						if (typeof value === 'string' && value.toLocaleLowerCase() === 'true') {
+						if (typeof value === 'string' && value.toLowerCase() === 'true') {
 							value = true;
 						}
 
 						// Parse json strings
-						if (typeof value === 'string' && value.length > 2 && (value[0] === '{' && value[value.length - 1] === '}' || value[0] === '[' && value[value.length - 1] === ']')) {
+						if (typeof value === 'string' && value.length >= 2 && (value[0] === '{' && value[value.length - 1] === '}' || value[0] === '[' && value[value.length - 1] === ']')) {
 							value = JSON.parse(value);
 						}
 
+						// Parse nulls
+						if (typeof value === 'string' && value.toLowerCase() === 'null') {
+							value = null;
+						}
+
 						props[name] = value;
-					} else if (a.name === 'data-props') {
-						Object.assign(props, JSON.parse(a.value));
-					}
+					} else
+
+						// JSON type props
+						if (a.name === HABITAT_JSON_PROP) {
+							// Parse all of the props as json
+							Object.assign(props, JSON.parse(a.value));
+						} else
+
+							// Number type props
+							if (a.name.indexOf('data-n-prop-') === 0) {
+
+								// Convert prop name from hyphens to camel case
+								var _name = getNameFor(HABITAT_NUMBER_PROP, a.name);
+
+								// Parse the value as a float as it handles both floats and whole int's
+								// Might want to look at configuring the radix somehow in the future
+								props[_name] = parseFloat(a.value);
+							} else
+
+								// Reference type props
+								if (window && a.name.indexOf(HABITAT_REF_PROP) === 0) {
+
+									// Convert prop name from hyphens to camel case
+									var _name2 = getNameFor(HABITAT_REF_PROP, a.name);
+
+									// Set the reference to the global object
+									props[_name2] = window[a.value];
+								}
 				}
 
 				return props;
@@ -511,7 +674,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			value: function create(ele, id) {
 
 				if (window.document.body === ele || ele === null || ele === undefined) {
-					console.warn('Cannot open a habitat for ', ele);
+					_Logger2.default.warn('RHW04', 'Cannot open a habitat for element.', ele);
 					return null;
 				}
 
@@ -547,9 +710,9 @@ return /******/ (function(modules) { // webpackBootstrap
 					// Not an input so assumed we don't need to keep the target
 					// element around
 
-					// Check it is empty first
-					if (ele.innerHTML !== '') {
-						throw new Error('React Habitat elements must be empty. ' + 'Any child components should be added inside React.');
+					// Check it is empty first (ignoring white space and line breaks)
+					if (ele.innerHTML.replace(/( |\r\n|\n|\r)/g, '') !== '') {
+						_Logger2.default.warn('RHW05', 'React Habitat element not empty.', ele);
 					}
 
 					if (!replaceDisabled) {
@@ -558,17 +721,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 						// But try to keep a reference to the host in-case destroy is ever called
 						// and we need to reinstate it back to how we found it
+
 						try {
+							// It might be better if we keep references in a weak map, need to look at this in the future
 							habitat[HABITAT_HOST_KEY] = host;
 						} catch (e) {
-							// Expando is off
-							console.warn('Arbitrary properties are disabled ' + 'and Habitat may not dispose correctly.', e);
+							if (hasExpandoWarning) {
+								// Expando is off
+								_Logger2.default.warn('RHW06', 'Arbitrary properties are disabled.' + ' The container may not dispose correctly.', e);
+								hasExpandoWarning = true;
+							}
 						}
 					}
 				} else {
 					// The element is an input, leave it in the
 					// dom to allow passing data back to the backend again
-					// // Set a flag so we know its been proccessed
+					// Set a flag so we know its been proccessed
 					ele.setAttribute(ACTIVE_HABITAT_FLAG, 'true');
 
 					// Set display none however if the input is not a hidden input
@@ -617,9 +785,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 	exports.default = Habitat;
+	module.exports = exports['default'];
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -630,11 +799,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports._Mixin = undefined;
 	exports.createBootstrapper = createBootstrapper;
 
-	var _Bootstrapper2 = __webpack_require__(1);
+	var _Bootstrapper2 = __webpack_require__(2);
 
 	var _Bootstrapper3 = _interopRequireDefault(_Bootstrapper2);
 
-	var _Container = __webpack_require__(2);
+	var _Container = __webpack_require__(3);
 
 	var _Container2 = _interopRequireDefault(_Container);
 
@@ -704,7 +873,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -722,13 +891,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 
-	var _react = __webpack_require__(6);
+	var _react = __webpack_require__(7);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(7);
+	var _reactDom = __webpack_require__(8);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _Logger = __webpack_require__(1);
+
+	var _Logger2 = _interopRequireDefault(_Logger);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -756,7 +929,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				if (target) {
 					_reactDom2.default.render(_react2.default.createElement(module, props || {}), target);
 				} else {
-					console.warn('Target element is null or undefined. Cannot inject component');
+					_Logger2.default.warn('RHW07', 'Target element is null or undefined.');
 				}
 			}
 
@@ -778,18 +951,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 	exports.default = ReactDomFactory;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+	module.exports = exports['default'];
 
 /***/ },
 /* 7 */
 /***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_7__;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
 
 /***/ }
 /******/ ])
