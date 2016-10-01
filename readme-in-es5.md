@@ -312,6 +312,26 @@ For Example
  
 See [data-prop-](#data-prop-) above for notes on defining property names.
 
+#### 4. Passing values back again
+
+It can be handy to pass values back again, particularly for inputs so the backend frameworks can see any changes or read data.
+
+*Every* React Habitat instance is passed in a prop named `proxy`, this is a reference the original dom element. 
+Please note only `<inputs />` are left in the DOM by default. To keep a generic element in the DOM, set the `data-habitat-no-replace="true"` attribute.
+
+So for example, we could use `proxy` to update the value of an input like so
+
+```html
+<input id="personId" type="hidden" data-component="personLookup" />
+```
+
+Somewhere inside the component
+
+```javascript
+this.props.proxy.value = '1234'
+```
+
+Sometimes you may additionally need to call `this.props.proxy.onchange()` if you have other scripts listening for this event.
 
 ## Options & Methods
 
