@@ -32,16 +32,6 @@ module.exports = {
         // Split our app code and libraries. See "Entry" config above
         new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"dist/vendor.bundle.js"),
 
-        // Minimize bundles
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
-            output: {
-                comments: false,
-            },
-        }),
-
         // Auto open the demo
         new OpenBrowserPlugin({ url: 'http://localhost:8080' })
     ]

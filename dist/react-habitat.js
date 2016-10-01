@@ -233,7 +233,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			if (component) {
 				factory.inject(component, _Habitat2.default.parseProps(ele), _Habitat2.default.create(ele, id));
 			} else {
-				_Logger2.default.error('RHW04', 'Cannot resolve component "' + componentName + '" for element.', ele);
+				_Logger2.default.error('RHW01', 'Cannot resolve component "' + componentName + '" for element.', ele);
 			}
 		}
 

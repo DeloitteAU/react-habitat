@@ -13,6 +13,7 @@
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-habitat": "^0.3.0",
     "webpack": "^1.13.2"
   },
   "devDependencies": {

@@ -21,7 +21,9 @@ This framework exists so you can get on with the fun stuff!
 - [Passing data back again](#4-passing-values-back-again)
 - [Options and Methods](#options-and-methods)
 - [Contribute](#want-to-contribute)
+- [Change log](#change-log)
 - [License information](#license-bsd-3-clause)
+- [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/examples)
 
 
 ## When to use React Habitat
@@ -390,6 +392,7 @@ Please don't hesitate to raise an issue through GitHub or open a pull request to
 - Non empty React Habitat component elements now log's a warning instead of throwing errors
 - Fixed issue with parsing empty object's and array's as strings. [#3](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/3)
 - Updated framework module exports so commonJS no longer needs ugly '.default' [#4](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/4)
+- Added examples
 
 ### [0.2.1]
 
