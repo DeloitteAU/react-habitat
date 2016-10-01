@@ -213,10 +213,10 @@ easily pass data to your components in a modular fashion.
 
 To set props you have a few choices. You can use all of these or only some (they merge) so just use what's suits you best for setting properties.
 
-- `data-props` Use this for mapping in a JSON string.
-- `data-prop-` Use this for mapping in strings, booleans, null, array or JSON to a single prop.
-- `data-n-prop-` Use this for mapping in numbers and floats to a single prop.
-- `data-r-prop-` Use this for mapping in a reference to an object that already exists on the global scope (window).
+- [data-props](#data-props) Use this for mapping in a JSON string.
+- [data-prop-](#data-prop-) Use this for mapping in strings, booleans, null, array or JSON to a single prop.
+- [data-n-prop-](#data-n-prop-) Use this for mapping in numbers and floats to a single prop.
+- [data-r-prop-](#data-r-prop-) Use this for mapping in a reference to an object that already exists on the global scope (window).
 
 ##### data-props 
 
