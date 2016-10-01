@@ -7,7 +7,7 @@
  */
 
 import ReactDomFactory from './factories/ReactDomFactory';
-
+import Logger from './Logger';
 
 /**
  * Creates a unique id
@@ -93,10 +93,7 @@ export default class Container {
 	* @deprecated
 	*/
 	registerComponent(name, comp) {
-		console.warn(
-			'registerComponent is being deprecated. ' +
-			'Please update to use "register()" instead.'
-		);
+		Logger.warn('RHW03', 'registerComponent is being deprecated. Please use "register" instead.');
 		this.register(name, comp);
 	}
 
@@ -105,10 +102,7 @@ export default class Container {
 	* @param {object}  comps     - The components
 	*/
 	registerComponents(comps) {
-		console.warn(
-			'registerComponents is being deprecated. ' +
-			'Please update to use "registerAll()" instead.'
-		);
+		Logger.warn('RHW03', 'registerComponents is being deprecated. Please use "registerAll" instead.');
 		this.registerAll(comps);
 	}
 
@@ -119,7 +113,7 @@ export default class Container {
 	* @deprecated
 	*/
 	getComponent(name) {
-		console.warn('getComponent is being deprecated. Please update to use "resolve()" instead.');
+		Logger.warn('RHW03', 'getComponent is being deprecated. Please use "resolve" instead.');
 		return this.resolve(name);
 	}
 

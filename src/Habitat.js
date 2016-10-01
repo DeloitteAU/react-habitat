@@ -5,21 +5,22 @@
  * This source code is licensed under the BSD-3-Clause license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import Logger from './Logger';
 
-function firstLetterToUpper(input) {
-	return input[1].toUpperCase();
-}
 
-/**
- * The host id
- * @type {string}
- */
-const HABITAT_HOST_KEY = 'habitatHostElement';
-const HABITAT_NAMESPACE = 'data-habitat';
+const HABITAT_HOST_KEY = 	'habitatHostElement';
+const HABITAT_NAMESPACE = 	'data-habitat';
 const ACTIVE_HABITAT_FLAG = 'data-has-habitat';
+const HABITAT_PROP = 		'data-prop-';
+const HABITAT_JSON_PROP = 	'data-props';
+const HABITAT_NUMBER_PROP = 'data-n-prop-';
+const HABITAT_REF_PROP = 	'data-r-prop-';
+
+let hasExpandoWarning = false;
 
 /**
  * Determine an elements computed display style
+ * @private
  * @param {HTMLElement}		ele		- The element to test
  * @returns {string}				- Returns 'block' or 'inline'
  */
@@ -29,13 +30,35 @@ function getDisplayType(ele) {
 }
 
 /**
+ * Converts the first letter of a string to uppercase
+ * @private
+ * @param {string}		input		- The string to parse
+ * @returns {string}				- Returns the parsed string
+ */
+function firstLetterToUpper(input) {
+	return input[1].toUpperCase();
+}
+
+/**
+ * Converts a habitat hyphenated attribute name into camelCase
+ * @param {string}		key			- The habitat pre attr
+ * @param {string}		name		- The attribute name
+ * @returns {string}				- The camel case value
+ */
+function getNameFor(key, name) {
+	return name
+		.replace(key, '')
+		.replace(/-([a-z])/g, firstLetterToUpper);
+}
+
+/**
  * The Habitat provider class
  */
 export default class Habitat {
 
-  /**
-   * Returns a dictionary of properties and values defined on an element
-   */
+	/**
+	 * Returns a dictionary of properties and values defined on an element
+	 */
 	static parseProps(ele) {
 		// Default props with reference to the initiating node
 		const props = {
@@ -46,28 +69,57 @@ export default class Habitat {
 		for (let i = 0; i < ele.attributes.length; i++) {
 			const a = ele.attributes[i];
 
-			if (a.name.indexOf('data-prop-') >= 0) {
+			if (a.name.indexOf(HABITAT_PROP) === 0) {
 				// Convert prop name from hyphens to camel case
-				const name = a.name
-					.replace('data-prop-', '')
-					.replace(/-([a-z])/g, firstLetterToUpper);
+				const name = getNameFor(HABITAT_PROP, a.name);
 
 				let value = a.value || '';
 
 				// Parse booleans
-				if (typeof value === 'string' && value.toLocaleLowerCase() === 'false') { value = false; }
-				if (typeof value === 'string' && value.toLocaleLowerCase() === 'true') { value = true; }
+				if (typeof value === 'string' && value.toLowerCase() === 'false') { value = false; }
+				if (typeof value === 'string' && value.toLowerCase() === 'true') { value = true; }
 
 				// Parse json strings
-				if (typeof value === 'string' && value.length > 2 &&
+				if (typeof value === 'string' && value.length >= 2 &&
 					((value[0] === '{' && value[value.length - 1] === '}') ||
 					(value[0] === '[' && value[value.length - 1] === ']'))) {
 					value = JSON.parse(value);
 				}
 
+				// Parse nulls
+				if (typeof value === 'string' && value.toLowerCase() === 'null') {
+					value = null;
+				}
+
 				props[name] = value;
-			} else if (a.name === 'data-props') {
+			} else
+
+			// JSON type props
+			if (a.name === HABITAT_JSON_PROP) {
+				// Parse all of the props as json
 				Object.assign(props, JSON.parse(a.value));
+			} else
+
+			// Number type props
+			if (a.name.indexOf('data-n-prop-') === 0) {
+
+				// Convert prop name from hyphens to camel case
+				const name = getNameFor(HABITAT_NUMBER_PROP, a.name);
+
+				// Parse the value as a float as it handles both floats and whole int's
+				// Might want to look at configuring the radix somehow in the future
+				props[name] = parseFloat(a.value);
+			} else
+
+			// Reference type props
+			if (window && a.name.indexOf(HABITAT_REF_PROP) === 0) {
+
+				// Convert prop name from hyphens to camel case
+				const name = getNameFor(HABITAT_REF_PROP, a.name);
+
+				// Set the reference to the global object
+				props[name] = window[a.value];
+
 			}
 		}
 
@@ -84,7 +136,7 @@ export default class Habitat {
 	static create(ele, id) {
 
 		if (window.document.body === ele || ele === null || ele === undefined) {
-			console.warn('Cannot open a habitat for ', ele);
+			Logger.warn('RHW04', 'Cannot open a habitat for element.', ele);
 			return null;
 		}
 
@@ -122,12 +174,9 @@ export default class Habitat {
 			// Not an input so assumed we don't need to keep the target
 			// element around
 
-			// Check it is empty first
-			if (ele.innerHTML !== '') {
-				throw new Error(
-					'React Habitat elements must be empty. ' +
-					'Any child components should be added inside React.'
-				);
+			// Check it is empty first (ignoring white space and line breaks)
+			if (ele.innerHTML.replace(/( |\r\n|\n|\r)/g,'') !== '') {
+				Logger.warn('RHW05', 'React Habitat element not empty.', ele);
 			}
 
 			if (!replaceDisabled) {
@@ -136,20 +185,24 @@ export default class Habitat {
 
 				// But try to keep a reference to the host in-case destroy is ever called
 				// and we need to reinstate it back to how we found it
+
 				try {
+					// It might be better if we keep references in a weak map, need to look at this in the future
 					habitat[HABITAT_HOST_KEY] = host;
 				} catch (e) {
-					// Expando is off
-					console.warn(
-						'Arbitrary properties are disabled ' +
-						'and Habitat may not dispose correctly.', e);
+					if(hasExpandoWarning) {
+						// Expando is off
+						Logger.warn('RHW06', 'Arbitrary properties are disabled.' +
+							' The container may not dispose correctly.', e);
+						hasExpandoWarning = true;
+					}
 				}
 			}
 
 		} else {
 			// The element is an input, leave it in the
 			// dom to allow passing data back to the backend again
-			// // Set a flag so we know its been proccessed
+			// Set a flag so we know its been proccessed
 			ele.setAttribute(ACTIVE_HABITAT_FLAG, 'true');
 
 			// Set display none however if the input is not a hidden input

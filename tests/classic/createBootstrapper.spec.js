@@ -31,7 +31,7 @@ describe('Classic Bootstrapper', () => {
 	});
 
 	it('should log unknown component warning', () => {
-		spyOn(console, 'warn');
+		spyOn(console, 'error');
 
 		node.innerHTML = '<div data-component="aUnknownComponent"></div>';
 
@@ -39,7 +39,7 @@ describe('Classic Bootstrapper', () => {
 			container: [],
 		});
 
-		expect(console.warn).toHaveBeenCalled();
+		expect(console.error).toHaveBeenCalled();
 	});
 
 	it('should render a component', () => {

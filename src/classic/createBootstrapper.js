@@ -37,7 +37,7 @@ export class _Mixin extends Bootstrapper {
 
 		// Map the components
 		for (let i = 0; i < spec.container.length; i++) {
-			container.registerComponent(
+			container.register(
 				spec.container[i].register,
 				spec.container[i].for
 			);

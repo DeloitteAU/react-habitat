@@ -7,6 +7,7 @@
  */
 
 import Habitat from './Habitat';
+import Logger from './Logger';
 
 const DEFAULT_HABITAT_SELECTOR = 'data-component';
 
@@ -33,10 +34,8 @@ function parseContainer(container, elements, componentSelector, cb = null) {
 				component,
 				Habitat.parseProps(ele),
 				Habitat.create(ele, id));
-		} else if (componentName === null || componentName === '' || componentName === undefined) {
-			console.warn(`Cannot read attribute value with '${componentSelector}' for element.`, ele);
 		} else {
-			console.warn(`Cannot resolve component "${componentName}" for`, ele);
+			Logger.error('RHW01', `Cannot resolve component "${componentName}" for element.`, ele);
 		}
 	}
 
@@ -77,9 +76,9 @@ export default class Bootstrapper {
 	setContainer(container, cb = null) {
 
 		if (this._container !== null) {
-			throw new Error(
-				'A container is already set. Please call dispose() before assigning a new one.'
-			);
+			Logger.error('RHW02', 'A container is already set. ' +
+				'Please call dispose() before assigning a new one.');
+			return;
 		}
 
 		// Set the container
@@ -95,6 +94,7 @@ export default class Bootstrapper {
 			this.componentSelector,
 			cb
 		);
+
 	}
 
 	/**

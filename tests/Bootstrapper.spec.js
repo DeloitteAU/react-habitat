@@ -32,13 +32,14 @@ describe('Bootstrapper', () => {
 	});
 
 	it('should log unknown component warning', () => {
-		spyOn(console, 'warn');
+		spyOn(console, 'error');
 
 		node.innerHTML = '<div data-component="aUnknownComponent"></div>';
 		const app = new App(new Container());
 
 		expect(app).toBeDefined();
-		expect(console.warn).toHaveBeenCalled();
+		expect(console.error).toHaveBeenCalled();
+		expect(node.innerHTML).toBe('<div data-component="aUnknownComponent"></div>');
 	});
 
 	it('should render a component', () => {
@@ -116,6 +117,41 @@ describe('Bootstrapper', () => {
 		expect(component2Lookup.length).toEqual(1);
 	});
 
+	it('should not render to elements that have children', () => {
+		spyOn(console, 'warn');
+
+		const html = '<div data-component="IMochComponent"><p>Child</p></div>';
+		node.innerHTML = html;
+
+		// -- MOCH CONTAINER SET UP -- //
+		const container = new Container();
+		container.register('IMochComponent', MochComponent);
+		// --------------------------- //
+
+		const app = new App(container);
+
+		expect(console.warn).toHaveBeenCalled();
+
+	});
+
+	it('should render to elements with white space and line breaks', () => {
+		node.innerHTML =
+			'<div data-component="IMochComponent">  \n   \n</div>';
+
+		// -- MOCH CONTAINER SET UP -- //
+		const container = new Container();
+		container.register('IMochComponent', MochComponent);
+		// --------------------------- //
+
+		const app = new App(container);
+		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+
+		expect(app).toBeDefined();
+		expect(componentLookup).not.toEqual(null);
+		expect(componentLookup.length).toEqual(1);
+
+	});
+
 	it('should pass props', () => {
 		node.innerHTML = '<div data-component="IMochComponent" data-prop-title="test"></div>';
 
@@ -137,16 +173,16 @@ describe('Bootstrapper', () => {
 
 	it('should not allow direct container replacements', () => {
 
+		spyOn(console, 'error');
+
 		const container1 = new Container();
 		const container2 = new Container();
 
 		const app = new App(container1);
 
-		function test() {
-			app.setContainer(container2);
-		}
+		app.setContainer(container2);
 
-		expect(test).toThrowError();
+		expect(console.error).toHaveBeenCalled();
 
 	});
 

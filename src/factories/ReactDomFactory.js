@@ -5,8 +5,9 @@
  * This source code is licensed under the BSD-3-Clause license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React 		from 'react';
+import ReactDOM 	from 'react-dom';
+import Logger 		from '../Logger';
 
 export default class ReactDomFactory {
 
@@ -23,7 +24,7 @@ export default class ReactDomFactory {
 				target
 			);
 		} else {
-			console.warn('Target element is null or undefined. Cannot inject component');
+			Logger.warn('RHW07', 'Target element is null or undefined.');
 		}
 	}
 

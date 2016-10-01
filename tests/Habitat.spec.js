@@ -11,6 +11,7 @@ import Habitat from '../src/Habitat';
 let node = null;
 
 describe('Habitat parse', () => {
+
 	beforeEach(() => {
 		node = document.createElement('div');
 		window.document.body.appendChild(node);
@@ -64,8 +65,16 @@ describe('Habitat parse', () => {
 		expect(results.isActive8).toEqual(false);
 	});
 
+	it('parses null strings', () => {
+		node.setAttribute('data-prop-address', 'null');
 
-	it('parses json', () => {
+		const results = Habitat.parseProps(node);
+
+		expect(results.address).toEqual(null);
+	});
+
+
+	it('parses json object', () => {
 		node.setAttribute('data-prop-user',
 			'{"name": "John Citizen", "isActive": true, "age": 22}');
 
@@ -75,6 +84,37 @@ describe('Habitat parse', () => {
 		expect(results.user.name).toEqual('John Citizen');
 		expect(results.user.isActive).toEqual(true);
 		expect(results.user.age).toEqual(22);
+	});
+
+	it('parses json array', () => {
+		node.setAttribute('data-prop-users',
+			'[{"name": "John"},{"name": "Sue"}]');
+
+		const results = Habitat.parseProps(node);
+
+		expect(results.users).toBeDefined();
+		expect(results.users.length).toEqual(2);
+		expect(results.users[0].name).toEqual('John');
+		expect(results.users[1].name).toEqual('Sue');
+	});
+
+	it('parses empty json array', () => {
+		node.setAttribute('data-prop-users', '[]');
+
+		const results = Habitat.parseProps(node);
+
+		expect(results.users).toBeDefined();
+		expect(typeof results.users).not.toEqual('string');
+		expect(results.users.length).toEqual(0);
+	});
+
+	it('parses empty json object', () => {
+		node.setAttribute('data-prop-user', '{}');
+
+		const results = Habitat.parseProps(node);
+
+		expect(results.user).toBeDefined();
+		expect(typeof results.user).toEqual('object');
 	});
 
 	it('parses json props', () => {
@@ -88,6 +128,39 @@ describe('Habitat parse', () => {
 		expect(results.user.isActive).toEqual(true);
 		expect(results.user.age).toEqual(22);
 	});
+
+
+	it('parses numbers', () => {
+		node.setAttribute('data-n-prop-amount', '300');
+		node.setAttribute('data-n-prop-amount2', '300.43');
+		node.setAttribute('data-n-prop-amount3', 'abcd');
+
+		const results = Habitat.parseProps(node);
+
+		expect(results.amount).toBeDefined();
+		expect(results.amount2).toBeDefined();
+		expect(results.amount3).toBeDefined();
+		expect(results.amount).toEqual(300);
+		expect(results.amount2).toEqual(300.43);
+		expect(results.amount3).toEqual(NaN);
+	});
+
+
+	it('parses references', () => {
+
+		// Our global variable
+		var myStates = window.myStates = ['VIC','QLD','NT', 'NSW', 'ACT', 'WA', 'SA', 'TAS'];
+
+		// Pass it in by the reference attribute
+		node.setAttribute('data-r-prop-states', 'myStates');
+
+		const results = Habitat.parseProps(node);
+
+		expect(results.states).toBeDefined();
+		expect(results.states).toBe(myStates);
+	});
+
+
 });
 
 describe('Habitat create', () => {
@@ -117,14 +190,16 @@ describe('Habitat create', () => {
 
 	it('should throw non empty target error', () => {
 
+		spyOn(console, 'warn');
+
 		const testElement = window.document.createElement('div');
 		testElement.innerHTML = '<p>test</p>';
 
 		node.appendChild(testElement);
 
-		function test() { Habitat.create(testElement, 'C01'); }
+		Habitat.create(testElement, 'C01');
 
-		expect(test).toThrowError();
+		expect(console.warn).toHaveBeenCalled();
 
 	});
 
