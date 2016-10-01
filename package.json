@@ -1,6 +1,6 @@
 {
   "name": "react-habitat",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A React DOM Bootstrapper designed to harmonise a hybrid application",
   "main": "./lib/index.js",
   "repository": {
@@ -36,6 +36,7 @@
     "babel-cli": "^6.11.4",
     "babel-core": "^6.13.2",
     "babel-loader": "^6.2.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-class-properties": "^6.11.5",
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-react": "^6.11.1",
@@ -60,6 +61,14 @@
     "react": "^15.0.0",
     "react-dom": "^15.0.0"
   },
+  "files": [
+    "LICENSE.md",
+    "index.d.ts",
+    "readme.md",
+    "readme-in-es5.md",
+    "lib/",
+    "dist/"
+  ],
   "scripts": {
     "test": "karma start --single-run --browsers PhantomJS",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
