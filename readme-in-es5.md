@@ -21,9 +21,9 @@ This framework exists so you can get on with the fun stuff!
 - [Passing data back again](#4-passing-values-back-again)
 - [Options and Methods](#options-and-methods)
 - [Contribute](#want-to-contribute)
-- [Change log](#change-log)
 - [License information](#license-bsd-3-clause)
 - [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/examples)
+- [Change log](https://github.com/DeloitteDigitalAPAC/react-habitat/blob/master/CHANGELOG.md)
 
 
 ## When to use React Habitat
@@ -201,19 +201,30 @@ Will render 3 instances of your component.
 **Note** It's important that the output built javascript file is included at the end of the DOM just before the closing </body> tag.
 
 
-#### 3. Passing properties *(props)* to your components
+### Passing properties *(props)* to your components
 
 Resolving and registering components alone is not all that special, but passing data to it via html attributes is pretty useful. This allows the backend to
 easily pass data to your components in a modular fashion.
 
 To set props you have a few choices. You can use all of these or only some (they merge) so just use what's suits you best for setting properties.
 
-- [data-props](#data-props) Use this for mapping in a JSON string.
-- [data-prop-](#data-prop-) Use this for mapping in strings, booleans, null, array or JSON to a single prop.
-- [data-n-prop-](#data-n-prop-) Use this for mapping in numbers and floats to a single prop.
-- [data-r-prop-](#data-r-prop-) Use this for mapping in a reference to an object that already exists on the global scope (window).
+- [data-props](#data-props) Maps JSON to props.
+- [data-prop-](#data-prop-) (Prefix) Maps in strings, booleans, null, array or JSON to a prop.
+- [data-n-prop-](#data-n-prop-) (Prefix) Maps in numbers and floats to a prop.
+- [data-r-prop-](#data-r-prop-) (Prefix) Maps in a reference to an object that exists on the global scope (window) to a prop.
 
-##### data-props 
+**PLEASE NOTE:** 
+The last three options are attribute *prefixes*. This allow's you to define the property the name. 
+Property names will be *automatically converted* from hyphens to camel case.
+
+For example
+
+`data-prop-title` would expose `title` on the props object inside the component.
+
+`data-prop-my-title` would expose `myTitle` on the props object inside the component.
+
+
+#### data-props 
 
 Set component props via a JSON string on the `data-props` attribute.
 
@@ -223,7 +234,7 @@ For example
 <div data-component="SomeReactComponent" data-props='{"title": "A nice title"}'></div>
 ```
 
-##### data-prop- 
+#### data-prop- 
 
 Set an component prop via prefixing attributes with `data-prop-`.
 
@@ -231,10 +242,7 @@ For example
 
 `data-prop-title` would expose `title` as a property inside the component.
 
-There are **two important things** to note when setting these attribute type properties:
-
-1. Hyphenated property names are converted to *camelCase*. Eg. `data-prop-my-title` would expose `myTitle` as a property in the component.
-2. *JSON*, *booleans* & *null* are automatically parsed. Eg `data-prop-my-bool="true"` would expose the value of `true`, NOT the string representation `"true"`.
+Please note: *JSON*, *booleans* & *null* are automatically parsed. Eg `data-prop-my-bool="true"` would expose the value of `true`, NOT the string representation `"true"`.
 
 Simple Example
 
@@ -284,21 +292,17 @@ var SomeReactComponent = React.createClass({
 ```
 
 
-##### data-n-prop-
+#### data-n-prop-
 
 Set an component prop with type [number] via prefixing attributes with `data-n-prop-`.
 
-This is handy if you know that a property is always going to be a number or float.
-
 For example `data-n-prop-temperature="33.3"` would expose the float value of 33.3 and not the string representation '33.3'.
 
-See [data-prop-](#data-prop-) above for notes on defining property names.
+This is handy if you know that a property is always going to be a number or float.
 
-##### data-r-prop-
+#### data-r-prop-
 
 Referenced a global variable in your component prop via prefixing attributes with `data-r-prop-`.
-
-This is handy if you need to share properties between habitats or you need to set JSON onto the page.
 
 For Example
 
@@ -310,9 +314,9 @@ For Example
 <div data-component="SomeReactComponent" data-r-prop-foo="foo"></div>
 ```
  
-See [data-prop-](#data-prop-) above for notes on defining property names.
+This is handy if you need to share properties between habitats or you need to set JSON onto the page.
 
-#### 4. Passing values back again
+## Passing values back again
 
 It can be handy to pass values back again, particularly for inputs so the backend frameworks can see any changes or read data.
 
@@ -346,6 +350,12 @@ Example
 Will result in the following being rendered
 
 `<div data-habitat="C1" class="my-css-class">...</div>`
+
+### Replace original node
+
+By default only `<inputs />` are left in the DOM when are React Habitat is created. 
+
+To keep a generic element in the DOM, set the `data-habitat-no-replace="true"` attribute.
 
 ### Changing the habitat query selector
 
@@ -398,26 +408,6 @@ Please don't hesitate to raise an issue through GitHub or open a pull request to
 ## Key Contributors
 
 * @jenna_salau
-
-## Change log
-
-### [0.3.0]
-
-- Added 'data-n-prop' to parse in number type properties
-- Added 'data-r-prop' to parse in reference type properties
-- 'null' values will now parse in as a null object
-- Added safe logging
-- Warnings and Errors now only apply when NODE_ENV is not 'production'
-- Updated warning messages & added more details links
-- Non empty React Habitat component elements now log's a warning instead of throwing errors
-- Fixed issue with parsing empty object's and array's as strings. [#3](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/3)
-- Updated framework module exports so commonJS no longer needs ugly '.default' [#4](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/4)
-- Added examples
-
-### [0.2.1]
-
-- Deprecated 'registerComponent' should now use 'register'
-- Deprecated 'registerComponents' should now use 'registerAll'
 
 ## Who is Deloitte Digital?
 
