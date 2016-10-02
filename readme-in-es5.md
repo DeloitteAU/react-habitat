@@ -353,7 +353,7 @@ Will result in the following being rendered
 
 ### Replace original node
 
-By default only `<inputs />` are left in the DOM when are React Habitat is created. 
+By default only `<inputs />` are left in the DOM when a React Habitat is created. 
 
 To keep a generic element in the DOM, set the `data-habitat-no-replace="true"` attribute.
 
