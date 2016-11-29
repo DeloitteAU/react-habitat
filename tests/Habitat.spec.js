@@ -188,21 +188,6 @@ describe('Habitat create', () => {
 
 	});
 
-	it('should throw non empty target error', () => {
-
-		spyOn(console, 'warn');
-
-		const testElement = window.document.createElement('div');
-		testElement.innerHTML = '<p>test</p>';
-
-		node.appendChild(testElement);
-
-		Habitat.create(testElement, 'C01');
-
-		expect(console.warn).toHaveBeenCalled();
-
-	});
-
 	it('should leave inputs in the dom', () => {
 
 		const testElement = window.document.createElement('input');
