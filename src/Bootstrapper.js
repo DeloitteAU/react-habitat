@@ -30,6 +30,9 @@ function parseContainer(container, elements, componentSelector, cb = null) {
 		const component = container.resolve(componentName);
 
 		if (component) {
+			if (ele.querySelector(`[${componentSelector}]`)) {
+				Logger.warn('RHW08', 'React Habitat should not contain additional components.', ele);
+			}
 			factory.inject(
 				component,
 				Habitat.parseProps(ele),

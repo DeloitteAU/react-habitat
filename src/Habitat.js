@@ -7,7 +7,6 @@
  */
 import Logger from './Logger';
 
-
 const HABITAT_HOST_KEY = 	'habitatHostElement';
 const HABITAT_NAMESPACE = 	'data-habitat';
 const ACTIVE_HABITAT_FLAG = 'data-has-habitat';
@@ -173,11 +172,6 @@ export default class Habitat {
 
 			// Not an input so assumed we don't need to keep the target
 			// element around
-
-			// Check it is empty first (ignoring white space and line breaks)
-			if (ele.innerHTML.replace(/( |\r\n|\n|\r)/g,'') !== '') {
-				Logger.warn('RHW05', 'React Habitat element not empty.', ele);
-			}
 
 			if (!replaceDisabled) {
 				// Detach it

@@ -1,6 +1,6 @@
 {
   "name": "react-habitat",
-  "version": "0.3.1-beta",
+  "version": "0.3.1",
   "description": "A React DOM Bootstrapper designed to harmonise a hybrid application",
   "main": "./lib/index.js",
   "repository": {
@@ -63,6 +63,7 @@
   },
   "files": [
     "LICENCE.md",
+    "CHANGELOG.md",
     "index.d.ts",
     "readme.md",
     "readme-in-es5.md",

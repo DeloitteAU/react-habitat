@@ -231,6 +231,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			var component = container.resolve(componentName);
 
 			if (component) {
+				if (ele.querySelector('[' + componentSelector + ']')) {
+					_Logger2.default.warn('RHW08', 'React Habitat should not contain additional components.', ele);
+				}
 				factory.inject(component, _Habitat2.default.parseProps(ele), _Habitat2.default.create(ele, id));
 			} else {
 				_Logger2.default.error('RHW01', 'Cannot resolve component "' + componentName + '" for element.', ele);
@@ -709,11 +712,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 					// Not an input so assumed we don't need to keep the target
 					// element around
-
-					// Check it is empty first (ignoring white space and line breaks)
-					if (ele.innerHTML.replace(/( |\r\n|\n|\r)/g, '') !== '') {
-						_Logger2.default.warn('RHW05', 'React Habitat element not empty.', ele);
-					}
 
 					if (!replaceDisabled) {
 						// Detach it

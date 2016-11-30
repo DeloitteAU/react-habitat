@@ -117,7 +117,41 @@ describe('Bootstrapper', () => {
 		expect(component2Lookup.length).toEqual(1);
 	});
 
-	it('should not render to elements that have children', () => {
+	it('should warn when rendering to elements that have components as children', () => {
+		spyOn(console, 'warn');
+
+		const html = '<div data-component="IMochComponent"><div data-component="IMochComponent"></div></div>';
+		node.innerHTML = html;
+
+		// -- MOCH CONTAINER SET UP -- //
+		const container = new Container();
+		container.register('IMochComponent', MochComponent);
+		// --------------------------- //
+
+		const app = new App(container);
+
+		expect(console.warn).toHaveBeenCalled();
+
+	});
+
+	it('should not warn when rendering to elements that have children that are not components', () => {
+		spyOn(console, 'warn');
+
+		const html = '<div data-component="IMochComponent"><p>Hello world</p></div>';
+		node.innerHTML = html;
+
+		// -- MOCH CONTAINER SET UP -- //
+		const container = new Container();
+		container.register('IMochComponent', MochComponent);
+		// --------------------------- //
+
+		const app = new App(container);
+
+		expect(console.warn).not.toHaveBeenCalled();
+
+	});
+
+	it('should render to elements that have children that are not components', () => {
 		spyOn(console, 'warn');
 
 		const html = '<div data-component="IMochComponent"><p>Child</p></div>';
@@ -130,7 +164,13 @@ describe('Bootstrapper', () => {
 
 		const app = new App(container);
 
-		expect(console.warn).toHaveBeenCalled();
+		expect(console.warn).not.toHaveBeenCalled();
+
+		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+
+		expect(app).toBeDefined();
+		expect(componentLookup).not.toEqual(null);
+		expect(componentLookup.length).toEqual(1);
 
 	});
 
