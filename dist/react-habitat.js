@@ -232,7 +232,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			if (component) {
 				if (ele.querySelector('[' + componentSelector + ']')) {
-					_Logger2.default.warn('RHW08', 'React Habitat should not contain additional components.', ele);
+					_Logger2.default.warn('RHW08', 'Component should not contain any nested components.', ele);
 				}
 				factory.inject(component, _Habitat2.default.parseProps(ele), _Habitat2.default.create(ele, id));
 			} else {
