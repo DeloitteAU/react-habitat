@@ -31,7 +31,7 @@ function parseContainer(container, elements, componentSelector, cb = null) {
 
 		if (component) {
 			if (ele.querySelector(`[${componentSelector}]`)) {
-				Logger.warn('RHW08', 'React Habitat should not contain additional components.', ele);
+				Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
 			}
 			factory.inject(
 				component,
