@@ -1,5 +1,9 @@
 ## React Habitat Change log
 
+### [0.4.0]
+
+- React Habitat Components can now have children [#5](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/5). Thanks @6stringbeliever
+
 ### [0.3.1]
 
 - Updated docs
