@@ -150,8 +150,8 @@ During the web application execution you will want to make use of the components
 
 When you resolve a component, a new instance of the object gets created (Resolving a component is roughly equivalent to calling 'new').
 
-To *resolve* new instances of your components you need to attach a `data-component` attribute to a `div` or a `span` element in the HTML. These elements should always
-remain empty. Any child components should be nested inside the React components themselves.
+To *resolve* new instances of your components you need to attach a `data-component` attribute to a `div` or a `span` element in the HTML. 
+Any child components should be nested inside the React components themselves.
 
 Set the `data-component` value to equal a component name you have registered in the container.
 
