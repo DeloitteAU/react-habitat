@@ -41,7 +41,7 @@ React Habitat works great with:
 - Umbraco
 - Drupal
 - Joomla
-- Wordpress
+- WordPress
 - Magento
 - *...etc*
 
