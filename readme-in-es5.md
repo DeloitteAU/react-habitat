@@ -1,6 +1,6 @@
 ![Deloitte Digital](https://raw.githubusercontent.com/DeloitteDigital/DDBreakpoints/master/docs/deloittedigital-logo-white.png)
 
-# React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=develop)
+# React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master)
 
 ## React Habitat <3 Your CMS
 
@@ -41,7 +41,7 @@ React Habitat works great with:
 - Umbraco
 - Drupal
 - Joomla
-- Wordpress
+- WordPress
 - Magento
 - *...etc*
 
