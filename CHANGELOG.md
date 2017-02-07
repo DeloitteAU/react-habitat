@@ -1,5 +1,10 @@
 ## React Habitat Change log
 
+### [0.4.2]
+
+- Updated readme with TypeScript notes
+- Fixed issues with type script definitions [#9](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/9). Thanks @aventurella
+
 ### [0.4.1]
 
 - Fixed typo in readme. Thanks @WPprodigy
