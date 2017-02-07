@@ -1,6 +1,6 @@
 ![Deloitte Digital](https://raw.githubusercontent.com/DeloitteDigital/DDBreakpoints/master/docs/deloittedigital-logo-white.png)
 
-# React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master)
+# React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=develop)
 
 ## React Habitat <3 Your CMS
 
@@ -59,7 +59,7 @@ Typically if you're building a full-on one page React app that yanks data from r
 - Simple to swap out components for others (The beauty of IOC containers)
 - For advanced users, you can use different components for different build environments
 - 100% W3C HTML5 Valid
-- TypeScript definitions included
+- TypeScript definitions included ([see notes](#typescript-users-please-note))
 
 ## Compatibility
 
@@ -411,6 +411,14 @@ class MyApp extends ReactHabitat.Bootstrapper {
 	}
 }
 ```
+
+## TypeScript users please note
+We are using Babel to transpile our code which wraps our modules in a "fake" module with a `default` property. TypeScript doesn't do any of the `default` wire up magic ([see here for more details](https://github.com/Microsoft/TypeScript/issues/2242#issuecomment-83694181)).
+
+So in order for TypeScript to consume our modules you will need to:
+
+* Change `ReactHabitat.Bootstrapper` for `ReactHabitat.default.Bootstrapper`; and
+* Change `ReactHabitat.Container` for `ReactHabitat.default.Container`
 
 ## Want to contribute?
 
