@@ -6,73 +6,72 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface IDomFactory {
+declare module "react-habitat" {
 
-	/**
-	 * The inject method after a wire-up has been requested
-	 * @param {*}           module      - The component
-	 * @param {object}      props       - The components properties
-	 * @param {Element}     target      - The element to inject the component into
-	 */
-	inject: (module: any, props: {}, target: Element) => void;
+	interface IDomFactory {
 
-	/**
-	 * The dispose method
-	 * @param {Element}		target		- The element to dispose
-     */
-	dispose: (target: Element) => void;
- }
+		/**
+		 * The inject method after a wire-up has been requested
+		 * @param {*}           module      - The component
+		 * @param {object}      props       - The components properties
+		 * @param {Element}     target      - The element to inject the component into
+		 */
+		inject: (module: any, props: {}, target: Element) => void;
 
-export interface IContainer {
+		/**
+		 * The dispose method
+		 * @param {Element}		target		- The element to dispose
+	     */
+		dispose: (target: Element) => void;
+	}
 
-	/**
-	 * Register a new component in the container
-	 * @param {string}      name        - The key that identifies this component
-	 * @param {*}           comp        - The component class
-	 */
-	register: (name: string, comp: any) => void;
+	interface IContainer {
 
-	/**
-	 * Register multiple components in the container
-	 * @param {object}      comps        - The components
-	 */
-	registerAll: (comps: {}) => void;
+		/**
+		 * Register a new component in the container
+		 * @param {string}      name        - The key that identifies this component
+		 * @param {*}           comp        - The component class
+		 */
+		register: (name: string, comp: any) => void;
 
-	/**
-	 * Get a registered component for a key
-	 * @param {string}      name        - The key name of the component that has been registered
-	 */
-	resolve: (name: string) => any;
+		/**
+		 * Register multiple components in the container
+		 * @param {object}      comps        - The components
+		 */
+		registerAll: (comps: {}) => void;
 
-	/**
-	* The container's unique id
-	*/
-	id: () => string;
+		/**
+		 * Get a registered component for a key
+		 * @param {string}      name        - The key name of the component that has been registered
+		 */
+		resolve: (name: string) => any;
 
-	/**
-	 * The containers dom factory
-	 */
-	domFactory: () => IDomFactory;
-}
+		/**
+		* The container's unique id
+		*/
+		id: () => string;
 
- export interface IBootstrapper {
+		/**
+		 * The containers dom factory
+		 */
+		domFactory: () => IDomFactory;
+	}
 
-	 /**
-	  * Set the container
-	  * @param {IContainer}		container	- The container
-      */
-	setContainer: (container: IContainer) => void;
+	interface IBootstrapper {
 
-	 /**
-	  * Dispose of the container
-	  */
-	 dispose: () => void;
- }
+		/**
+		  * Set the container
+		  * @param {IContainer}		container	- The container
+	      */
+		setContainer: (container: IContainer) => void;
 
+		/**
+		  * Dispose of the container
+		  */
+		 dispose: () => void;
+	}
 
-declare module ReactHabitat {
-
-	export class Bootstrapper implements IBootstrapper {
+	class Bootstrapper implements IBootstrapper {
 
 		/**
 		 * Sets the container
@@ -95,7 +94,7 @@ declare module ReactHabitat {
 		dispose: () => void;
 	}
 
-	export class Container implements IContainer {
+	class Container implements IContainer {
 
 		/**
 		 * The containers unique id
@@ -122,7 +121,4 @@ declare module ReactHabitat {
 		 */
 		domFactory: () => IDomFactory;
 	}
-
 }
-
-export default ReactHabitat;
