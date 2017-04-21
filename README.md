@@ -253,6 +253,8 @@ For example
 
 Please note: *JSON*, *booleans* & *null* are automatically parsed. Eg `data-prop-my-bool="true"` would expose the value of `true`, NOT the string representation `"true"`.
 
+Passing in an array of objects will require you to use html encoded characters for quotes etc i.e &quot;foo&quot; will replace "foo"
+
 Simple Example
 
 ```html
