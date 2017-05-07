@@ -1,6 +1,6 @@
 ![Deloitte Digital](https://raw.githubusercontent.com/DeloitteDigital/DDBreakpoints/master/docs/deloittedigital-logo-white.png)
 
-# React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=develop)
+# React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master)
 
 ## React Habitat <3 Your CMS
 
@@ -252,6 +252,8 @@ For example
 `data-prop-title` would expose `title` as a property inside the component.
 
 Please note: *JSON*, *booleans* & *null* are automatically parsed. Eg `data-prop-my-bool="true"` would expose the value of `true`, NOT the string representation `"true"`.
+
+Passing in an array of objects will require you to use html encoded characters for quotes etc i.e &quot;foo&quot; will replace "foo"
 
 Simple Example
 
