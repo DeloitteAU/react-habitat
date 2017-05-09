@@ -38,6 +38,7 @@ React Habitat works great with:
 
 - Sitecore
 - Adobe Experience Manager
+- Hybris
 - Umbraco
 - Drupal
 - Joomla
@@ -71,13 +72,17 @@ We highly recommend you use something like [WebPack](https://webpack.github.io/)
 
 ## Installing
 
-Install with Node Package Manager (NPM)
+Install with [NPM](http://npmjs.com/)
 
 `npm install --save-dev react-habitat`
 
-This assumes that you’re using [npm](http://npmjs.com/) package manager with a module bundler like [Webpack](http://webpack.github.io) or [Browserify](http://browserify.org/).
+Install with [Yarn](https://yarnpkg.com/en/)
 
-If you don’t yet use [npm](http://npmjs.com/) or a modern module bundler, and would rather prefer a single-file [UMD](https://github.com/umdjs/umd) build that makes `ReactHabitat` available as a global object, you can grab a pre-built version from the dist folder.
+`yarn add react-habitat`
+
+This assumes that you’re using a package manager with a module bundler like [Webpack](http://webpack.github.io) or [Browserify](http://browserify.org/).
+
+If you don’t use a module bundler, and would prefer a single-file [UMD](https://github.com/umdjs/umd) build that makes `ReactHabitat` available as a global object, you can grab a pre-built version from the dist folder.
 
 ## Getting Started
 
@@ -207,24 +212,23 @@ For example. This is perfectly valid.
 
 Will render 3 instances of your component.
 
-**Note** It's important that the output built javascript file is included at the end of the DOM just before the closing </body> tag.
+**Note** It's important that the output built javascript file is included at the end of the DOM just before the closing body tag.
 
-
-### Passing properties *(props)* to your components
+## Passing properties *(props)* to your components
 
 Resolving and registering components alone is not all that special, but passing data to it via html attributes is pretty useful. This allows the backend to
 easily pass data to your components in a modular fashion.
 
 To set props you have a few choices. You can use all of these or only some (they merge) so just use what's suits you best for setting properties.
 
-- [data-props](#data-props) Maps JSON to props.
-- [data-prop-](#data-prop-) (Prefix) Maps in strings, booleans, null, array or JSON to a prop.
-- [data-n-prop-](#data-n-prop-) (Prefix) Maps in numbers and floats to a prop.
-- [data-r-prop-](#data-r-prop-) (Prefix) Maps in a reference to an object that exists on the global scope (window) to a prop.
+- [data-props](#data-props) Maps [encoded JSON](#Use-encoded-JSON-in-HTML-attributes) to props.
+- [data-prop-*](#data-prop-*) (Prefix) Maps in strings, booleans, null, array or [encoded JSON](#Use-encoded-JSON-in-HTML-attributes) to a prop.
+- [data-n-prop-*](#data-n-prop-*) (Prefix) Maps in numbers and floats to a prop.
+- [data-r-prop-*](#data-r-prop-*) (Prefix) Maps in a reference to an object that exists on the global scope (window) to a prop.
 
 **PLEASE NOTE:** 
-The last three options are attribute *prefixes*. This allow's you to define the property the name. 
-Property names will be *automatically converted* from hyphens to camel case.
+The last three options are attribute *prefixes* and the **\*** may be replaced by any name. This allow's you to define the property the name. 
+Property names must be all lower case and hyphens will be *automatically converted* to camel case.
 
 For example
 
@@ -232,10 +236,9 @@ For example
 
 `data-prop-my-title` would expose `myTitle` on the props object inside the component.
 
+### data-props 
 
-#### data-props 
-
-Set component props via a JSON string on the `data-props` attribute.
+Set component props via an [encoded JSON](#Use-encoded-JSON-in-HTML-attributes) string on the `data-props` attribute.
 
 For example
 
@@ -243,7 +246,7 @@ For example
 <div data-component="SomeReactComponent" data-props='{"title": "A nice title"}'></div>
 ```
 
-#### data-prop- 
+### data-prop-* 
 
 Set an component prop via prefixing attributes with `data-prop-`.
 
@@ -307,7 +310,7 @@ class MyReactComponent extends React.Component {
 }
 ```
 
-#### data-n-prop-
+### data-n-prop-*
 
 Set an component prop with type [number] via prefixing attributes with `data-n-prop-`.
 
@@ -315,7 +318,7 @@ For example `data-n-prop-temperature="33.3"` would expose the float value of 33.
 
 This is handy if you know that a property is always going to be a number or float.
 
-#### data-r-prop-
+### data-r-prop-*
 
 Referenced a global variable in your component prop via prefixing attributes with `data-r-prop-`.
 
@@ -414,13 +417,38 @@ class MyApp extends ReactHabitat.Bootstrapper {
 }
 ```
 
-## TypeScript users please note
-We are using Babel to transpile our code which wraps our modules in a "fake" module with a `default` property. TypeScript doesn't do any of the `default` wire up magic ([see here for more details](https://github.com/Microsoft/TypeScript/issues/2242#issuecomment-83694181)).
+### Use encoded JSON in HTML attributes
 
-So in order for TypeScript to consume our modules you will need to:
+HTML encoding will be required with any JSON you set into attributes so content can be preserved and properly rendered.
 
-* Change `ReactHabitat.Bootstrapper` for `ReactHabitat.default.Bootstrapper`; and
-* Change `ReactHabitat.Container` for `ReactHabitat.default.Container`
+As a general rule, escape the following characters with HTML entity encoding:
+
+`&` --> `&amp`;  
+`<` --> `&lt`;  
+`>` --> `&gt`;  
+`"` --> `&quot`;  
+`'` --> `&#x27`;  
+`/` --> `&#x2F`;
+
+Additionally, an encoder may replace high-order characters with the equivalent HTML entity encoding.
+
+Example:
+
+`<div data-props="{&quot;foo&quot;&colon; &quot;bar&quot;}"></div>`
+
+Most backend systems are capable of doing this automatically. An alternative is to use the [data-r-prop-*](#data-r-prop-*) option.
+
+**Single of Double Quotes?**
+
+Double quotes around attributes values are the most common and our recommendation for setting properties with React Habitat.
+
+However, there is a known hack of wrapping JSON attributes with single quotes and escaping nested single quotes.
+
+example
+
+`<div data-props='{"name": "foo"}'></div>'`
+
+*We will use this method in the docs to maintain readability. However, we strongly recommend you encode in production code.*
 
 ## Want to contribute?
 
