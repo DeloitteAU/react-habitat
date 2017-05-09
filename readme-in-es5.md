@@ -20,6 +20,7 @@ This framework exists so you can get on with the fun stuff!
 - [Passing props/properties to your components](#passing-properties-props-to-your-components)
 - [Passing data back again](#passing-values-back-again)
 - [Options and Methods](#options-and-methods)
+- [Use encoded JSON in HTML attributes](#use-encoded-json-in-html-attributes)
 - [Contribute](#want-to-contribute)
 - [License information](#license-bsd-3-clause)
 - [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/examples)
@@ -212,10 +213,10 @@ easily pass data to your components in a modular fashion.
 
 To set props you have a few choices. You can use all of these or only some (they merge) so just use what's suits you best for setting properties.
 
-- [data-props](#data-props) Maps [encoded JSON](#Use-encoded-JSON-in-HTML-attributes) to props.
-- [data-prop-*](#data-prop-*) (Prefix) Maps in strings, booleans, null, array or [encoded JSON](#Use-encoded-JSON-in-HTML-attributes) to a prop.
-- [data-n-prop-*](#data-n-prop-*) (Prefix) Maps in numbers and floats to a prop.
-- [data-r-prop-*](#data-r-prop-*) (Prefix) Maps in a reference to an object that exists on the global scope (window) to a prop.
+- [data-props](#data-props) Maps [encoded JSON](#use-encoded-json-in-html-attributes) to props.
+- [data-prop-*](#data-prop-) (Prefix) Maps in strings, booleans, null, array or [encoded JSON](#use-encoded-json-in-html-attributes) to a prop.
+- [data-n-prop-*](#data-n-prop-) (Prefix) Maps in numbers and floats to a prop.
+- [data-r-prop-*](#data-r-prop-) (Prefix) Maps in a reference to an object that exists on the global scope (window) to a prop.
 
 **PLEASE NOTE:** 
 The last three options are attribute *prefixes* and the **\*** may be replaced by any name. This allow's you to define the property the name. 
@@ -229,7 +230,7 @@ For example
 
 ### data-props 
 
-Set component props via a [encoded JSON](#Use-encoded-JSON-in-HTML-attributes) string on the `data-props` attribute.
+Set component props via a [encoded JSON](#use-encoded-json-in-html-attributes) string on the `data-props` attribute.
 
 For example
 
@@ -420,7 +421,7 @@ Example:
 
 `<div data-props="{&quot;foo&quot;&colon; &quot;bar&quot;}"></div>`
 
-Most backend systems are capable of doing this automatically. An alternative is to use the [data-r-prop-*](#data-r-prop-*) option.
+Most backend systems are capable of doing this automatically. An alternative is to use the [data-r-prop-*](#data-r-prop-) option.
 
 **Single of Double Quotes?**
 
