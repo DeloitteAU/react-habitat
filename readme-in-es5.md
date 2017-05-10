@@ -156,7 +156,7 @@ During the web application execution you will want to make use of the components
 
 When you resolve a component, a new instance of the object gets created (Resolving a component is roughly equivalent to calling 'new').
 
-To *resolve* new instances of your components you need to attach a `data-component` attribute to a `div` or a `span` element in the HTML. 
+To *resolve* new instances of your components you need to attach a `data-component` attribute to a `div` or a `span` element in the HTML.
 Any child components should be nested inside the React components themselves.
 
 Set the `data-component` value to equal a component name you have registered in the container.
@@ -218,8 +218,8 @@ To set props you have a few choices. You can use all of these or only some (they
 - [data-n-prop-*](#data-n-prop-) (Prefix) Maps in numbers and floats to a prop.
 - [data-r-prop-*](#data-r-prop-) (Prefix) Maps in a reference to an object that exists on the global scope (window) to a prop.
 
-**PLEASE NOTE:** 
-The last three options are attribute *prefixes* and the **\*** may be replaced by any name. This allow's you to define the property the name. 
+**PLEASE NOTE:**
+The last three options are attribute *prefixes* and the **\*** may be replaced by any name. This allow's you to define the property the name.
 Property names must be all lower case and hyphens will be *automatically converted* to camel case.
 
 For example
@@ -228,7 +228,7 @@ For example
 
 `data-prop-my-title` would expose `myTitle` on the props object inside the component.
 
-### data-props 
+### data-props
 
 Set component props via a [encoded JSON](#use-encoded-json-in-html-attributes) string on the `data-props` attribute.
 
@@ -238,7 +238,7 @@ For example
 <div data-component="SomeReactComponent" data-props='{"title": "A nice title"}'></div>
 ```
 
-### data-prop-* 
+### data-prop-*
 
 Set an component prop via prefixing attributes with `data-prop-`.
 
@@ -317,14 +317,14 @@ For Example
 
 <div data-component="SomeReactComponent" data-r-prop-foo="foo"></div>
 ```
- 
+
 This is handy if you need to share properties between habitats or you need to set JSON onto the page.
 
 ## Passing values back again
 
 It can be handy to pass values back again, particularly for inputs so the backend frameworks can see any changes or read data.
 
-*Every* React Habitat instance is passed in a prop named `proxy`, this is a reference the original dom element. 
+*Every* React Habitat instance is passed in a prop named `proxy`, this is a reference the original dom element.
 Please note only `<inputs />` are left in the DOM by default. To keep a generic element in the DOM, set the `data-habitat-no-replace="true"` attribute.
 
 So for example, we could use `proxy` to update the value of an input like so
@@ -357,7 +357,7 @@ Will result in the following being rendered
 
 ### Replace original node
 
-By default only `<inputs />` are left in the DOM when a React Habitat is created. 
+By default only `<inputs />` are left in the DOM when a React Habitat is created.
 
 To keep a generic element in the DOM, set the `data-habitat-no-replace="true"` attribute.
 
@@ -404,7 +404,7 @@ function MyApp() {
 
 ### Use encoded JSON in HTML attributes
 
-HTML encoding will be required with any JSON you set into attributes so content can be preserved and properly rendered.
+When passing JSON to an attribute, you will need to encode the value so that content can be preserved and properly rendered.
 
 As a general rule, escape the following characters with HTML entity encoding:
 
@@ -415,11 +415,11 @@ As a general rule, escape the following characters with HTML entity encoding:
 `'` --> `&#x27`;  
 `/` --> `&#x2F`;
 
-Additionally, an encoder may replace high-order characters with the equivalent HTML entity encoding.
-
 Example:
 
 `<div data-props="{&quot;foo&quot;&colon; &quot;bar&quot;}"></div>`
+
+Additionally, an encoder may replace [extended ASCII characters](https://en.wikipedia.org/wiki/Extended_ASCII) with the equivalent HTML entity encoding.
 
 Most backend systems are capable of doing this automatically. An alternative is to use the [data-r-prop-*](#data-r-prop-) option.
 
