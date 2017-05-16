@@ -1,5 +1,11 @@
 ## React Habitat Change log
 
+### [0.4.3]
+
+- Updated packages in examples
+- Updated readme with JSON encoding information [#11](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/11). Thanks @joshuakelly
+
+
 ### [0.4.2]
 
 - Updated readme with TypeScript notes
