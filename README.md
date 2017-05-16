@@ -33,7 +33,7 @@ You should use React Habitat any time there is a framework or CMS rendering your
 [React components](https://facebook.github.io/react/docs/component-api.html) on the page(s).
 For example sometimes there are only sections of your page that you want to be a React Component, then this framework is perfect for that.
 
-[The idea behind this](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/14#issuecomment-301644503) is that, rather than trying to initiate one or many React components; by either hard coding or using a Router. You switch it around so components "new up" themselves when required.
+The idea behind this is that, rather than trying to initiate one or many React components; by either hard coding or using a Router. You switch it around so components "new up" themselves when required.
 
 React Habitat works great with:
 
