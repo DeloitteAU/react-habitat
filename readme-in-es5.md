@@ -275,7 +275,7 @@ JSON Example
 
 ```html
 <div data-component="SomeReactComponent"
-		data-prop-person="{'name': 'john', 'age': 22}">
+		data-prop-person='{"name": "john", "age": 22}'>
 </div>
 ```
 
@@ -431,7 +431,7 @@ However, there is a known hack of wrapping JSON attributes with single quotes an
 
 example
 
-`<div data-props='{"name": "foo"}'></div>'`
+`<div data-props='{"restaurant": "Bob\'s bar and grill"}'></div>`
 
 *We will use this method in the docs to maintain readability. However, we strongly recommend you encode in production code.*
 
