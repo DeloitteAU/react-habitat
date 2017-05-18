@@ -1,9 +1,9 @@
 module.exports = function(config) {
 	config.set({
 		basePath: './',
-		frameworks: ['jasmine'],
+		frameworks: ['polyfill', 'jasmine'],
+		polyfill: ['Object.assign', 'MutationObserver'],
 		files: [
-			'./node_modules/phantomjs-polyfill-object-assign/object-assign-polyfill.js',
 			'tests/**/*.spec.js'
 		],
 

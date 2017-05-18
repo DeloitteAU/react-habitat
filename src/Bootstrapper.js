@@ -20,27 +20,36 @@ const DEFAULT_HABITAT_SELECTOR = 'data-component';
  */
 function parseContainer(container, elements, componentSelector, cb = null) {
 
+	if (!elements || !elements.length) {
+		return;
+	}
+
 	const factory = container.domFactory();
 	const id = container.id();
 
 	// Iterate over component elements in the dom
 	for (let i = 0; i < elements.length; ++i) {
 		const ele = elements[i];
-		const componentName = ele.getAttribute(componentSelector);
-		const component = container.resolve(componentName);
 
-		if (component) {
-			if (ele.querySelector(`[${componentSelector}]`)) {
-				Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
+		if (!Habitat.hasHabitat(ele)) {
+			const componentName = ele.getAttribute(componentSelector);
+			const component = container.resolve(componentName);
+			if (component) {
+				if (process.env.NODE_ENV !== 'production') {
+					if (ele.querySelector(`[${componentSelector}]`)) {
+						Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
+					}
+				}
+				factory.inject(
+					component,
+					Habitat.parseProps(ele),
+					Habitat.create(ele, id));
+			} else {
+				Logger.error('RHW01', `Cannot resolve component "${componentName}" for element.`, ele);
 			}
-			factory.inject(
-				component,
-				Habitat.parseProps(ele),
-				Habitat.create(ele, id));
-		} else {
-			Logger.error('RHW01', `Cannot resolve component "${componentName}" for element.`, ele);
 		}
 	}
+
 
 	if (typeof cb === 'function') {
 		cb.call();
@@ -64,11 +73,12 @@ export default class Bootstrapper {
 		// Set dom component selector
 		this.componentSelector = DEFAULT_HABITAT_SELECTOR;
 
-		// The target elements
-		this._elements = null;
-
 		// The container
 		this._container = null;
+
+		// Dom mutation observer
+		this.enableDomWatcher = true;
+		this._observer = null;
 	}
 
 	/**
@@ -87,17 +97,75 @@ export default class Bootstrapper {
 		// Set the container
 		this._container = container;
 
-		// Find all the elements in the dom with the component selector attribute
-		this._elements = window.document.body.querySelectorAll(`[${this.componentSelector}]`);
-
 		// Wire up the components from the container
 		parseContainer(
 			this._container,
-			this._elements,
+			window.document.body.querySelectorAll(`[${this.componentSelector}]`),
 			this.componentSelector,
 			cb
 		);
 
+		// Create a dom watcher if available
+		if (typeof MutationObserver !== 'undefined') {
+			this._observer = new MutationObserver(this._handleDomMutation.bind(this));
+			// Start the dom watcher unless disabled
+			if (this.enableDomWatcher) {
+				this.startDomWatcher();
+			}
+		} else {
+			Logger.warn('RHWXX', 'MutationObserver not available');
+		}
+	}
+
+	/**
+	* Apply the container to an updated dom structure
+	* This should be triggered anytime HTML has been ajaxed in
+	* @param {node}		node		- Target node to parse or null for entire document body
+	* @param {function}  	[cb=null]   - Optional callback
+	*/
+	domDidUpdate(node, cb = null) {
+
+		if (this._container === null) {
+			return;
+		}
+
+		parseContainer(
+			this._container,
+			node || window.document.body.querySelectorAll(`[${this.componentSelector}]`),
+			this.componentSelector,
+			cb
+		);
+	}
+
+	startDomWatcher() {
+		if (this._observer) {
+			this.stopDomWatcher();
+			this._observer.observe(window.document.body, {
+				childList: true,
+				attributes: true,
+				subtree: true,
+				attributeFilter: [this.componentSelector],
+			});
+		}
+	}
+
+	stopDomWatcher() {
+		if (this._observer && this._observer.disconnect) {
+			this._observer.disconnect();
+		}
+	}
+
+	/**
+	* Handle dom mutation event
+	* @param {MutationRecord}		mutationRecord		- The mutation record
+	*/
+	_handleDomMutation(mutationRecord) {
+		if (typeof mutationRecord !== 'undefined') {
+			this.domDidUpdate(mutationRecord.addedNodes);
+		} else {
+			// Polyfill Fallback
+			this.domDidUpdate();
+		}
 	}
 
 	/**
@@ -121,9 +189,13 @@ export default class Bootstrapper {
 			Habitat.destroy(habitats[i]);
 		}
 
+		// Stop dom watcher if any
+		this.stopDomWatcher();
+
 		// Reset and release
 		this._container = null;
 		this._elements = null;
+		this._observer = null;
 
 		// Handle callback
 		if (typeof cb === 'function') {

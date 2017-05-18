@@ -14,15 +14,15 @@ const WARN_DEFINITIONS_URL = 'http://tinyurl.com/jxryd3s';
 // If not production update the stubs
 if (process.env.NODE_ENV !== 'production') {
 
-    /**
-     * Safely log to the console
-     */
-    log = (type, args) => {
+  /**
+   * Safely log to the console
+   */
+  log = (type, args) => {
 
-        if (typeof console !== 'undefined' && console[type]) {
-            console[type].apply(undefined, args);
-        }
-    };
+      if (typeof console !== 'undefined' && console[type]) {
+          console[type].apply(undefined, args);
+      }
+  };
 
     /**
      * Concats the message and arguments into a single array

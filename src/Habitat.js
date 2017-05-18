@@ -181,10 +181,11 @@ export default class Habitat {
 				// and we need to reinstate it back to how we found it
 
 				try {
-					// It might be better if we keep references in a weak map, need to look at this in the future
+					// It might be better if we keep references in a weak map, need to look
+					// at this in the future
 					habitat[HABITAT_HOST_KEY] = host;
 				} catch (e) {
-					if(hasExpandoWarning) {
+					if (hasExpandoWarning) {
 						// Expando is off
 						Logger.warn('RHW06', 'Arbitrary properties are disabled.' +
 							' The container may not dispose correctly.', e);

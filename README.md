@@ -65,9 +65,12 @@ Typically if you're building a full-on one page React app that yanks data from r
 
 ## Compatibility
 
-- Supports Browsers IE9+ and all the evergreens. (IE9-11 will require an "Object.assign" [Pollyfill](https://babeljs.io/docs/usage/polyfill/))
+- Supports Browsers IE9+ and all the evergreens.
 - ES5, ES6/7 & TypeScript
 - React v15 and up
+
+IE9-11 will require an "Object.assign" [Pollyfill](https://babeljs.io/docs/usage/polyfill/)
+IE9-10 will optionally require an MutationObserver [Pollyfill](https://github.com/megawac/MutationObserver.js/tree/master) if you want dynamic node support.
 
 We highly recommend you use something like [WebPack](https://webpack.github.io/) or [Browserify](http://browserify.org/) when using this framework.
 

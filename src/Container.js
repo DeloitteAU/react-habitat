@@ -93,7 +93,8 @@ export default class Container {
 	* @deprecated
 	*/
 	registerComponent(name, comp) {
-		Logger.warn('RHW03', 'registerComponent is being deprecated. Please use "register" instead.');
+		Logger.warn('RHW03',
+			'registerComponent is being deprecated. Please use "register" instead.');
 		this.register(name, comp);
 	}
 
@@ -102,7 +103,8 @@ export default class Container {
 	* @param {object}  comps     - The components
 	*/
 	registerComponents(comps) {
-		Logger.warn('RHW03', 'registerComponents is being deprecated. Please use "registerAll" instead.');
+		Logger.warn('RHW03',
+			'registerComponents is being deprecated. Please use "registerAll" instead.');
 		this.registerAll(comps);
 	}
 
@@ -113,7 +115,8 @@ export default class Container {
 	* @deprecated
 	*/
 	getComponent(name) {
-		Logger.warn('RHW03', 'getComponent is being deprecated. Please use "resolve" instead.');
+		Logger.warn('RHW03',
+			'getComponent is being deprecated. Please use "resolve" instead.');
 		return this.resolve(name);
 	}
 
