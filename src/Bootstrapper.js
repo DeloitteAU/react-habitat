@@ -19,8 +19,11 @@ const DEFAULT_HABITAT_SELECTOR = 'data-component';
  * @param cb
  */
 function parseContainer(container, elements, componentSelector, cb = null) {
+	console.log('Running Parser ---- ');
 
+	// Bail out early if no elements to parse
 	if (!elements || !elements.length) {
+		if (typeof cb === 'function') { cb(); }
 		return;
 	}
 
@@ -30,12 +33,12 @@ function parseContainer(container, elements, componentSelector, cb = null) {
 	// Iterate over component elements in the dom
 	for (let i = 0; i < elements.length; ++i) {
 		const ele = elements[i];
-
 		if (!Habitat.hasHabitat(ele)) {
 			const componentName = ele.getAttribute(componentSelector);
 			const component = container.resolve(componentName);
 			if (component) {
 				if (process.env.NODE_ENV !== 'production') {
+					// Expensive operation, only do on non prod builds
 					if (ele.querySelector(`[${componentSelector}]`)) {
 						Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
 					}
@@ -52,7 +55,7 @@ function parseContainer(container, elements, componentSelector, cb = null) {
 
 
 	if (typeof cb === 'function') {
-		cb.call();
+		cb();
 	}
 }
 
@@ -102,19 +105,17 @@ export default class Bootstrapper {
 			this._container,
 			window.document.body.querySelectorAll(`[${this.componentSelector}]`),
 			this.componentSelector,
-			cb
-		);
+			() => {
+				// Start the dom watcher unless disabled
+				if (this.enableDomWatcher) {
+					console.log('starting watcher');
+					this.startDomWatcher();
+				}
 
-		// Create a dom watcher if available
-		if (typeof MutationObserver !== 'undefined') {
-			this._observer = new MutationObserver(this._handleDomMutation.bind(this));
-			// Start the dom watcher unless disabled
-			if (this.enableDomWatcher) {
-				this.startDomWatcher();
+				// Callback
+				if (typeof cb === 'function') { cb(); }
 			}
-		} else {
-			Logger.warn('RHWXX', 'MutationObserver not available');
-		}
+		);
 	}
 
 	/**
@@ -124,29 +125,50 @@ export default class Bootstrapper {
 	* @param {function}  	[cb=null]   - Optional callback
 	*/
 	domDidUpdate(node, cb = null) {
-
 		if (this._container === null) {
 			return;
 		}
+
+		// Temporarily stop the watcher from triggering due to Habitat injections
+		// Note: This could possibly miss some dom changes during parse time.. bug maybe?
+		this.stopDomWatcher();
 
 		parseContainer(
 			this._container,
 			node || window.document.body.querySelectorAll(`[${this.componentSelector}]`),
 			this.componentSelector,
-			cb
+			() => {
+				// Restart the dom watcher unless disabled
+				if (this.enableDomWatcher) {
+					this.startDomWatcher();
+				}
+
+				// Callback
+				if (typeof cb === 'function') { cb(); }
+			}
 		);
 	}
 
-	startDomWatcher() {
-		if (this._observer) {
-			this.stopDomWatcher();
-			this._observer.observe(window.document.body, {
-				childList: true,
-				attributes: true,
-				subtree: true,
-				attributeFilter: [this.componentSelector],
-			});
+	startDomWatcher(node) {
+		// Feature available?
+		if (typeof MutationObserver === 'undefined') {
+			Logger.warn('RHWXX', 'MutationObserver not available');
+			return;
 		}
+
+		// Create observer if not assigned already
+		if (!this._observer) {
+			this._observer = new MutationObserver(this._handleDomMutation.bind(this));
+		}
+
+		// Start observing for dom changes filtered by our component selector
+		this._observer.observe(node || window.document.body, {
+			childList: true,
+			attributes: true,
+			subtree: true,
+			attributeFilter: [this.componentSelector],
+		});
+
 	}
 
 	stopDomWatcher() {
@@ -164,6 +186,7 @@ export default class Bootstrapper {
 			this.domDidUpdate(mutationRecord.addedNodes);
 		} else {
 			// Polyfill Fallback
+			console.log('Mutation fallback');
 			this.domDidUpdate();
 		}
 	}
