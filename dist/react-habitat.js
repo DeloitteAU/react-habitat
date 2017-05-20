@@ -52,7 +52,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -79,9 +79,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -178,9 +178,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Logger;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -211,38 +211,65 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DEFAULT_HABITAT_SELECTOR = 'data-component';
 
 	/**
-	 * Parses a container and populate components
-	 * @param {array}     container             The container
-	 * @param {array}     elements              The elements to parse
-	 * @param {string}    componentSelector     The component selector
-	 * @param cb
+	 * Safe callback wrapper
+	 * @param {null|function}		cb			- The callback
+	 * @private
 	 */
-	function parseContainer(container, elements, componentSelector) {
+	function _callback(cb) {
+		if (typeof cb === 'function') {
+			cb();
+		}
+	}
+
+	/**
+	 * Apply a container to nodes and populate components
+	 * @param {array}     container             The container
+	 * @param {array}     nodes              	The elements to parse
+	 * @param {string}    componentSelector     The component selector
+	 * @param {function}  [cb=null]   			- Optional callback
+	 * @private
+	 */
+	function _applyContainer(container, nodes, componentSelector) {
 		var cb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
+		console.log('Running Parser ---- ');
+
+		// Bail out early if no elements to parse
+		if (!nodes || !nodes.length) {
+			_callback(cb);
+			return;
+		}
 
 		var factory = container.domFactory();
 		var id = container.id();
 
 		// Iterate over component elements in the dom
-		for (var i = 0; i < elements.length; ++i) {
-			var ele = elements[i];
+		for (var i = 0; i < nodes.length; ++i) {
+			var ele = nodes[i];
+
+			// Ignore elements that have already been connected
+			if (_Habitat2.default.hasHabitat(ele)) {
+				continue;
+			}
+
 			var componentName = ele.getAttribute(componentSelector);
 			var component = container.resolve(componentName);
-
 			if (component) {
-				if (ele.querySelector('[' + componentSelector + ']')) {
-					_Logger2.default.warn('RHW08', 'Component should not contain any nested components.', ele);
+				// Expensive operation, only do on non prod builds
+				if (true) {
+					if (ele.querySelector('[' + componentSelector + ']')) {
+						_Logger2.default.warn('RHW08', 'Component should not contain any nested components.', ele);
+					}
 				}
+
+				// Inject the component
 				factory.inject(component, _Habitat2.default.parseProps(ele), _Habitat2.default.create(ele, id));
 			} else {
 				_Logger2.default.error('RHW01', 'Cannot resolve component "' + componentName + '" for element.', ele);
 			}
 		}
 
-		if (typeof cb === 'function') {
-			cb.call();
-		}
+		_callback(cb);
 	}
 
 	/**
@@ -262,14 +289,32 @@ return /******/ (function(modules) { // webpackBootstrap
 				throw new Error('React Habitat requires a window but cannot see one :(');
 			}
 
-			// Set dom component selector
+			/**
+	   * The DOM component selector
+	   * @type {string}
+	   */
 			this.componentSelector = DEFAULT_HABITAT_SELECTOR;
 
-			// The target elements
-			this._elements = null;
+			/**
+	   * If true, the container will be applied to dom mutations automatically. True by default.
+	   * i.e update(*addedNodes*)
+	   * @type {boolean}
+	   */
+			this.enableWatcher = true;
 
-			// The container
+			/**
+	   * The container
+	   * @type {Container|null|
+	   * @private
+	   */
 			this._container = null;
+
+			/**
+	   * The watcher's observer instance or null
+	   * @type {MutationObserver|null}
+	   * @private
+	   */
+			this._observer = null;
 		}
 
 		/**
@@ -293,11 +338,111 @@ return /******/ (function(modules) { // webpackBootstrap
 				// Set the container
 				this._container = container;
 
-				// Find all the elements in the dom with the component selector attribute
-				this._elements = window.document.body.querySelectorAll('[' + this.componentSelector + ']');
-
 				// Wire up the components from the container
-				parseContainer(this._container, this._elements, this.componentSelector, cb);
+				this.update(null, function () {
+					_callback(cb);
+				});
+			}
+
+			/**
+	  * Apply the container to an updated dom structure
+	  * This should be triggered anytime HTML has been ajaxed in
+	  * @param {node}		node		- Target node to parse or null for entire document body
+	  * @param {function}		[cb=null]	- Optional callback
+	  */
+
+		}, {
+			key: 'update',
+			value: function update(node) {
+				var _this = this;
+
+				var cb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+				// Check if we have a container before attempting an update
+				if (!this._container) {
+					_callback(cb);
+					return;
+				}
+
+				_callback(this.domWillUpdate);
+
+				// Temporarily stop the watcher from triggering due to Habitat injections
+				// Note: This could possibly miss some dom changes during parse time.. bug maybe?
+				this.stopWatcher();
+
+				_applyContainer(this._container, node || window.document.body.querySelectorAll('[' + this.componentSelector + ']'), this.componentSelector, function () {
+					// Restart the dom watcher unless disabled
+					if (_this.enableWatcher) {
+						_this.startWatcher();
+					}
+
+					_callback(cb);
+					_callback(_this.domDidUpdate);
+				});
+			}
+
+			/**
+	   * Start DOM watcher for auto wire ups
+	   */
+
+		}, {
+			key: 'startWatcher',
+			value: function startWatcher() {
+				// Feature available?
+				if (typeof MutationObserver === 'undefined') {
+					_Logger2.default.warn('RHWXX', 'MutationObserver not available');
+					return;
+				}
+
+				// Create observer if not assigned already
+				if (!this._observer) {
+					this._observer = new MutationObserver(this._handleDomMutation.bind(this));
+				}
+
+				// Start observing for dom changes filtered by our component selector
+				this._observer.observe(window.document.body, {
+					childList: true,
+					attributes: true,
+					subtree: true,
+					attributeOldValue: false,
+					characterData: false,
+					characterDataOldValue: false,
+					attributeFilter: [this.componentSelector]
+				});
+			}
+
+			/**
+	   * Stop the DOM watcher if running
+	   */
+
+		}, {
+			key: 'stopWatcher',
+			value: function stopWatcher() {
+				if (this._observer && this._observer.disconnect) {
+					this._observer.disconnect();
+				}
+			}
+
+			/**
+	  * Handle dom mutation event
+	  * @param {MutationRecord}		mutationRecord		- The mutation record
+	  */
+
+		}, {
+			key: '_handleDomMutation',
+			value: function _handleDomMutation(mutationRecord) {
+				if (typeof mutationRecord !== 'undefined') {
+					var diff = mutationRecord.filter(function (r) {
+						return r.addedNodes.length;
+					});
+					// Only run update if nodes have been added
+					if (diff.length) {
+						this.update();
+					}
+				} else {
+					// Fallback
+					this.update();
+				}
 			}
 
 			/**
@@ -310,6 +455,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			value: function dispose() {
 				var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
+
+				// Stop dom watcher if any
+				this.stopWatcher();
 
 				// get the container's factory
 				var factory = this._container.domFactory();
@@ -326,11 +474,10 @@ return /******/ (function(modules) { // webpackBootstrap
 				// Reset and release
 				this._container = null;
 				this._elements = null;
+				this._observer = null;
 
 				// Handle callback
-				if (typeof cb === 'function') {
-					cb.call();
-				}
+				_callback(cb, this);
 			}
 		}]);
 
@@ -340,9 +487,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Bootstrapper;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -514,9 +661,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Container;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -721,7 +868,8 @@ return /******/ (function(modules) { // webpackBootstrap
 						// and we need to reinstate it back to how we found it
 
 						try {
-							// It might be better if we keep references in a weak map, need to look at this in the future
+							// It might be better if we keep references in a weak map, need to look
+							// at this in the future
 							habitat[HABITAT_HOST_KEY] = host;
 						} catch (e) {
 							if (hasExpandoWarning) {
@@ -785,9 +933,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Habitat;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -870,9 +1018,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		return new _Mixin(spec);
 	}
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -951,19 +1099,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = ReactDomFactory;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_7__;
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;
