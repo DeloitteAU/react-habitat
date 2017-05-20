@@ -102,7 +102,7 @@ export default class Bootstrapper {
 
 		/**
 		 * The container
-		 * @type {Container|null|
+		 * @type {Container|null}
 		 * @private
 		 */
 		this._container = null;
