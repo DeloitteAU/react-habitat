@@ -1,0 +1,108 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>React Habitat Demo</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="demo.css" />
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">React Habitat Demo</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/index.html">Standard</a></li>
+                <li class="active"><a href="/dynamic.html">Dynamic/Ajax</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="jumbotron">
+    <div class="container">
+        <p>This demo shows how HTML can be added to the dom dynamically and React Habitat will still automatically
+            wire up components registered. View the page source to see how this works.</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <!--
+        START REACT HABITAT EXAMPLES
+        =======================================================
+    -->
+
+    <!-- Ajax loader -->
+    <div id="loader" class="progress" style="display: none;">
+        <div class="progress-bar progress-bar-striped active" style="width: 100%">
+            <span class="sr-only">Loading</span>
+        </div>
+    </div>
+
+    <!-- Target to append the loaded html -->
+    <div id="target"></div>
+
+    <!-- Button to trigger the ajax load -->
+    <button id="btnLoad" class="btn btn-success btn-lg">Load in 'ajaxData.html'</button>
+
+    <!-- jQuery demo script -->
+    <script>
+        // On button click
+        $('#btnLoad').on('click', function() {
+
+            $(this).remove();       // hide the button
+            $('#loader').show();    // show the loading animation
+
+            // Set a timeout only so things dont happen too fast for the demo
+            window.setTimeout(function() {
+
+                // Use jquery to ajax in the demo html data
+                $.ajax('/ajaxData.html')
+                        .done(function(response){
+                            // Append the response
+                            // React habitat will automatically see this type of event and wire up components
+                            $('#target').append(response);
+
+                            // This alternative also works, it dosnt depend on jquery
+                            // window.document.getElementById('target').innerHTML = response;
+                        })
+                        .always(function() {
+                            // Hide the loader
+                            $('#loader').hide();
+                        });
+
+            }, 1500);
+
+        });
+    </script>
+    <!--
+        =======================================================
+        // END REACT HABITAT EXAMPLES
+    -->
+
+
+    <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>© 2016 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+
+</div>
+
+<script type="text/javascript" src="dist/vendor.bundle.js"></script>
+<script type="text/javascript" src="dist/app.bundle.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</body>
+</html>
