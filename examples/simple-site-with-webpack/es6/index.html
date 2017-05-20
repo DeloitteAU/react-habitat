@@ -51,6 +51,21 @@
 
     <hr class="featurette-divider" />
 
+
+    <script>
+      function injectHTML() {
+      	window.document.getElementById('dynamicTarget').innerHTML =
+          '<div data-component="RFeaturette"' +
+            'data-prop-title="And lastly, this one."' +
+            'data-prop-sub-title="Nice."' +
+            'data-prop-img-src="http://placehold.it/400x300/">' +
+          '</div>';
+      }
+    </script>
+    <div id="dynamicTarget">
+      <button onclick="injectHTML()">Inject some HTML</button>
+    </div>
+
     <!--
         =======================================================
         // END REACT HABITAT EXAMPLES

@@ -1,0 +1,116 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>React Habitat Demo</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="demo.css" />
+
+  </head>
+  <body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">React Habitat Demo</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div>
+      <p>This demo shows how HTML can be added to the dom dynamically and React Habitat will still automatically
+      wire up components registered. View the page source to see how this works.</p>
+    </div>
+
+    <!--
+      START FORM
+      =======================================================
+    -->
+    <script>
+      function addHTML() {
+      	// Create an element to hold our HTML
+        var nextNode = window.document.createElement('div');
+
+        // Get the form values
+        var layout = window.document.getElementById('rbLtr').checked ? 'ltr' : 'rtl';
+        var title = window.document.getElementById('txtTitle').value;
+        var subTitle = window.document.getElementById('txtSubTitle').value;
+
+        // Add the html with the values
+        // Note this is pure HTML, not react
+        nextNode.innerHTML =
+          '<div data-component="RFeaturette"' +
+            'data-prop-layout="' + layout + '"' +
+            'data-prop-title="' + title + ' "' +
+            'data-prop-sub-title="' + subTitle + '"' +
+            'data-prop-img-src="http://placehold.it/400x300/">' +
+          '</div>' +
+        '<hr class="featurette-divider" />';
+
+        // Inject the html.. react habitat will automatically pick this up and render the react component
+        // we registered in the container
+        var target = window.document.getElementById('dynamicTarget');
+        target.insertBefore(nextNode, target.firstChild);
+      }
+    </script>
+      <form class="form-inline">
+        <fieldset class="form-group col-3">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="rbLayout" id="rbLtr" value="ltr" checked>
+              Image on the right
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="rbLayout" id="rbRtl" value="rtl">
+              Image on the left
+            </label>
+          </div>
+        </fieldset>
+        <div class="form-group">
+          <label for="txtTitle">Title</label>
+          <input type="text" class="form-control" id="txtTitle" aria-describedby="txtTitle" placeholder="Cool featurette">
+        </div>
+        <div class="form-group">
+          <label for="txtSubTitle">Sub Title</label>
+          <input type="text" class="form-control" id="txtSubTitle" aria-describedby="txtSubTitle" placeholder="Cool featurette">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="addHTML()">Add</button>
+      </form>
+
+    <hr />
+  </div>
+
+  <!--
+    END FORM
+    =======================================================
+  -->
+
+
+  <!--
+      START REACT HABITAT EXAMPLES
+      =======================================================
+  -->
+
+  <div id="dynamicTarget"></div>
+
+  <!--
+      =======================================================
+      // END REACT HABITAT EXAMPLES
+  -->
+
+    <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+      <p>© 2016 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+
+  </div>
+
+
+  <script type="text/javascript" src="dist/vendor.bundle.js"></script>
+  <script type="text/javascript" src="dist/app.bundle.js"></script>
+  </body>
+</html>
