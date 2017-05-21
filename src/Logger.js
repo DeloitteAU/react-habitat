@@ -19,7 +19,12 @@ if (process.env.NODE_ENV !== 'production') {
 	*/
 	log = (type, args) => {
 		if (typeof console !== 'undefined' && console[type]) {
-			console[type].apply(undefined, args);
+			if (console[type].apply) {
+				console[type].apply(undefined, args);
+			} else {
+				// IE9 Fallback
+				console[type](args);
+			}
 		}
 	};
 

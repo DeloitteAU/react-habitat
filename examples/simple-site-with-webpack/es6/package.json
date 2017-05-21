@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --progress",
+    "start": "webpack-dev-server --progress --host 192.168.0.21",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jenna Salau",

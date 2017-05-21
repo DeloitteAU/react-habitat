@@ -1,10 +1,32 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>React Habitat Demo</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous" />
     <link rel="stylesheet" href="demo.css" />
+
+    <!-- Conditional MutationObserver Pollyfill for IE 9 & 10 support -->
+    <script>
+      if (typeof MutationObserver === 'undefined') {
+        var head = document.getElementsByTagName('head')[0];
+
+        var script = document.createElement('script');
+        script.src = '//cdn.jsdelivr.net/g/mutationobserver/';
+        script.type = 'text/javascript';
+
+        head.appendChild(script)
+      }
+    </script>
+
+    <!-- jQuery & bootstrap for demo menu -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
 
   </head>
   <body>
@@ -21,7 +43,7 @@
       </div>
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="/index.html">Standard</a></li>
+          <li class="active"><a href="/index.html">Initial Load</a></li>
           <li><a href="/dynamic.html">Dynamic/Ajax</a></li>
         </ul>
       </div>
@@ -78,9 +100,6 @@
   <script type="text/javascript" src="dist/app.bundle.js"></script>
 
   <!-- jQuery & bootstrap for demo menu -->
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-          integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-          crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
   </body>
