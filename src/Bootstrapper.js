@@ -176,6 +176,11 @@ export default class Bootstrapper {
 	 * Start DOM watcher for auto wire ups
 	 */
 	startWatcher() {
+		// If disabled, do nothing
+		if (!this.enableWatcher) {
+			return;
+		}
+
 		// Feature available?
 		if (typeof MutationObserver === 'undefined') {
 			Logger.warn('RHWXX', 'MutationObserver not available');
