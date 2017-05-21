@@ -86,7 +86,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+		value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -109,30 +109,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	// If not production update the stubs
 	if (true) {
 
-	    /**
-	     * Safely log to the console
-	     */
-	    log = function log(type, args) {
+		/**
+	 * Safely log to the console
+	 */
+		log = function log(type, args) {
+			if (typeof console !== 'undefined' && console[type]) {
+				if (console[type].apply) {
+					console[type].apply(undefined, args);
+				} else {
+					// IE9 Fallback
+					console[type](args);
+				}
+			}
+		};
 
-	        if (typeof console !== 'undefined' && console[type]) {
-	            console[type].apply(undefined, args);
-	        }
-	    };
+		/**
+	  * Concats the message and arguments into a single array
+	  */
+		concatArgs = function concatArgs(msg, args) {
+			var throwArgs = [msg];
 
-	    /**
-	     * Concats the message and arguments into a single array
-	     */
-	    concatArgs = function concatArgs(msg, args) {
-	        var throwArgs = [msg];
+			if (args && args.length > 2) {
+				for (var i = 2; i < args.length; i++) {
+					throwArgs.push(args[i]);
+				}
+			}
 
-	        if (args && args.length > 2) {
-	            for (var i = 2; i < args.length; i++) {
-	                throwArgs.push(args[i]);
-	            }
-	        }
-
-	        return throwArgs;
-	    };
+			return throwArgs;
+		};
 	}
 
 	/**
@@ -140,39 +144,49 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	var Logger = function () {
-	    function Logger() {
-	        _classCallCheck(this, Logger);
-	    }
+		function Logger() {
+			_classCallCheck(this, Logger);
+		}
 
-	    _createClass(Logger, null, [{
-	        key: 'warn',
+		_createClass(Logger, null, [{
+			key: 'warn',
 
 
-	        /**
-	         * Log a warning
-	         * @param {string}  code    - The warning code
-	         * @param {string}  msg     - The warning message
-	         */
-	        value: function warn(code, msg) {
-	            var args = concatArgs('WARNING: ' + code + ' ' + msg + ' ' + WARN_DEFINITIONS_URL + '#' + code.toLowerCase(), arguments);
-	            log('warn', args);
-	        }
+			/**
+	   * Log a warning
+	   * @param {string}  code    - The warning code
+	   * @param {string}  msg     - The warning message
+	   * @param {Array}	debugs	- Any debugging arguments
+	   */
+			value: function warn(code, msg) {
+				for (var _len = arguments.length, debugs = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+					debugs[_key - 2] = arguments[_key];
+				}
 
-	        /**
-	         * Log an error
-	         * @param {string}  code    - The warning code
-	         * @param {string}  msg     - The error message
-	         */
+				var args = concatArgs.apply(undefined, ['WARNING: ' + code + ' ' + msg + ' ' + WARN_DEFINITIONS_URL + '#' + code.toLowerCase()].concat(debugs));
+				log('warn', args);
+			}
 
-	    }, {
-	        key: 'error',
-	        value: function error(code, msg) {
-	            var args = concatArgs('ERROR: ' + code + ' ' + msg + ' ' + WARN_DEFINITIONS_URL + '#' + code.toLowerCase(), arguments);
-	            log('error', args);
-	        }
-	    }]);
+			/**
+	   * Log an error
+	   * @param {string}  code    - The warning code
+	   * @param {string}  msg     - The error message
+	   * @param {Array}	debugs	- Any debugging arguments
+	   */
 
-	    return Logger;
+		}, {
+			key: 'error',
+			value: function error(code, msg) {
+				for (var _len2 = arguments.length, debugs = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+					debugs[_key2 - 2] = arguments[_key2];
+				}
+
+				var args = concatArgs.apply(undefined, ['ERROR: ' + code + ' ' + msg + ' ' + WARN_DEFINITIONS_URL + '#' + code.toLowerCase()].concat(debugs));
+				log('error', args);
+			}
+		}]);
+
+		return Logger;
 	}();
 
 	exports.default = Logger;
@@ -232,7 +246,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _applyContainer(container, nodes, componentSelector) {
 		var cb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
-		console.log('Running Parser ---- ');
 
 		// Bail out early if no elements to parse
 		if (!nodes || !nodes.length) {
@@ -304,7 +317,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			/**
 	   * The container
-	   * @type {Container|null|
+	   * @type {Container|null}
 	   * @private
 	   */
 			this._container = null;
@@ -346,7 +359,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			/**
 	  * Apply the container to an updated dom structure
-	  * This should be triggered anytime HTML has been ajaxed in
 	  * @param {node}		node		- Target node to parse or null for entire document body
 	  * @param {function}		[cb=null]	- Optional callback
 	  */
@@ -388,9 +400,17 @@ return /******/ (function(modules) { // webpackBootstrap
 		}, {
 			key: 'startWatcher',
 			value: function startWatcher() {
+				// If disabled, do nothing
+				if (!this.enableWatcher) {
+					return;
+				}
+
 				// Feature available?
 				if (typeof MutationObserver === 'undefined') {
 					_Logger2.default.warn('RHWXX', 'MutationObserver not available');
+
+					// Auto disable it so it dosnt attempt to start again
+					this.enableWatcher = false;
 					return;
 				}
 
@@ -432,10 +452,10 @@ return /******/ (function(modules) { // webpackBootstrap
 			key: '_handleDomMutation',
 			value: function _handleDomMutation(mutationRecord) {
 				if (typeof mutationRecord !== 'undefined') {
+					// Only run update if nodes have been added
 					var diff = mutationRecord.filter(function (r) {
 						return r.addedNodes.length;
 					});
-					// Only run update if nodes have been added
 					if (diff.length) {
 						this.update();
 					}
@@ -528,7 +548,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		var _nextId = 0;
 
 		return function _assignId() {
-			_nextId++;
+			_nextId = _nextId + 1;
 			return 'C' + _nextId;
 		};
 	}();
@@ -748,7 +768,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			value: function parseProps(ele) {
 				// Default props with reference to the initiating node
 				var props = {
-					proxy: ele };
+					proxy: ele // Pass in a reference to the original node
+				};
 
 				// Populate custom props from reading any ele attributes that start with 'data-prop-'
 				for (var i = 0; i < ele.attributes.length; i++) {
