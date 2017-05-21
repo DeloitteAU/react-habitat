@@ -139,7 +139,6 @@ export default class Bootstrapper {
 
 	/**
 	* Apply the container to an updated dom structure
-	* This should be triggered anytime HTML has been ajaxed in
 	* @param {node}		node		- Target node to parse or null for entire document body
 	* @param {function}		[cb=null]	- Optional callback
 	*/
