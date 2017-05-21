@@ -179,6 +179,9 @@ export default class Bootstrapper {
 		// Feature available?
 		if (typeof MutationObserver === 'undefined') {
 			Logger.warn('RHWXX', 'MutationObserver not available');
+
+			// Auto disable it so it dosnt attempt to start again
+			this.enableWatcher = false;
 			return;
 		}
 
