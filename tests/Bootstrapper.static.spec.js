@@ -18,6 +18,7 @@ describe('Bootstrapper', () => {
 	class App extends Bootstrapper {
 		constructor(container, cb = null) {
 			super();
+			this.enableWatcher = false;	// DISABLE WATCHER
 			this.setContainer(container, cb);
 		}
 	}
@@ -225,96 +226,6 @@ describe('Bootstrapper', () => {
 		expect(console.error).toHaveBeenCalled();
 
 	});
-
-	// it('should render dynamic loaded elements with observer', (done) => {
-	// 	node.innerHTML =
-	// 		'<div data-component="IMochComponent"></div>';
-	//
-	// 	// -- MOCH CONTAINER SET UP -- //
-	// 	const container = new Container();
-	// 	container.register('IMochComponent', MochComponent);
-	// 	container.register('IMochComponentTwo', MochComponentTwo);
-	// 	// --------------------------- //
-	//
-	// 	const app = new App(container);
-	// 	let componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
-	// 	let component2Lookup = node.innerHTML.match(/\[component MochComponentTwo\]/g);
-	//
-	// 	expect(app).toBeDefined();
-	// 	expect(componentLookup).not.toEqual(null);
-	// 	expect(componentLookup.length).toEqual(1);
-	// 	expect(component2Lookup).toEqual(null);
-	//
-	// 	// Dynamically inject new node
-	//
-	// 	const nextNode = document.createElement('div');
-	// 	nextNode.innerHTML =
-	// 		'<div data-component="IMochComponentTwo"></div>';
-	//
-	// 	// This should trigger the dom watcher
-	// 	node.appendChild(nextNode);
-	//
-	// 	// Give a grace period for observer to fire as it calls async
-	// 	window.setTimeout(() => {
-	// 		componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
-	// 		component2Lookup = node.innerHTML.match(/\[component MochComponentTwo\]/g);
-	//
-	// 		// expect(componentLookup).not.toEqual(null);
-	// 		// expect(componentLookup.length).toEqual(1);
-	// 		// expect(component2Lookup).not.toEqual(null);
-	// 		// expect(component2Lookup.length).toEqual(1);
-	// 		done();
-	// 		app.dispose();
-	// 	}, 5000);
-	//
-	// });
-
-	// it('should render dynamic loaded elements with inputs', (done) => {
-	// 	node.innerHTML =
-	// 		'<input type="text" data-component="IMochComponent" />';
-	//
-	// 	// -- MOCH CONTAINER SET UP -- //
-	// 	const container = new Container();
-	// 	container.register('IMochComponent', MochComponent);
-	// 	container.register('IMochComponentTwo', MochComponentTwo);
-	// 	// --------------------------- //
-	//
-	// 	const app = new App(container);
-	// 	let inputLookup = node.innerHTML.match(/data-component="IMochComponent"/g);
-	// 	let componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
-	// 	let component2Lookup = node.innerHTML.match(/\[component MochComponentTwo\]/g);
-	//
-	// 	expect(app).toBeDefined();
-	// 	expect(inputLookup).not.toEqual(null);
-	// 	expect(inputLookup.length).toEqual(1);
-	// 	expect(componentLookup).not.toEqual(null);
-	// 	expect(componentLookup.length).toEqual(1);
-	// 	expect(component2Lookup).toEqual(null);
-	//
-	// 	// Dynamically inject new node
-	//
-	// 	const nextNode = document.createElement('div');
-	// 	nextNode.innerHTML =
-	// 		'<div data-component="IMochComponentTwo"></div>';
-	//
-	// 	// This should trigger the dom watcher
-	// 	//node.appendChild(nextNode);
-	//
-	// 	// Give a grace period for observer to fire as it calls async
-	// 	window.setTimeout(() => {
-	// 		inputLookup = node.innerHTML.match(/data-component="IMochComponent"/g);
-	// 		componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
-	// 		component2Lookup = node.innerHTML.match(/\[component MochComponentTwo\]/g);
-	//
-	// 		// expect(inputLookup).not.toEqual(null);
-	// 		// expect(inputLookup.length).toEqual(1);
-	// 		// expect(componentLookup).not.toEqual(null);
-	// 		// expect(componentLookup.length).toEqual(1);
-	// 		// expect(component2Lookup).not.toEqual(null);
-	// 		// expect(component2Lookup.length).toEqual(1);
-	// 		done();
-	// 	}, 500);
-	// });
 
 	it('should dispose', () => {
 
