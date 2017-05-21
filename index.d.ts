@@ -66,6 +66,21 @@ declare module "react-habitat" {
 		setContainer: (container: IContainer) => void;
 
 		/**
+		 * Apply the container to an updated dom structure
+		 */
+		update: (node?: Element) => void;
+
+		/**
+		 * Start DOM watcher for auto wire ups
+		 */
+		startWatcher: () => void;
+
+		/**
+		 * Stop the DOM watcher if running
+		 */
+		stopWatcher: () => void;
+
+		/**
 		  * Dispose of the container
 		  */
 		 dispose: () => void;
@@ -84,9 +99,24 @@ declare module "react-habitat" {
 		componentSelector: string;
 
 		/**
-		 * Collection of elements matching the component selector
+		 * If true, the container will be applied to dom mutations automatically. True by default.
 		 */
-		elements: NodeListOf<Element>;
+		enableWatcher: boolean;
+
+		/**
+		 * Apply the container to an updated dom structure
+		 */
+		update: (node?: Element) => void;
+
+		/**
+		 * Start DOM watcher for auto wire ups
+		 */
+		startWatcher: () => void;
+
+		/**
+		 * Stop the DOM watcher if running
+		 */
+		stopWatcher: () => void;
 
 		/**
 		 * Disposes the container
