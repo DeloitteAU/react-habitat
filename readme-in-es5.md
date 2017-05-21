@@ -383,6 +383,89 @@ function MyApp() {
 }
 ```
 
+### Update
+
+Will scan the DOM and for any components that require wiring up (i.e after ajaxing in some HTML). This is usually
+evoked automatically unless the [watcher](#watcher) is disabled or not available.
+
+By default it will scan the entire body, however a parent node can optionally be passed in for better performance if you 
+know where the update has occurred.
+
+Example
+
+```javascript
+// Will scan the entire document body
+MyApp.update();
+
+// Will scan just the children of the element with id 'content'
+MyApp.update(window.document.getElementById('content'))
+```
+
+### Watcher
+
+*Default: true*
+
+React Habitat will automatically watch the DOM for any new elements by default and will wire up components from your container.
+
+You can enable/disable this by assigning the `enableWatcher` property in your constructor.
+
+Example, to turn off the watcher
+
+```javascript
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		enableWatcher: false
+	});
+
+}
+```
+
+If you disable the watcher (recommended for high performance), you can trigger an [update](#update) manually.
+
+**Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
+to use this feature. 
+
+
+### Start Watcher
+
+Will start watching the DOM for any changes and wire up components automatically. See [watcher](#watcher).
+
+Example
+
+```javascript
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		...
+	});
+
+	this.domContainer.startWatcher();
+}
+```
+
+The watcher will only start if `enableWatcher` is true and the feature is available.
+
+### Stop Watcher
+
+Will stop watching the DOM for any changes. See [watcher](#watcher).
+
+Example
+
+```javascript
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		...
+	});
+
+	this.domContainer.stopWatcher();
+}
+```
+
 ### Disposing the container
 
 To unload the container and remove all React Habitat instances. Call the `dispose()` method.
