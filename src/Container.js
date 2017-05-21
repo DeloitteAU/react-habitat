@@ -18,7 +18,7 @@ const assignId = (function idFactory() {
 	let _nextId = 0;
 
 	return function _assignId() {
-		_nextId++;
+		_nextId = _nextId + 1;
 		return `C${_nextId}`;
 	};
 }());

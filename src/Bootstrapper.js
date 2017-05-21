@@ -195,7 +195,7 @@ export default class Bootstrapper {
 			attributeOldValue: false,
 			characterData: false,
 			characterDataOldValue: false,
-			attributeFilter: [this.componentSelector],
+			attributeFilter: [this.componentSelector]
 		});
 	}
 
@@ -214,8 +214,8 @@ export default class Bootstrapper {
 	*/
 	_handleDomMutation(mutationRecord) {
 		if (typeof mutationRecord !== 'undefined') {
-			let diff = mutationRecord.filter(r => r.addedNodes.length);
 			// Only run update if nodes have been added
+			const diff = mutationRecord.filter(r => r.addedNodes.length);
 			if (diff.length) {
 				this.update();
 			}
