@@ -1,73 +1,59 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>React Habitat Demo</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/dist/bootstrap.min.css" />
     <link rel="stylesheet" href="demo.css" />
 
-    <!-- Conditional MutationObserver Pollyfill for IE 9 & 10 support -->
-    <script>
-        if (typeof MutationObserver === 'undefined') {
-            var head = document.getElementsByTagName('head')[0];
+    <!-- jQuery used for demo menu only -->
+    <script src="/dist/jquery-3.2.1.min.js"></script>
 
-            var script = document.createElement('script');
-            script.src = '//cdn.jsdelivr.net/g/mutationobserver/';
-            script.type = 'text/javascript';
+  </head>
+  <body>
 
-            head.appendChild(script)
-        }
-    </script>
-
-    <!-- jQuery & bootstrap for demo menu -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous"></script>
-</head>
-<body>
-
-<nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">React Habitat Demo</a>
-        </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="/index.html">Initial Load</a></li>
-                <li class="active"><a href="/dynamic.html">Dynamic/Ajax</a></li>
-            </ul>
-        </div>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">React Habitat Demo</a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="/index.html">Initial Load</a></li>
+          <li class="active"><a href="/dynamic.html">Dynamic/Ajax</a></li>
+        </ul>
+      </div>
     </div>
-</nav>
+  </nav>
 
-<div class="jumbotron">
+  <div class="jumbotron">
     <div class="container">
-        <p>This demo shows how HTML can be added to the dom dynamically and React Habitat will still automatically
-            wire up components registered. View the page source to see how this works.</p>
+      <p>This demo shows how HTML can be added to the dom dynamically and React Habitat will still automatically
+        wire up components registered. View the page source to see how this works.</p>
     </div>
-</div>
+  </div>
 
-<div class="container">
+  <div class="container">
 
-    <!--
-        START REACT HABITAT EXAMPLES
-        =======================================================
-    -->
+  <!--
+      START REACT HABITAT EXAMPLES
+      =======================================================
+  -->
 
     <!-- Ajax loader -->
     <div id="loader" class="progress" style="display: none;">
-        <div class="progress-bar progress-bar-striped active" style="width: 100%">
-            <span class="sr-only">Loading</span>
-        </div>
+      <div class="progress-bar progress-bar-striped active" style="width: 100%">
+        <span class="sr-only">Loading</span>
+      </div>
     </div>
 
     <!-- Target to append the loaded html -->
@@ -78,33 +64,33 @@
 
     <!-- jQuery demo script -->
     <script>
-        // On button click
-        $('#btnLoad').on('click', function() {
+      // On button click
+      $('#btnLoad').on('click', function() {
 
-            $(this).remove();       // hide the button
-            $('#loader').show();    // show the loading animation
+        $(this).remove();       // hide the button
+        $('#loader').show();    // show the loading animation
 
-            // Set a timeout only so things dont happen too fast for the demo
-            window.setTimeout(function() {
+        // Set a timeout only so things dont happen too fast for the demo
+        window.setTimeout(function() {
 
-                // Use jquery to ajax in the demo html data
-                $.ajax('/ajaxData.html')
-                        .done(function(response){
-                            // Append the response
-                            // React habitat will automatically see this type of event and wire up components
-                            $('#target').append(response);
+          // Use jquery to ajax in the demo html data
+          $.ajax('/ajaxData.html')
+            .done(function(response){
+              // Append the response
+              // React habitat will automatically see this type of event and wire up components
+              $('#target').append(response);
 
-                            // This alternative also works, it dosnt depend on jquery
-                            // window.document.getElementById('target').innerHTML = response;
-                        })
-                        .always(function() {
-                            // Hide the loader
-                            $('#loader').hide();
-                        });
+              // This alternative also works, it dosnt depend on jquery events
+              // window.document.getElementById('target').innerHTML = response;
+            })
+            .always(function() {
+              // Hide the loader
+              $('#loader').hide();
+            });
 
-            }, 1500);
+        }, 1200);
 
-        });
+      });
     </script>
     <!--
         =======================================================
@@ -113,15 +99,17 @@
 
 
     <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>© 2016 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+      <p>© 2016 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
     </footer>
 
-</div>
+  </div>
 
-<script type="text/javascript" src="dist/vendor.bundle.js"></script>
-<script type="text/javascript" src="dist/app.bundle.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="dist/vendor.bundle.js"></script>
+  <script type="text/javascript" src="dist/app.bundle.js"></script>
 
-</body>
+  <!-- Used for demo menu only -->
+  <script type="text/javascript" src="/dist/bootstrap.min.js"></script>
+
+  </body>
 </html>

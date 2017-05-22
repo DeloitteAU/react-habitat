@@ -6,8 +6,14 @@ module.exports = {
         // Our main app
         app: ['./src/App.js'],
 
-        // React Habitat requires Object.assign pollyfill for old IE support
-        vendor: ['babel-polyfill', 'react', 'react-dom', 'react-habitat']
+
+        vendor: [
+            'babel-polyfill', // React Habitat requires Object.assign pollyfill for old IE support
+            'mutationobserver-shim',
+            'react',
+            'react-dom',
+            'react-habitat'
+        ]
     },
     output: {
         filename: 'dist/app.bundle.js'

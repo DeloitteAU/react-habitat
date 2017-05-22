@@ -7,26 +7,11 @@
 
     <title>React Habitat Demo</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/dist/bootstrap.min.css" />
     <link rel="stylesheet" href="demo.css" />
 
-    <!-- Conditional MutationObserver Pollyfill for IE 9 & 10 support -->
-    <script>
-      if (typeof MutationObserver === 'undefined') {
-        var head = document.getElementsByTagName('head')[0];
-
-        var script = document.createElement('script');
-        script.src = '//cdn.jsdelivr.net/g/mutationobserver/';
-        script.type = 'text/javascript';
-
-        head.appendChild(script)
-      }
-    </script>
-
-    <!-- jQuery & bootstrap for demo menu -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous"></script>
+    <!-- jQuery used for demo menu only -->
+    <script src="/dist/jquery-3.2.1.min.js"></script>
 
   </head>
   <body>
@@ -122,7 +107,9 @@
 
   <script type="text/javascript" src="dist/vendor.bundle.js"></script>
   <script type="text/javascript" src="dist/app.bundle.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  <!-- Used for demo menu only -->
+  <script type="text/javascript" src="/dist/bootstrap.min.js"></script>
 
   </body>
 </html>
