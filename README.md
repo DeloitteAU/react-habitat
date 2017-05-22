@@ -441,12 +441,12 @@ Example
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
-	constructor(){
-	    this.setContainer(myContainer);
-		
-		// Wire up any future habitat elements automatically
-		this.startWatcher();
-	}
+    constructor(){
+        this.setContainer(myContainer);
+
+        // Wire up any future habitat elements automatically
+        this.startWatcher();
+    }
 }
 ```
 
