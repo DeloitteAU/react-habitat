@@ -152,8 +152,8 @@ export default class Bootstrapper {
 		// Temporarily stop the watcher from triggering from our own Habitat injections
 		// This is better for performance however, this could possibly miss any
 		// mutations during the parsing time.. possible bug maybe? dont know yet.
-		const watcherPersists = this._isWatching;
-		if (watcherPersists) {
+		const shouldWatcherPersist = this._isWatching;
+		if (shouldWatcherPersist) {
 			this.stopWatcher();
 		}
 
@@ -163,7 +163,7 @@ export default class Bootstrapper {
 			this.componentSelector,
 			() => {
 				// Restart the dom watcher if persisting
-				if (watcherPersists) {
+				if (shouldWatcherPersist) {
 					this.startWatcher();
 				}
 
