@@ -402,14 +402,19 @@ performance if you know where the update has occurred.
 Example
 
 ```javascript
-class MyApp extends ReactHabitat.Bootstrapper {
-	someMethod() {
-        // This will scan the entire document body
-        this.update();
-    
-        // Will scan just the children of the element with id 'content'
-        this.update(window.document.getElementById('content'))
-    }
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: 'myComponents'
+	});
+
+	// This will scan the entire document body
+	this.domContainer.update();
+
+	// Will scan just the children of the element with id 'content'
+	this.domContainer.update(window.document.getElementById('content'));
+
 }
 ```
 
@@ -420,13 +425,16 @@ Will start watching the DOM for any changes and wire up future components automa
 Example
 
 ```javascript
-class MyApp extends ReactHabitat.Bootstrapper {
-	constructor(){
-	    this.setContainer(myContainer);
-		
-		// Wire up any future habitat elements automatically
-		this.startWatcher();
-	}
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: 'myComponents'
+	});
+
+	// Wire up any future habitat elements automatically
+	this.domContainer.startWatcher();
+
 }
 ```
 
@@ -440,10 +448,16 @@ Will stop watching the DOM for any changes. See [watcher](#watcher).
 Example
 
 ```javascript
-class MyApp extends ReactHabitat.Bootstrapper {
-	someMethod(){
-		this.stopWatcher();
-	}
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: 'myComponents'
+	});
+
+	// Stop the watcher
+	this.domContainer.stopWatcher();
+
 }
 ```
 
