@@ -455,7 +455,7 @@ to use this feature. An alternative is to call [update](#update) manually.
 
 ### Stop Watcher
 
-Will stop watching the DOM for any changes. See [watcher](#watcher).
+Will stop watching the DOM for any changes.
 
 Example
 
