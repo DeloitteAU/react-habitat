@@ -1,5 +1,13 @@
 ## React Habitat Change log
 
+### [0.5.0]
+
+- Updated packages in examples
+- Updated readme with JSON encoding information [#11](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/11). Thanks @joshuakelly
+- Deprecated elements property from Bootstrapper
+- Added dynamic html wire up support [#12](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/12)
+- Small optimisation wins for production builds
+
 ### [0.4.2]
 
 - Updated readme with TypeScript notes

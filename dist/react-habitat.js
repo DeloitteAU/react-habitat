@@ -52,7 +52,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -79,14 +79,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+		value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -109,30 +109,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	// If not production update the stubs
 	if (true) {
 
-	    /**
-	     * Safely log to the console
-	     */
-	    log = function log(type, args) {
+		/**
+	 * Safely log to the console
+	 */
+		log = function log(type, args) {
+			if (typeof console !== 'undefined' && console[type]) {
+				if (console[type].apply) {
+					console[type].apply(undefined, args);
+				} else {
+					// IE9 Fallback
+					console[type](args);
+				}
+			}
+		};
 
-	        if (typeof console !== 'undefined' && console[type]) {
-	            console[type].apply(undefined, args);
-	        }
-	    };
+		/**
+	  * Concats the message and arguments into a single array
+	  */
+		concatArgs = function concatArgs(msg, args) {
+			var throwArgs = [msg];
 
-	    /**
-	     * Concats the message and arguments into a single array
-	     */
-	    concatArgs = function concatArgs(msg, args) {
-	        var throwArgs = [msg];
+			if (args && args.length > 2) {
+				for (var i = 2; i < args.length; i++) {
+					throwArgs.push(args[i]);
+				}
+			}
 
-	        if (args && args.length > 2) {
-	            for (var i = 2; i < args.length; i++) {
-	                throwArgs.push(args[i]);
-	            }
-	        }
-
-	        return throwArgs;
-	    };
+			return throwArgs;
+		};
 	}
 
 	/**
@@ -140,47 +144,57 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	var Logger = function () {
-	    function Logger() {
-	        _classCallCheck(this, Logger);
-	    }
+		function Logger() {
+			_classCallCheck(this, Logger);
+		}
 
-	    _createClass(Logger, null, [{
-	        key: 'warn',
+		_createClass(Logger, null, [{
+			key: 'warn',
 
 
-	        /**
-	         * Log a warning
-	         * @param {string}  code    - The warning code
-	         * @param {string}  msg     - The warning message
-	         */
-	        value: function warn(code, msg) {
-	            var args = concatArgs('WARNING: ' + code + ' ' + msg + ' ' + WARN_DEFINITIONS_URL + '#' + code.toLowerCase(), arguments);
-	            log('warn', args);
-	        }
+			/**
+	   * Log a warning
+	   * @param {string}  code    - The warning code
+	   * @param {string}  msg     - The warning message
+	   * @param {Array}	debugs	- Any debugging arguments
+	   */
+			value: function warn(code, msg) {
+				for (var _len = arguments.length, debugs = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+					debugs[_key - 2] = arguments[_key];
+				}
 
-	        /**
-	         * Log an error
-	         * @param {string}  code    - The warning code
-	         * @param {string}  msg     - The error message
-	         */
+				var args = concatArgs.apply(undefined, ['WARNING: ' + code + ' ' + msg + ' ' + WARN_DEFINITIONS_URL + '#' + code.toLowerCase()].concat(debugs));
+				log('warn', args);
+			}
 
-	    }, {
-	        key: 'error',
-	        value: function error(code, msg) {
-	            var args = concatArgs('ERROR: ' + code + ' ' + msg + ' ' + WARN_DEFINITIONS_URL + '#' + code.toLowerCase(), arguments);
-	            log('error', args);
-	        }
-	    }]);
+			/**
+	   * Log an error
+	   * @param {string}  code    - The warning code
+	   * @param {string}  msg     - The error message
+	   * @param {Array}	debugs	- Any debugging arguments
+	   */
 
-	    return Logger;
+		}, {
+			key: 'error',
+			value: function error(code, msg) {
+				for (var _len2 = arguments.length, debugs = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+					debugs[_key2 - 2] = arguments[_key2];
+				}
+
+				var args = concatArgs.apply(undefined, ['ERROR: ' + code + ' ' + msg + ' ' + WARN_DEFINITIONS_URL + '#' + code.toLowerCase()].concat(debugs));
+				log('error', args);
+			}
+		}]);
+
+		return Logger;
 	}();
 
 	exports.default = Logger;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -211,38 +225,64 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DEFAULT_HABITAT_SELECTOR = 'data-component';
 
 	/**
-	 * Parses a container and populate components
-	 * @param {array}     container             The container
-	 * @param {array}     elements              The elements to parse
-	 * @param {string}    componentSelector     The component selector
-	 * @param cb
+	 * Safe callback wrapper
+	 * @param {null|function}		cb			- The callback
+	 * @private
 	 */
-	function parseContainer(container, elements, componentSelector) {
+	function _callback(cb) {
+		if (typeof cb === 'function') {
+			cb();
+		}
+	}
+
+	/**
+	 * Apply a container to nodes and populate components
+	 * @param {array}     container             The container
+	 * @param {array}     nodes              	The elements to parse
+	 * @param {string}    componentSelector     The component selector
+	 * @param {function}  [cb=null]   			- Optional callback
+	 * @private
+	 */
+	function _applyContainer(container, nodes, componentSelector) {
 		var cb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
+
+		// Bail out early if no elements to parse
+		if (!nodes || !nodes.length) {
+			_callback(cb);
+			return;
+		}
 
 		var factory = container.domFactory();
 		var id = container.id();
 
 		// Iterate over component elements in the dom
-		for (var i = 0; i < elements.length; ++i) {
-			var ele = elements[i];
+		for (var i = 0; i < nodes.length; ++i) {
+			var ele = nodes[i];
+
+			// Ignore elements that have already been connected
+			if (_Habitat2.default.hasHabitat(ele)) {
+				continue;
+			}
+
 			var componentName = ele.getAttribute(componentSelector);
 			var component = container.resolve(componentName);
-
 			if (component) {
-				if (ele.querySelector('[' + componentSelector + ']')) {
-					_Logger2.default.warn('RHW08', 'Component should not contain any nested components.', ele);
+				// Expensive operation, only do on non prod builds
+				if (true) {
+					if (ele.querySelector('[' + componentSelector + ']')) {
+						_Logger2.default.warn('RHW08', 'Component should not contain any nested components.', ele);
+					}
 				}
+
+				// Inject the component
 				factory.inject(component, _Habitat2.default.parseProps(ele), _Habitat2.default.create(ele, id));
 			} else {
 				_Logger2.default.error('RHW01', 'Cannot resolve component "' + componentName + '" for element.', ele);
 			}
 		}
 
-		if (typeof cb === 'function') {
-			cb.call();
-		}
+		_callback(cb);
 	}
 
 	/**
@@ -262,14 +302,32 @@ return /******/ (function(modules) { // webpackBootstrap
 				throw new Error('React Habitat requires a window but cannot see one :(');
 			}
 
-			// Set dom component selector
+			/**
+	   * The DOM component selector
+	   * @type {string}
+	   */
 			this.componentSelector = DEFAULT_HABITAT_SELECTOR;
 
-			// The target elements
-			this._elements = null;
+			/**
+	   * If true, the container will be applied to dom mutations automatically. True by default.
+	   * i.e update(*addedNodes*)
+	   * @type {boolean}
+	   */
+			this.enableWatcher = true;
 
-			// The container
+			/**
+	   * The container
+	   * @type {Container|null}
+	   * @private
+	   */
 			this._container = null;
+
+			/**
+	   * The watcher's observer instance or null
+	   * @type {MutationObserver|null}
+	   * @private
+	   */
+			this._observer = null;
 		}
 
 		/**
@@ -293,11 +351,118 @@ return /******/ (function(modules) { // webpackBootstrap
 				// Set the container
 				this._container = container;
 
-				// Find all the elements in the dom with the component selector attribute
-				this._elements = window.document.body.querySelectorAll('[' + this.componentSelector + ']');
-
 				// Wire up the components from the container
-				parseContainer(this._container, this._elements, this.componentSelector, cb);
+				this.update(null, function () {
+					_callback(cb);
+				});
+			}
+
+			/**
+	  * Apply the container to an updated dom structure
+	  * @param {node}		node		- Target node to parse or null for entire document body
+	  * @param {function}		[cb=null]	- Optional callback
+	  */
+
+		}, {
+			key: 'update',
+			value: function update(node) {
+				var _this = this;
+
+				var cb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+				// Check if we have a container before attempting an update
+				if (!this._container) {
+					_callback(cb);
+					return;
+				}
+
+				_callback(this.domWillUpdate);
+
+				// Temporarily stop the watcher from triggering due to Habitat injections
+				// Note: This could possibly miss some dom changes during parse time.. bug maybe?
+				this.stopWatcher();
+
+				_applyContainer(this._container, node || window.document.body.querySelectorAll('[' + this.componentSelector + ']'), this.componentSelector, function () {
+					// Restart the dom watcher unless disabled
+					if (_this.enableWatcher) {
+						_this.startWatcher();
+					}
+
+					_callback(cb);
+					_callback(_this.domDidUpdate);
+				});
+			}
+
+			/**
+	   * Start DOM watcher for auto wire ups
+	   */
+
+		}, {
+			key: 'startWatcher',
+			value: function startWatcher() {
+				// If disabled, do nothing
+				if (!this.enableWatcher) {
+					return;
+				}
+
+				// Feature available?
+				if (typeof MutationObserver === 'undefined') {
+					_Logger2.default.warn('RHWXX', 'MutationObserver not available');
+
+					// Auto disable it so it dosnt attempt to start again
+					this.enableWatcher = false;
+					return;
+				}
+
+				// Create observer if not assigned already
+				if (!this._observer) {
+					this._observer = new MutationObserver(this._handleDomMutation.bind(this));
+				}
+
+				// Start observing for dom changes filtered by our component selector
+				this._observer.observe(window.document.body, {
+					childList: true,
+					attributes: true,
+					subtree: true,
+					attributeOldValue: false,
+					characterData: false,
+					characterDataOldValue: false,
+					attributeFilter: [this.componentSelector]
+				});
+			}
+
+			/**
+	   * Stop the DOM watcher if running
+	   */
+
+		}, {
+			key: 'stopWatcher',
+			value: function stopWatcher() {
+				if (this._observer && this._observer.disconnect) {
+					this._observer.disconnect();
+				}
+			}
+
+			/**
+	  * Handle dom mutation event
+	  * @param {MutationRecord}		mutationRecord		- The mutation record
+	  */
+
+		}, {
+			key: '_handleDomMutation',
+			value: function _handleDomMutation(mutationRecord) {
+				if (typeof mutationRecord !== 'undefined') {
+					// Only run update if nodes have been added
+					var diff = mutationRecord.filter(function (r) {
+						return r.addedNodes.length;
+					});
+					if (diff.length) {
+						this.update();
+					}
+				} else {
+					// Fallback
+					this.update();
+				}
 			}
 
 			/**
@@ -310,6 +475,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			value: function dispose() {
 				var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
+
+				// Stop dom watcher if any
+				this.stopWatcher();
 
 				// get the container's factory
 				var factory = this._container.domFactory();
@@ -326,11 +494,10 @@ return /******/ (function(modules) { // webpackBootstrap
 				// Reset and release
 				this._container = null;
 				this._elements = null;
+				this._observer = null;
 
 				// Handle callback
-				if (typeof cb === 'function') {
-					cb.call();
-				}
+				_callback(cb, this);
 			}
 		}]);
 
@@ -340,9 +507,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Bootstrapper;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -381,7 +548,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		var _nextId = 0;
 
 		return function _assignId() {
-			_nextId++;
+			_nextId = _nextId + 1;
 			return 'C' + _nextId;
 		};
 	}();
@@ -514,9 +681,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Container;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -601,7 +768,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			value: function parseProps(ele) {
 				// Default props with reference to the initiating node
 				var props = {
-					proxy: ele };
+					proxy: ele // Pass in a reference to the original node
+				};
 
 				// Populate custom props from reading any ele attributes that start with 'data-prop-'
 				for (var i = 0; i < ele.attributes.length; i++) {
@@ -721,7 +889,8 @@ return /******/ (function(modules) { // webpackBootstrap
 						// and we need to reinstate it back to how we found it
 
 						try {
-							// It might be better if we keep references in a weak map, need to look at this in the future
+							// It might be better if we keep references in a weak map, need to look
+							// at this in the future
 							habitat[HABITAT_HOST_KEY] = host;
 						} catch (e) {
 							if (hasExpandoWarning) {
@@ -785,9 +954,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Habitat;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -870,9 +1039,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		return new _Mixin(spec);
 	}
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -951,19 +1120,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = ReactDomFactory;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_7__;
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;

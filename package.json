@@ -1,6 +1,6 @@
 {
   "name": "react-habitat",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "A React DOM Bootstrapper designed to harmonise a hybrid application",
   "main": "./lib/index.js",
   "repository": {
@@ -44,17 +44,18 @@
     "cross-env": "^2.0.0",
     "eslint": "^3.2.2",
     "eslint-config-airbnb": "^10.0.0",
-    "eslint-plugin-import": "^1.12.0",
+    "eslint-config-deloitte": "^1.0.1",
+    "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-jasmine": "^1.8.1",
     "eslint-plugin-jsx-a11y": "^2.0.1",
     "eslint-plugin-react": "^6.0.0",
     "jasmine-core": "^2.4.1",
-    "karma": "^1.1.2",
+    "karma": "^1.7.0",
     "karma-chrome-launcher": "^1.0.1",
-    "karma-jasmine": "^1.0.2",
+    "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.1",
+    "karma-polyfill": "^1.0.0",
     "karma-webpack": "^1.8.0",
-    "phantomjs-polyfill-object-assign": "0.0.2",
     "webpack": "^1.13.0"
   },
   "dependencies": {
@@ -72,6 +73,7 @@
   ],
   "scripts": {
     "test": "karma start --single-run --browsers PhantomJS",
+    "test:debug": "karma start --browsers Chrome",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "build:lib": "babel src --out-dir lib",
     "build:umd": "cross-env NODE_ENV=development webpack src/index.js dist/react-habitat.js",

@@ -32,6 +32,11 @@ export class _Mixin extends Bootstrapper {
 			this.componentSelector = spec.componentSelector;
 		}
 
+		// Set the watcher value if defined
+		if (typeof spec.enableWatcher === 'boolean') {
+			this.enableWatcher = spec.enableWatcher;
+		}
+
 		// Create a new container
 		const container = new Container();
 

@@ -13,13 +13,14 @@
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-habitat": "^0.3.0",
+    "react-habitat": "^0.5.0",
     "webpack": "^1.13.2"
   },
   "devDependencies": {
     "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
+    "mutationobserver-shim": "^0.3.2",
     "open-browser-webpack-plugin": "0.0.2",
     "webpack-dev-server": "^1.16.1"
   }

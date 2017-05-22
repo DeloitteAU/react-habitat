@@ -20,6 +20,13 @@ This framework exists so you can get on with the fun stuff!
 - [Passing props/properties to your components](#passing-properties-props-to-your-components)
 - [Passing data back again](#passing-values-back-again)
 - [Options and Methods](#options-and-methods)
+  - [Setting the habitats css class](#setting-the-habitats-css-class)
+  - [Replace original node](#replace-original-node)
+  - [Dynamic Updates](#dynamic-updates)
+  - [Start the dom watcher](#start-watcher)
+  - [Stop the dom watcher](#stop-watcher)
+  - [Disposing the container](#disposing-the-container)
+- [Use encoded JSON in HTML attributes](#use-encoded-json-in-html-attributes)
 - [Contribute](#want-to-contribute)
 - [License information](#license-bsd-3-clause)
 - [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/examples)
@@ -38,6 +45,7 @@ React Habitat works great with:
 
 - Sitecore
 - Adobe Experience Manager
+- Hybris
 - Umbraco
 - Drupal
 - Joomla
@@ -71,13 +79,17 @@ We highly recommend you use something like [WebPack](https://webpack.github.io/)
 
 ## Installing
 
-Install with Node Package Manager (NPM)
+Install with [NPM](http://npmjs.com/)
 
 `npm install --save-dev react-habitat`
 
-This assumes that you’re using [npm](http://npmjs.com/) package manager with a module bundler like [Webpack](http://webpack.github.io) or [Browserify](http://browserify.org/).
+Install with [Yarn](https://yarnpkg.com/en/)
 
-If you don’t yet use [npm](http://npmjs.com/) or a modern module bundler, and would rather prefer a single-file [UMD](https://github.com/umdjs/umd) build that makes `ReactHabitat` available as a global object, you can grab a pre-built version from the dist folder.
+`yarn add react-habitat`
+
+This assumes that you’re using a package manager with a module bundler like [Webpack](http://webpack.github.io) or [Browserify](http://browserify.org/).
+
+If you don’t use a module bundler, and would prefer a single-file [UMD](https://github.com/umdjs/umd) build that makes `ReactHabitat` available as a global object, you can grab a pre-built version from the dist folder.
 
 ## Getting Started
 
@@ -150,7 +162,7 @@ During the web application execution you will want to make use of the components
 
 When you resolve a component, a new instance of the object gets created (Resolving a component is roughly equivalent to calling 'new').
 
-To *resolve* new instances of your components you need to attach a `data-component` attribute to a `div` or a `span` element in the HTML. 
+To *resolve* new instances of your components you need to attach a `data-component` attribute to a `div` or a `span` element in the HTML.
 Any child components should be nested inside the React components themselves.
 
 Set the `data-component` value to equal a component name you have registered in the container.
@@ -198,24 +210,23 @@ For example. This is perfectly valid.
 
 Will render 3 instances of your component.
 
-**Note** It's important that the output built javascript file is included at the end of the DOM just before the closing </body> tag.
+**Note** It's important that the output built javascript file is included at the end of the DOM just before the closing body tag.
 
-
-### Passing properties *(props)* to your components
+## Passing properties *(props)* to your components
 
 Resolving and registering components alone is not all that special, but passing data to it via html attributes is pretty useful. This allows the backend to
 easily pass data to your components in a modular fashion.
 
 To set props you have a few choices. You can use all of these or only some (they merge) so just use what's suits you best for setting properties.
 
-- [data-props](#data-props) Maps JSON to props.
-- [data-prop-](#data-prop-) (Prefix) Maps in strings, booleans, null, array or JSON to a prop.
-- [data-n-prop-](#data-n-prop-) (Prefix) Maps in numbers and floats to a prop.
-- [data-r-prop-](#data-r-prop-) (Prefix) Maps in a reference to an object that exists on the global scope (window) to a prop.
+- [data-props](#data-props) Maps [encoded JSON](#use-encoded-json-in-html-attributes) to props.
+- [data-prop-*](#data-prop-) (Prefix) Maps in strings, booleans, null, array or [encoded JSON](#use-encoded-json-in-html-attributes) to a prop.
+- [data-n-prop-*](#data-n-prop-) (Prefix) Maps in numbers and floats to a prop.
+- [data-r-prop-*](#data-r-prop-) (Prefix) Maps in a reference to an object that exists on the global scope (window) to a prop.
 
-**PLEASE NOTE:** 
-The last three options are attribute *prefixes*. This allow's you to define the property the name. 
-Property names will be *automatically converted* from hyphens to camel case.
+**PLEASE NOTE:**
+The last three options are attribute *prefixes* and the **\*** may be replaced by any name. This allow's you to define the property the name.
+Property names must be all lower case and hyphens will be *automatically converted* to camel case.
 
 For example
 
@@ -223,10 +234,9 @@ For example
 
 `data-prop-my-title` would expose `myTitle` on the props object inside the component.
 
+### data-props
 
-#### data-props 
-
-Set component props via a JSON string on the `data-props` attribute.
+Set component props via a [encoded JSON](#use-encoded-json-in-html-attributes) string on the `data-props` attribute.
 
 For example
 
@@ -234,7 +244,7 @@ For example
 <div data-component="SomeReactComponent" data-props='{"title": "A nice title"}'></div>
 ```
 
-#### data-prop- 
+### data-prop-*
 
 Set an component prop via prefixing attributes with `data-prop-`.
 
@@ -271,7 +281,7 @@ JSON Example
 
 ```html
 <div data-component="SomeReactComponent"
-		data-prop-person="{'name': 'john', 'age': 22}">
+		data-prop-person='{"name": "john", "age": 22}'>
 </div>
 ```
 
@@ -292,7 +302,7 @@ var SomeReactComponent = React.createClass({
 ```
 
 
-#### data-n-prop-
+### data-n-prop-*
 
 Set an component prop with type [number] via prefixing attributes with `data-n-prop-`.
 
@@ -300,7 +310,7 @@ For example `data-n-prop-temperature="33.3"` would expose the float value of 33.
 
 This is handy if you know that a property is always going to be a number or float.
 
-#### data-r-prop-
+### data-r-prop-*
 
 Referenced a global variable in your component prop via prefixing attributes with `data-r-prop-`.
 
@@ -313,14 +323,14 @@ For Example
 
 <div data-component="SomeReactComponent" data-r-prop-foo="foo"></div>
 ```
- 
+
 This is handy if you need to share properties between habitats or you need to set JSON onto the page.
 
 ## Passing values back again
 
 It can be handy to pass values back again, particularly for inputs so the backend frameworks can see any changes or read data.
 
-*Every* React Habitat instance is passed in a prop named `proxy`, this is a reference the original dom element. 
+*Every* React Habitat instance is passed in a prop named `proxy`, this is a reference the original dom element.
 Please note only `<inputs />` are left in the DOM by default. To keep a generic element in the DOM, set the `data-habitat-no-replace="true"` attribute.
 
 So for example, we could use `proxy` to update the value of an input like so
@@ -353,7 +363,7 @@ Will result in the following being rendered
 
 ### Replace original node
 
-By default only `<inputs />` are left in the DOM when a React Habitat is created. 
+By default only `<inputs />` are left in the DOM when a React Habitat is created.
 
 To keep a generic element in the DOM, set the `data-habitat-no-replace="true"` attribute.
 
@@ -379,6 +389,78 @@ function MyApp() {
 }
 ```
 
+### Dynamic Updates
+
+`update()`
+
+Will scan the DOM and for any components that require wiring up (i.e after ajaxing in some HTML). 
+This can be evoked automatically by using a [watcher](#start-watcher).
+
+By default *update()* will scan the entire body, however a parent node can optionally be passed in for better
+performance if you know where the update has occurred.
+
+Example
+
+```javascript
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: 'myComponents'
+	});
+
+	// This will scan the entire document body
+	this.domContainer.update();
+
+	// Will scan just the children of the element with id 'content'
+	this.domContainer.update(window.document.getElementById('content'));
+
+}
+```
+
+### Start Watcher
+
+Will start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
+
+Example
+
+```javascript
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: 'myComponents'
+	});
+
+	// Wire up any future habitat elements automatically
+	this.domContainer.startWatcher();
+
+}
+```
+
+**Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
+to use this feature. An alternative is to call [update](#update) manually.
+
+### Stop Watcher
+
+Will stop watching the DOM for any changes.
+
+Example
+
+```javascript
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: 'myComponents'
+	});
+
+	// Stop the watcher
+	this.domContainer.stopWatcher();
+
+}
+```
+
 ### Disposing the container
 
 To unload the container and remove all React Habitat instances. Call the `dispose()` method.
@@ -397,6 +479,39 @@ function MyApp() {
 
 }
 ```
+
+### Use encoded JSON in HTML attributes
+
+When passing JSON to an attribute, you will need to encode the value so that content can be preserved and properly rendered.
+
+As a general rule, escape the following characters with HTML entity encoding:
+
+`&` --> `&amp`;  
+`<` --> `&lt`;  
+`>` --> `&gt`;  
+`"` --> `&quot`;  
+`'` --> `&#x27`;  
+`/` --> `&#x2F`;
+
+Example:
+
+`<div data-props="{&quot;foo&quot;&colon; &quot;bar&quot;}"></div>`
+
+Additionally, an encoder may replace [extended ASCII characters](https://en.wikipedia.org/wiki/Extended_ASCII) with the equivalent HTML entity encoding.
+
+Most backend systems are capable of doing this automatically. An alternative is to use the [data-r-prop-*](#data-r-prop-) option.
+
+**Single of Double Quotes?**
+
+Double quotes around attributes values are the most common and our recommendation for setting properties with React Habitat.
+
+However, there is a known hack of wrapping JSON attributes with single quotes and escaping nested single quotes.
+
+example
+
+`<div data-props='{"restaurant": "Bob\'s bar and grill"}'></div>`
+
+*We will use this method in the docs to maintain readability. However, we strongly recommend you encode in production code.*
 
 ## Want to contribute?
 
