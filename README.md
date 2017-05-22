@@ -20,6 +20,12 @@ This framework exists so you can get on with the fun stuff!
 - [Passing props/properties to your components](#passing-properties-props-to-your-components)
 - [Passing data back again](#passing-values-back-again)
 - [Options and Methods](#options-and-methods)
+  - [Setting the habitats css class](#setting-the-habitats-css-class)
+  - [Replace original node](#replace-original-node)
+  - [Dynamic Updates](#dynamic-updates)
+  - [Start the dom watcher](#start-watcher)
+  - [Stop the dom watcher](#stop-watcher)
+  - [Disposing the container](#disposing-the-container)
 - [Use encoded JSON in HTML attributes](#use-encoded-json-in-html-attributes)
 - [Contribute](#want-to-contribute)
 - [License information](#license-bsd-3-clause)
@@ -403,65 +409,49 @@ class MyApp extends ReactHabitat.Bootstrapper {
 }
 ```
 
-### Update
+### Dynamic Updates
 
-Will scan the DOM and for any components that require wiring up (i.e after ajaxing in some HTML). This is usually
-evoked automatically unless the [watcher](#watcher) is disabled or not available.
+`update()`
 
-By default it will scan the entire body, however a parent node can optionally be passed in for better performance if you 
-know where the update has occurred.
+Will scan the DOM and for any components that require wiring up (i.e after ajaxing in some HTML). 
+This can be evoked automatically by using a [watcher](#watcher).
+
+By default *update()* will scan the entire body, however a parent node can optionally be passed in for better
+performance if you know where the update has occurred.
 
 Example
 
 ```javascript
-// Will scan the entire document body
-MyApp.update();
-
-// Will scan just the children of the element with id 'content'
-MyApp.update(window.document.getElementById('content'))
+class MyApp extends ReactHabitat.Bootstrapper {
+	someMethod() {
+        // This will scan the entire document body
+        this.update();
+    
+        // Will scan just the children of the element with id 'content'
+        this.update(window.document.getElementById('content'))
+    }
+}
 ```
 
-### Watcher
+### Start Watcher
 
-*Default: true*
+Will start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
 
-React Habitat will automatically watch the DOM for any new elements by default and will wire up components from your container.
-
-You can enable/disable this by assigning the `enableWatcher` property in your constructor.
-
-Example, to turn off the watcher
+Example
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
 	constructor(){
-		super();
-
-		this.enableWatcher = false;
-	}
-}
-```
-
-If you disable the watcher (recommended for high performance), you can trigger an [update](#update) manually.
-
-**Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
-to use this feature. 
-
-
-### Start Watcher
-
-Will start watching the DOM for any changes and wire up components automatically. See [watcher](#watcher).
-
-Example
-
-```javascript
-class MyApp extends ReactHabitat.Bootstrapper {
-	someMethod(){
+	    this.setContainer(myContainer);
+		
+		// Wire up any future habitat elements automatically
 		this.startWatcher();
 	}
 }
 ```
 
-The watcher will only start if `enableWatcher` is true and the feature is available.
+**Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
+to use this feature. An alternative is to call [update](#update) manually.
 
 ### Stop Watcher
 
