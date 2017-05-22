@@ -20,6 +20,12 @@ This framework exists so you can get on with the fun stuff!
 - [Passing props/properties to your components](#passing-properties-props-to-your-components)
 - [Passing data back again](#passing-values-back-again)
 - [Options and Methods](#options-and-methods)
+  - [Setting the habitats css class](#setting-the-habitats-css-class)
+  - [Replace original node](#replace-original-node)
+  - [Dynamic Updates](#dynamic-updates)
+  - [Start the dom watcher](#start-watcher)
+  - [Stop the dom watcher](#stop-watcher)
+  - [Disposing the container](#disposing-the-container)
 - [Use encoded JSON in HTML attributes](#use-encoded-json-in-html-attributes)
 - [Contribute](#want-to-contribute)
 - [License information](#license-bsd-3-clause)
@@ -379,6 +385,78 @@ function MyApp() {
 	this.domContainer = ReactHabitat.createBootstrapper({
 		componentSelector: 'myComponents'
 	});
+
+}
+```
+
+### Dynamic Updates
+
+`update()`
+
+Will scan the DOM and for any components that require wiring up (i.e after ajaxing in some HTML). 
+This can be evoked automatically by using a [watcher](#start-watcher).
+
+By default *update()* will scan the entire body, however a parent node can optionally be passed in for better
+performance if you know where the update has occurred.
+
+Example
+
+```javascript
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: 'myComponents'
+	});
+
+	// This will scan the entire document body
+	this.domContainer.update();
+
+	// Will scan just the children of the element with id 'content'
+	this.domContainer.update(window.document.getElementById('content'));
+
+}
+```
+
+### Start Watcher
+
+Will start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
+
+Example
+
+```javascript
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: 'myComponents'
+	});
+
+	// Wire up any future habitat elements automatically
+	this.domContainer.startWatcher();
+
+}
+```
+
+**Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
+to use this feature. An alternative is to call [update](#update) manually.
+
+### Stop Watcher
+
+Will stop watching the DOM for any changes.
+
+Example
+
+```javascript
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: 'myComponents'
+	});
+
+	// Stop the watcher
+	this.domContainer.stopWatcher();
 
 }
 ```

@@ -19,6 +19,11 @@ function MyApp() {
         ]
     });
 
+    // Optionally start a dom watcher to automatically wire up any new elements
+    // that may be injected later (eg ajaxed HTML)
+    // See dynamic.html for demo of this
+    this.domContainer.startWatcher();
+
 }
 
 // Always export a 'new' instance so it immediately evokes

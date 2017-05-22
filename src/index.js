@@ -5,5 +5,5 @@ import { createBootstrapper } from './classic/createBootstrapper';
 export default {
 	Bootstrapper,
 	Container,
-	createBootstrapper,
+	createBootstrapper
 };

@@ -20,6 +20,12 @@ This framework exists so you can get on with the fun stuff!
 - [Passing props/properties to your components](#passing-properties-props-to-your-components)
 - [Passing data back again](#passing-values-back-again)
 - [Options and Methods](#options-and-methods)
+  - [Setting the habitats css class](#setting-the-habitats-css-class)
+  - [Replace original node](#replace-original-node)
+  - [Dynamic Updates](#dynamic-updates)
+  - [Start the dom watcher](#start-watcher)
+  - [Stop the dom watcher](#stop-watcher)
+  - [Disposing the container](#disposing-the-container)
 - [Use encoded JSON in HTML attributes](#use-encoded-json-in-html-attributes)
 - [Contribute](#want-to-contribute)
 - [License information](#license-bsd-3-clause)
@@ -65,9 +71,12 @@ Typically if you're building a full-on one page React app that yanks data from r
 
 ## Compatibility
 
-- Supports Browsers IE9+ and all the evergreens. (IE9-11 will require an "Object.assign" [Pollyfill](https://babeljs.io/docs/usage/polyfill/))
+- Supports Browsers IE9+ and all the evergreens.
 - ES5, ES6/7 & TypeScript
 - React v15 and up
+
+IE9-11 will require an "Object.assign" [Pollyfill](https://babeljs.io/docs/usage/polyfill/)
+IE9-10 will optionally require an MutationObserver [Pollyfill](https://github.com/megawac/MutationObserver.js/tree/master) if you want dynamic node support.
 
 We highly recommend you use something like [WebPack](https://webpack.github.io/) or [Browserify](http://browserify.org/) when using this framework.
 
@@ -396,6 +405,64 @@ class MyApp extends ReactHabitat.Bootstrapper {
 		super();
 
 		this.componentSelector = 'data-myComponents';
+	}
+}
+```
+
+### Dynamic Updates
+
+`update()`
+
+Will scan the DOM and for any components that require wiring up (i.e after ajaxing in some HTML). 
+This can be evoked automatically by using a [watcher](#start-watcher).
+
+By default *update()* will scan the entire body, however a parent node can optionally be passed in for better
+performance if you know where the update has occurred.
+
+Example
+
+```javascript
+class MyApp extends ReactHabitat.Bootstrapper {
+	someMethod() {
+        // This will scan the entire document body
+        this.update();
+    
+        // Will scan just the children of the element with id 'content'
+        this.update(window.document.getElementById('content'))
+    }
+}
+```
+
+### Start Watcher
+
+Will start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
+
+Example
+
+```javascript
+class MyApp extends ReactHabitat.Bootstrapper {
+    constructor(){
+        this.setContainer(myContainer);
+
+        // Wire up any future habitat elements automatically
+        this.startWatcher();
+    }
+}
+```
+
+**Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
+to use this feature. An alternative is to call [update](#update) manually.
+
+### Stop Watcher
+
+Will stop watching the DOM for any changes.
+
+Example
+
+```javascript
+class MyApp extends ReactHabitat.Bootstrapper {
+	someMethod(){
+		this.stopWatcher();
 	}
 }
 ```
