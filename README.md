@@ -414,7 +414,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
 `update()`
 
 Will scan the DOM and for any components that require wiring up (i.e after ajaxing in some HTML). 
-This can be evoked automatically by using a [watcher](#watcher).
+This can be evoked automatically by using a [watcher](#start-watcher).
 
 By default *update()* will scan the entire body, however a parent node can optionally be passed in for better
 performance if you know where the update has occurred.
