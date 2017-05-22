@@ -20,8 +20,12 @@ class Main extends ReactHabitat.Bootstrapper {
     // Set the DOM container
     this.setContainer(container);
 
+    // Optionally start a dom watcher to automatically wire up any new elements
+    // that may be injected later (eg ajaxed HTML)
+    // See dynamic.html for demo of this
+    this.startWatcher();
+
   }
 }
-
 
 export var main = new Main();
