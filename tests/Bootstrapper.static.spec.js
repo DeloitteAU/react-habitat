@@ -18,7 +18,6 @@ describe('Bootstrapper', () => {
 	class App extends Bootstrapper {
 		constructor(container, cb = null) {
 			super();
-			this.enableWatcher = false;	// DISABLE WATCHER
 			this.setContainer(container, cb);
 		}
 	}
