@@ -12,12 +12,13 @@ import MochComponent 		from './mochs/MochComponent';
 
 let node = null;
 
-describe('Dynamic Bootstrapper Enabled', () => {
+describe('Dynamic Watcher', () => {
 
 	class App extends Bootstrapper {
 		constructor(container, cb = null) {
 			super();
 			this.setContainer(container, cb);
+			this.startWatcher();
 		}
 	}
 

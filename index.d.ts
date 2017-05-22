@@ -99,11 +99,6 @@ declare module "react-habitat" {
 		componentSelector: string;
 
 		/**
-		 * If true, the container will be applied to dom mutations automatically. True by default.
-		 */
-		enableWatcher: boolean;
-
-		/**
 		 * Apply the container to an updated dom structure
 		 */
 		update: (node?: Element) => void;

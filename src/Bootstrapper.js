@@ -16,9 +16,9 @@ const DEFAULT_HABITAT_SELECTOR = 'data-component';
  * @param {null|function}		cb			- The callback
  * @private
  */
-function _callback(cb) {
+function _callback(cb, context, ...args) {
 	if (typeof cb === 'function') {
-		cb();
+		cb.call(context, ...args);
 	}
 }
 
@@ -53,7 +53,7 @@ function _applyContainer(container, nodes, componentSelector, cb = null) {
 		const componentName = ele.getAttribute(componentSelector);
 		const component = container.resolve(componentName);
 		if (component) {
-			// Expensive operation, only do on non prod builds
+			// Expensive operation so only do on non prod builds
 			if (process.env.NODE_ENV !== 'production') {
 				if (ele.querySelector(`[${componentSelector}]`)) {
 					Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
@@ -94,13 +94,6 @@ export default class Bootstrapper {
 		this.componentSelector = DEFAULT_HABITAT_SELECTOR;
 
 		/**
-		 * If true, the container will be applied to dom mutations automatically. True by default.
-		 * i.e update(*addedNodes*)
-		 * @type {boolean}
-		 */
-		this.enableWatcher = true;
-
-		/**
 		 * The container
 		 * @type {Container|null}
 		 * @private
@@ -113,6 +106,13 @@ export default class Bootstrapper {
 		 * @private
 		 */
 		this._observer = null;
+
+		/**
+		 * Observing persistence status flag
+		 * @type {boolean}
+		 * @private
+		 */
+		this._isWatching = false;
 	}
 
 	/**
@@ -133,7 +133,7 @@ export default class Bootstrapper {
 
 		// Wire up the components from the container
 		this.update(null, () => {
-			_callback(cb);
+			_callback(cb, this);
 		});
 	}
 
@@ -149,24 +149,25 @@ export default class Bootstrapper {
 			return;
 		}
 
-		_callback(this.domWillUpdate);
-
-		// Temporarily stop the watcher from triggering due to Habitat injections
-		// Note: This could possibly miss some dom changes during parse time.. bug maybe?
-		this.stopWatcher();
+		// Temporarily stop the watcher from triggering from our own Habitat injections
+		// This is better for performance however, this could possibly miss any
+		// mutations during the parsing time.. possible bug maybe? dont know yet.
+		var watcherPersists = this._isWatching;
+		if (watcherPersists) {
+			this.stopWatcher();
+		}
 
 		_applyContainer(
 			this._container,
 			node || window.document.body.querySelectorAll(`[${this.componentSelector}]`),
 			this.componentSelector,
 			() => {
-				// Restart the dom watcher unless disabled
-				if (this.enableWatcher) {
+				// Restart the dom watcher if persisting
+				if (watcherPersists) {
 					this.startWatcher();
 				}
 
-				_callback(cb);
-				_callback(this.domDidUpdate);
+				_callback(cb, this);
 			}
 		);
 	}
@@ -175,17 +176,9 @@ export default class Bootstrapper {
 	 * Start DOM watcher for auto wire ups
 	 */
 	startWatcher() {
-		// If disabled, do nothing
-		if (!this.enableWatcher) {
-			return;
-		}
-
 		// Feature available?
 		if (typeof MutationObserver === 'undefined') {
-			Logger.warn('RHWXX', 'MutationObserver not available');
-
-			// Auto disable it so it dosnt attempt to start again
-			this.enableWatcher = false;
+			Logger.error('RHE09', 'MutationObserver not available.');
 			return;
 		}
 
@@ -204,6 +197,9 @@ export default class Bootstrapper {
 			characterDataOldValue: false,
 			attributeFilter: [this.componentSelector]
 		});
+
+		// Set flag for persistence during update's
+		this._isWatching = true;
 	}
 
 	/**
@@ -213,6 +209,7 @@ export default class Bootstrapper {
 		if (this._observer && this._observer.disconnect) {
 			this._observer.disconnect();
 		}
+		this._isWatching = false;
 	}
 
 	/**
@@ -258,8 +255,8 @@ export default class Bootstrapper {
 
 		// Reset and release
 		this._container = null;
-		this._elements = null;
 		this._observer = null;
+		this._isWatching = false;
 
 		// Handle callback
 		_callback(cb, this);
