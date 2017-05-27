@@ -12,7 +12,6 @@ This framework exists so you can get on with the fun stuff!
 ## Table of contents
 
 - [When to use React Habitat](#when-to-use-react-habitat)
-- [When not to use it](#when-not-to-use-it)
 - [Features](#features)
 - [Compatibility](#compatibility)
 - [Installing](#installing)
@@ -57,8 +56,6 @@ React Habitat works great with:
 
 Typically if you're building a full-on one page React app that yanks data from restful API's... then this framework isn't really going to bring much benefit to you. However you are definitely invited to use it if you want to.
 
-**[⬆ back to top](#table-of-contents)**
-
 ## Features
 
 - Tiny code footprint (only 8KB)
@@ -71,20 +68,22 @@ Typically if you're building a full-on one page React app that yanks data from r
 - 100% W3C HTML5 Valid
 - TypeScript definitions included ([see notes](#typescript-users-please-note))
 
-**[⬆ back to top](#table-of-contents)**
-
 ## Compatibility
 
 - Supports Browsers IE9+ and all the evergreens.
 - ES5, ES6/7 & TypeScript
 - React v15 and up
 
-IE9-11 will require an "Object.assign" [Pollyfill](https://babeljs.io/docs/usage/polyfill/)
-IE9-10 will optionally require an MutationObserver [Pollyfill](https://github.com/megawac/MutationObserver.js/tree/master) if you want dynamic node support.
+Older internet explorers may require these polyfill's
+
+|Pollyfill|IE9|IE10|IE11
+|---|---|---|
+|[Object.assign](http://babeljs.io/docs/usage/polyfill/)|REQUIRED|REQUIRED|
+|[Promise](http://babeljs.io/docs/usage/polyfill/)|REQUIRED|REQUIRED|REQUIRED
+|[MutationObserver](https://github.com/megawac/MutationObserver.js/tree/master) **optional:** only needed if using watcher|OPTIONAL|OPTIONAL|
+
 
 We highly recommend you use something like [WebPack](https://webpack.github.io/) or [Browserify](http://browserify.org/) when using this framework.
-
-**[⬆ back to top](#table-of-contents)**
 
 ## Installing
 
@@ -95,8 +94,6 @@ Install with [NPM](http://npmjs.com/)
 This assumes that you’re using a package manager with a module bundler like [Webpack](http://webpack.github.io) or [Browserify](http://browserify.org/).
 
 If you don’t use a module bundler, and would prefer a single-file [UMD](https://github.com/umdjs/umd) build that makes `ReactHabitat` available as a global object, you can grab a pre-built version from the dist folder.
-
-**[⬆ back to top](#table-of-contents)**
 
 ## Getting Started
 
@@ -243,8 +240,6 @@ To set props you have a few choices. You can use all of these or only some (they
 |[data-prop-*](#data-prop-)|This [prefix](#prefix) maps in strings, booleans, null, array or [encoded JSON](#use-encoded-json-in-html-attributes) to a prop.
 |[data-n-prop-*](#data-n-prop-)|This [prefix](#prefix) maps in numbers and floats to a prop.
 |[data-r-prop-*](#data-r-prop-)|This [prefix](#prefix) in a reference to an object that exists on the global scope (window) to a prop.
-
-**[⬆ back to top](#table-of-contents)**
 
 ### Prefix
 
