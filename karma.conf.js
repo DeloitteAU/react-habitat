@@ -14,16 +14,9 @@ module.exports = function(config) {
 			'tests/**/*.spec.js'
 		],
 
-		customLaunchers: {
-			Chrome_travis_ci: {
-				base: 'Chrome',
-				flags: ['--no-sandbox']
-			}
-		},
-
 		// start these browsers
 		// available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-		browsers: ['Chrome'],
+		browsers: ['Chrome', 'Firefox'],
 
 		// web server port
 		port: 9876,
@@ -84,7 +77,7 @@ module.exports = function(config) {
 	};
 
 	if (process.env.TRAVIS) {
-	 	configuration.browsers = ['Chrome_travis_ci'];
+	 	configuration.browsers = ['Firefox'];
 	}
 
 	config.set(configuration);
