@@ -77,7 +77,7 @@ Typically if you're building a full-on one page React app that yanks data from r
 Older internet explorers may require these polyfill's
 
 |Pollyfill|IE9|IE10|IE11
-|---|---|---|
+|---|---|---|---|
 |[Object.assign](http://babeljs.io/docs/usage/polyfill/)|REQUIRED|REQUIRED|
 |[Promise](http://babeljs.io/docs/usage/polyfill/)|REQUIRED|REQUIRED|REQUIRED
 |[MutationObserver](https://github.com/megawac/MutationObserver.js/tree/master) **optional:** only needed if using watcher|OPTIONAL|OPTIONAL|
