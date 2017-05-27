@@ -22,6 +22,7 @@ This framework exists so you can get on with the fun stuff!
   - [Setting the habitats css class](#setting-the-habitats-css-class)
   - [Replace original node](#replace-original-node)
   - [Dynamic Updates](#dynamic-updates)
+  - [Update Lifecycle](#update-lifecycle)
   - [Start the dom watcher](#start-watcher)
   - [Stop the dom watcher](#stop-watcher)
   - [Disposing the container](#disposing-the-container)
@@ -126,6 +127,7 @@ container.register('SomeReactComponent', SomeReactComponent);
 ```
 
 So for our sample application we need to register all of our components (classes) to be exposed to the DOM so things get wired up nicely.
+Note in this example you can also define split points using React Habitat [dynamic imports](#dynamic-imports-and-code-splitting).
 
 ```javascript
 import ReactHabitat                 from 'react-habitat';
@@ -139,9 +141,12 @@ class MyApp extends ReactHabitat.Bootstrapper {
         // Create a new container builder
         var container = new ReactHabitat.Container();
 
-        // Register your top level component(s) (ie mini/child apps)
+        // Register top level component(s) (ie mini/child apps)
         container.register('SomeReactComponent', SomeReactComponent);
         container.register('AnotherReactComponent', AnotherReactComponent);
+        
+        // Register a dynamic import
+        container.register('AsyncReactComponent', import('./AsyncReactComponent'));
 
         // Finally, set the container
         this.setContainer(container);
@@ -425,11 +430,8 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 `update()`
 
-Will scan the DOM and for any components that require wiring up (i.e after ajaxing in some HTML). 
+The update method will scan the DOM and for any components that require wiring up (i.e after ajaxing in some HTML). 
 This can be evoked automatically by using a [watcher](#start-watcher).
-
-By default *update()* will scan the entire body, however a parent node can optionally be passed in for better
-performance if you know where the update has occurred.
 
 Example
 
@@ -438,9 +440,68 @@ class MyApp extends ReactHabitat.Bootstrapper {
 	someMethod() {
         // This will scan the entire document body
         this.update();
-    
+    }
+}
+```
+By default *update()* will scan the entire body, however a parent node can optionally be passed in for better
+performance if you know where the update has occurred.
+
+Example
+
+```javascript
+class MyApp extends ReactHabitat.Bootstrapper {
+	someMethod() {    
         // Will scan just the children of the element with id 'content'
         this.update(window.document.getElementById('content'))
+    }
+}
+```
+
+You can call this method from somewhere else in your app by importing it
+
+```javascript
+import MyApp from './MyApp';
+
+// ...
+
+MyApp.update();
+```
+
+### Update Lifecycle
+
+React Habitat applications have update "lifecycle methods" that you can override to run code at particular times
+in the process.
+
+**shouldUpdate(node)**
+
+Called when an update has been requested. Return false to cancel the update.
+
+**willUpdate(node)**
+
+Called when and update is about to take place.
+
+**didUpdate(node)**
+
+Called after an update has taken place.
+
+
+Example
+
+```javascript
+class MyApp extends ReactHabitat.Bootstrapper {
+	shouldUpdate(node) { 
+		// Dont allow updates on div's
+        if (node.tagName === 'div') {
+        	return false;
+        }
+    }
+    
+    willUpdate(node) {
+		console.log('Im about to update', node);
+    }
+    
+    didUpdate(node) {
+        console.log('I just updated', node);
     }
 }
 ```

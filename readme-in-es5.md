@@ -23,6 +23,7 @@ This framework exists so you can get on with the fun stuff!
   - [Setting the habitats css class](#setting-the-habitats-css-class)
   - [Replace original node](#replace-original-node)
   - [Dynamic Updates](#dynamic-updates)
+  - [Update Lifecycle](#update-lifecycle)
   - [Start the dom watcher](#start-watcher)
   - [Stop the dom watcher](#stop-watcher)
   - [Disposing the container](#disposing-the-container)
@@ -131,6 +132,7 @@ In React Habitat, you'd register a component something like this
 ```
 
 So for our sample application we need to register all of our components (classes) to be exposed to the DOM so things get wired up nicely.
+Note in this example you can also define split points using React Habitat [dynamic imports](#dynamic-imports-and-code-splitting).
 
 ```javascript
 var ReactHabitat = require('react-habitat');
@@ -147,7 +149,10 @@ function MyApp() {
 
       // Register your top level component(s)
       {register: 'SomeReactComponent', for: SomeReactComponent},
-      {register: 'AnotherReactComponent', for: AnotherReactComponent}
+      {register: 'AnotherReactComponent', for: AnotherReactComponent},
+      
+      // Register a dynamic import
+      {register: 'AsyncReactComponent', for: import('./AsyncReactComponent')}
     ]
   });
 
@@ -417,9 +422,6 @@ function MyApp() {
 Will scan the DOM and for any components that require wiring up (i.e after ajaxing in some HTML). 
 This can be evoked automatically by using a [watcher](#start-watcher).
 
-By default *update()* will scan the entire body, however a parent node can optionally be passed in for better
-performance if you know where the update has occurred.
-
 Example
 
 ```javascript
@@ -436,6 +438,67 @@ function MyApp() {
 	// Will scan just the children of the element with id 'content'
 	this.domContainer.update(window.document.getElementById('content'));
 
+}
+```
+
+By default *update()* will scan the entire body, however a parent node can optionally be passed in for better
+performance if you know where the update has occurred.
+
+Example
+
+```javascript
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: 'myComponents'
+	});
+
+	// Will scan just the children of the element with id 'content'
+	this.domContainer.update(window.document.getElementById('content'));
+
+}
+```
+
+### Update Lifecycle
+
+React Habitat applications have update "lifecycle methods" that you can override to run code at particular times
+in the process.
+
+**shouldUpdate(node)**
+
+Called when an update has been requested. Return false to cancel the update.
+
+**willUpdate(node)**
+
+Called when and update is about to take place.
+
+**didUpdate(node)**
+
+Called after an update has taken place.
+
+
+Example
+
+```javascript
+function MyApp() {
+
+	// Create a new react habitat bootstrapper
+	this.domContainer = ReactHabitat.createBootstrapper({
+		componentSelector: 'myComponents'
+		shouldUpdate: function(node) {
+			// Dont allow updates on div's
+            if (node.tagName === 'div') {
+                return false;
+            }
+		},
+		willUpdate: function(node) {
+			// will update
+		},
+		didUpdate: function(node) {
+			// did update
+		}
+	});
 }
 ```
 
