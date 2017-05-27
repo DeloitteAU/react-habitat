@@ -8,6 +8,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class MochComponent extends React.Component {
 
@@ -25,7 +26,7 @@ class MochComponent extends React.Component {
 }
 
 MochComponent.propTypes = {
-	title: React.PropTypes.string,
+	title: PropTypes.string,
 };
 
 export default MochComponent;

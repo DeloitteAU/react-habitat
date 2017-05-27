@@ -22,42 +22,41 @@ describe('Dynamic Watcher', () => {
 		}
 	}
 
-	// -- MOCH CONTAINER SET UP -- //
-	const container = new Container();
-	container.register('IMochComponent', MochComponent);
-	// --------------------------- //
-
-	// Create the app early before any components rendered on the page
-	var app = new App(container);
-
-	beforeEach((done) => {
-		app = new App(container);
-
-		// Ensure the HTML is added after app has initilised
-		window.setTimeout(() => {
-			node = document.createElement('div');
-			node.innerHTML =
-				'<div data-component="IMochComponent"></div>';
-
-			// This should fire the MutationObserver
-			window.document.body.appendChild(node);
-
-			// Give the MutationObserver some grace time as it runs async
-			window.setTimeout(done, 200);
-		}, 300);
+	beforeEach(() => {
+		node = document.createElement('div');
+		window.document.body.appendChild(node);
 	});
 
 	afterEach(() => {
-		app.dispose();
-		app = null;
 		window.document.body.removeChild(node);
 	});
 
-	it('should render dynamic loaded elements via observer', () => {
+	it('should render dynamic loaded elements via observer', (done) => {
 
-		let componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+		// -- MOCH CONTAINER SET UP -- //
+		const container = new Container();
+		container.register('IMochComponent', MochComponent);
+		// --------------------------- //
 
-		expect(componentLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(1);
+		const app = new App(container, () => {
+			const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+
+			expect(componentLookup).toEqual(null);
+
+			// Now add the HTML after the app has finished initialising
+			node = document.createElement('div');
+			node.innerHTML = '<div data-component="IMochComponent"></div>';
+
+			// We expect this to trigger the watcher
+			window.document.body.appendChild(node);
+
+			// Give the watcher some grace time as it runs async
+			window.setTimeout(() => {
+				const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+				expect(componentLookup.length).toEqual(1);
+				app.dispose(); // Stop the watcher for other tests
+				done();
+			}, 500);
+		});
 	});
 });

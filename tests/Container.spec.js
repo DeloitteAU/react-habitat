@@ -20,42 +20,64 @@ describe('Container', () => {
 		expect(container).toBeDefined();
 	});
 
-	it('does register components', () => {
+	it('does register components', (done) => {
 		container.register('aComponent', MochComponent);
 
 		expect(container).toBeDefined();
-		expect(container.resolve('aComponent')).toBe(MochComponent);
+		container.resolve('aComponent').then((component) => {
+			expect(component).toBe(MochComponent);
+			done();
+		});
 	});
 
-	it('does register multiple components', () => {
+	it('does register multiple components', (done) => {
 
 		const testContainer = new Container();
 		testContainer.registerAll({
 			aComponent: MochComponent,
-			anotherComponent: MochComponentTwo,
+			anotherComponent: MochComponentTwo
 		});
 
 		expect(testContainer).toBeDefined();
-		expect(testContainer.resolve('aComponent')).toBe(MochComponent);
-		expect(testContainer.resolve('anotherComponent')).toBe(MochComponentTwo);
+
+		const t1 = testContainer.resolve('aComponent').then((component) => {
+			expect(component).toBe(MochComponent);
+		});
+
+		const t2 = testContainer.resolve('anotherComponent').then((component) => {
+			expect(component).toBe(MochComponentTwo);
+		});
+
+		Promise.all([t1, t2]).then(done);
 	});
 
 
-	it('does override registered components', () => {
+	it('does override registered components', (done) => {
 		container.register('aComponent', MochComponent);
 		container.register('aComponent', MochComponentTwo);
 
 		expect(container).toBeDefined();
-		expect(container.resolve('aComponent')).toBe(MochComponentTwo);
+
+		container.resolve('aComponent').then((component) => {
+			expect(component).toBe(MochComponentTwo);
+			done();
+		});
 	});
 
 
-	it('does resolve distinct components', () => {
+	it('does resolve distinct components', (done) => {
 		container.register('aComponent', MochComponent);
 		container.register('aComponent2', MochComponentTwo);
 
-		expect(container.resolve('aComponent')).toBe(MochComponent);
-		expect(container.resolve('aComponent2')).toBe(MochComponentTwo);
+		const t1 = container.resolve('aComponent').then((component) => {
+			expect(component).toBe(MochComponent);
+		});
+
+		const t2 = container.resolve('aComponent2').then((component) => {
+			expect(component).toBe(MochComponentTwo);
+		});
+
+		Promise.all([t1, t2]).then(done);
 	});
 
 	it('does return valid id', () => {
