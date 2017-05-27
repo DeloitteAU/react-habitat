@@ -283,13 +283,13 @@ Would expose props as
 
 ```javascript
 var SomeReactComponent = React.createClass({
-	render: function() {
+    render: function() {
 
-		this.props.title === "A nice title";      //> true
-		this.props.showTitle === true;            //> true
+        this.props.title === "A nice title";      //> true
+        this.props.showTitle === true;            //> true
 
-		return <div>{ this.props.showTitle ? this.props.title : null }</div>;
-	}
+        return <div>{ this.props.showTitle ? this.props.title : null }</div>;
+    }
 });
 ```
 
@@ -297,7 +297,7 @@ JSON Example
 
 ```html
 <div data-component="SomeReactComponent"
-		data-prop-person='{"name": "john", "age": 22}'>
+        data-prop-person='{"name": "john", "age": 22}'>
 </div>
 ```
 
@@ -305,14 +305,14 @@ Would expose as
 
 ```javascript
 var SomeReactComponent = React.createClass({
-	render: function() {
+    render: function() {
 
-		return (
-			<div>
-				Name: {this.props.person.name}
-				Age: {this.props.person.age}
-			</div>
-		);
+        return (
+            <div>
+                Name: {this.props.person.name}
+                Age: {this.props.person.age}
+            </div>
+        );
   }
 });
 ```
@@ -405,10 +405,10 @@ Example
 ```javascript
 function MyApp() {
 
-	// Create a new react habitat bootstrapper
-	this.domContainer = ReactHabitat.createBootstrapper({
-		componentSelector: 'myComponents'
-	});
+    // Create a new react habitat bootstrapper
+    this.domContainer = ReactHabitat.createBootstrapper({
+        componentSelector: 'myComponents'
+    });
 
 }
 ```
@@ -427,16 +427,16 @@ Example
 ```javascript
 function MyApp() {
 
-	// Create a new react habitat bootstrapper
-	this.domContainer = ReactHabitat.createBootstrapper({
-		componentSelector: 'myComponents'
-	});
+    // Create a new react habitat bootstrapper
+    this.domContainer = ReactHabitat.createBootstrapper({
+        componentSelector: 'myComponents'
+    });
 
-	// This will scan the entire document body
-	this.domContainer.update();
+    // This will scan the entire document body
+    this.domContainer.update();
 
-	// Will scan just the children of the element with id 'content'
-	this.domContainer.update(window.document.getElementById('content'));
+    // Will scan just the children of the element with id 'content'
+    this.domContainer.update(window.document.getElementById('content'));
 
 }
 ```
@@ -449,13 +449,13 @@ Example
 ```javascript
 function MyApp() {
 
-	// Create a new react habitat bootstrapper
-	this.domContainer = ReactHabitat.createBootstrapper({
-		componentSelector: 'myComponents'
-	});
+    // Create a new react habitat bootstrapper
+    this.domContainer = ReactHabitat.createBootstrapper({
+        componentSelector: 'myComponents'
+    });
 
-	// Will scan just the children of the element with id 'content'
-	this.domContainer.update(window.document.getElementById('content'));
+    // Will scan just the children of the element with id 'content'
+    this.domContainer.update(window.document.getElementById('content'));
 
 }
 ```
@@ -483,22 +483,22 @@ Example
 ```javascript
 function MyApp() {
 
-	// Create a new react habitat bootstrapper
-	this.domContainer = ReactHabitat.createBootstrapper({
-		componentSelector: 'myComponents'
-		shouldUpdate: function(node) {
-			// Dont allow updates on div's
+    // Create a new react habitat bootstrapper
+    this.domContainer = ReactHabitat.createBootstrapper({
+        componentSelector: 'myComponents'
+        shouldUpdate: function(node) {
+            // Dont allow updates on div's
             if (node.tagName === 'div') {
                 return false;
             }
-		},
-		willUpdate: function(node) {
-			// will update
-		},
-		didUpdate: function(node) {
-			// did update
-		}
-	});
+        },
+        willUpdate: function(node) {
+            // will update
+        },
+        didUpdate: function(node) {
+            // did update
+        }
+    });
 }
 ```
 
@@ -516,13 +516,13 @@ Example
 ```javascript
 function MyApp() {
 
-	// Create a new react habitat bootstrapper
-	this.domContainer = ReactHabitat.createBootstrapper({
-		componentSelector: 'myComponents'
-	});
+    // Create a new react habitat bootstrapper
+    this.domContainer = ReactHabitat.createBootstrapper({
+        componentSelector: 'myComponents'
+    });
 
-	// Wire up any future habitat elements automatically
-	this.domContainer.startWatcher();
+    // Wire up any future habitat elements automatically
+    this.domContainer.startWatcher();
 
 }
 ```
@@ -538,13 +538,13 @@ Example
 ```javascript
 function MyApp() {
 
-	// Create a new react habitat bootstrapper
-	this.domContainer = ReactHabitat.createBootstrapper({
-		componentSelector: 'myComponents'
-	});
+    // Create a new react habitat bootstrapper
+    this.domContainer = ReactHabitat.createBootstrapper({
+        componentSelector: 'myComponents'
+    });
 
-	// Stop the watcher
-	this.domContainer.stopWatcher();
+    // Stop the watcher
+    this.domContainer.stopWatcher();
 
 }
 ```
@@ -560,12 +560,12 @@ Example
 ```javascript
 function MyApp() {
 
-	// Create a new react habitat bootstrapper
-	this.domContainer = ReactHabitat.createBootstrapper({
-		...
-	});
+    // Create a new react habitat bootstrapper
+    this.domContainer = ReactHabitat.createBootstrapper({
+        ...
+    });
 
-	this.domContainer.dispose();
+    this.domContainer.dispose();
 
 }
 ```

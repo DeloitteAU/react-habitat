@@ -161,8 +161,8 @@ You can also register multiple component's all at once with `registerAll` like t
 
 ```javascript
 container.registerAll({
-	'SomeReactComponent': SomeReactComponent,
-	'AnotherReactComponent': AnotherReactComponent
+    'SomeReactComponent': SomeReactComponent,
+    'AnotherReactComponent': AnotherReactComponent
 });
 ```
 
@@ -290,16 +290,16 @@ Would expose props as
 ```javascript
 class SomeReactComponent extends React.Component {
 
-	constructor(props) {
-		super(props);
+    constructor(props) {
+        super(props);
 
-		props.title === "A nice title";  //> true
-		props.showTitle === true;        //> true
-	}
+        props.title === "A nice title";  //> true
+        props.showTitle === true;        //> true
+    }
 
-	render() {
-		return <div>{ this.props.showTitle ? this.props.title : null }</div>;
-	}
+    render() {
+        return <div>{ this.props.showTitle ? this.props.title : null }</div>;
+    }
 }
 ```
 
@@ -307,7 +307,7 @@ JSON Example
 
 ```html
 <div data-component="SomeReactComponent"
-		data-prop-person='{"name": "john", "age": 22}'>
+        data-prop-person='{"name": "john", "age": 22}'>
 </div>
 ```
 
@@ -315,16 +315,16 @@ Would expose as
 
 ```javascript
 class MyReactComponent extends React.Component {
-	constructor(props) {
-		super(props);
+    constructor(props) {
+        super(props);
 
-		return (
-			<div>
-				Name: {this.props.person.name}
-				Age: {this.props.person.age}
-			</div>
-		);
-	}
+        return (
+            <div>
+                Name: {this.props.person.name}
+                Age: {this.props.person.age}
+            </div>
+        );
+    }
 }
 ```
 
@@ -416,11 +416,11 @@ Example
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
-	constructor(){
-		super();
+    constructor(){
+        super();
 
-		this.componentSelector = 'data-myComponents';
-	}
+        this.componentSelector = 'data-myComponents';
+    }
 }
 ```
 
@@ -437,7 +437,7 @@ Example
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
-	someMethod() {
+    someMethod() {
         // This will scan the entire document body
         this.update();
     }
@@ -450,7 +450,7 @@ Example
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
-	someMethod() {    
+    someMethod() {    
         // Will scan just the children of the element with id 'content'
         this.update(window.document.getElementById('content'))
     }
@@ -489,15 +489,15 @@ Example
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
-	shouldUpdate(node) { 
-		// Dont allow updates on div's
+    shouldUpdate(node) { 
+        // Dont allow updates on div's
         if (node.tagName === 'div') {
-        	return false;
+            return false;
         }
     }
     
     willUpdate(node) {
-		console.log('Im about to update', node);
+        console.log('Im about to update', node);
     }
     
     didUpdate(node) {
@@ -538,9 +538,9 @@ Example
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
-	someMethod(){
-		this.stopWatcher();
-	}
+    someMethod(){
+        this.stopWatcher();
+    }
 }
 ```
 
@@ -554,13 +554,13 @@ Example
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
-	constructor(){
-		super();
+    constructor(){
+        super();
 
-		...
+        //...
 
-		this.dispose();
-	}
+        this.dispose();
+    }
 }
 ```
 
