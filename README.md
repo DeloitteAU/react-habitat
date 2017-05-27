@@ -57,6 +57,8 @@ React Habitat works great with:
 
 Typically if you're building a full-on one page React app that yanks data from restful API's... then this framework isn't really going to bring much benefit to you. However you are definitely invited to use it if you want to.
 
+**[⬆ back to top](#table-of-contents)**
+
 ## Features
 
 - Tiny code footprint (only 8KB)
@@ -69,6 +71,8 @@ Typically if you're building a full-on one page React app that yanks data from r
 - 100% W3C HTML5 Valid
 - TypeScript definitions included ([see notes](#typescript-users-please-note))
 
+**[⬆ back to top](#table-of-contents)**
+
 ## Compatibility
 
 - Supports Browsers IE9+ and all the evergreens.
@@ -80,19 +84,19 @@ IE9-10 will optionally require an MutationObserver [Pollyfill](https://github.co
 
 We highly recommend you use something like [WebPack](https://webpack.github.io/) or [Browserify](http://browserify.org/) when using this framework.
 
+**[⬆ back to top](#table-of-contents)**
+
 ## Installing
 
 Install with [NPM](http://npmjs.com/)
 
 `npm install --save-dev react-habitat`
 
-Install with [Yarn](https://yarnpkg.com/en/)
-
-`yarn add react-habitat`
-
 This assumes that you’re using a package manager with a module bundler like [Webpack](http://webpack.github.io) or [Browserify](http://browserify.org/).
 
 If you don’t use a module bundler, and would prefer a single-file [UMD](https://github.com/umdjs/umd) build that makes `ReactHabitat` available as a global object, you can grab a pre-built version from the dist folder.
+
+**[⬆ back to top](#table-of-contents)**
 
 ## Getting Started
 
@@ -224,6 +228,8 @@ Will render 3 instances of your component.
 
 **Note** It's important that the output built javascript file is included at the end of the DOM just before the closing body tag.
 
+**[⬆ back to top](#table-of-contents)**
+
 ## Passing properties *(props)* to your components
 
 Resolving and registering components alone is not all that special, but passing data to it via html attributes is pretty useful. This allows the backend to
@@ -238,9 +244,11 @@ To set props you have a few choices. You can use all of these or only some (they
 |[data-n-prop-*](#data-n-prop-)|This [prefix](#prefix) maps in numbers and floats to a prop.
 |[data-r-prop-*](#data-r-prop-)|This [prefix](#prefix) in a reference to an object that exists on the global scope (window) to a prop.
 
+**[⬆ back to top](#table-of-contents)**
+
 ### Prefix
 
-With a attribute *prefix* the **\*** may be replaced by any name. This allow's you to define the property the name.
+With an attribute *prefix* the **\*** may be replaced by any name. This allow's you to define the property name.
 Property names must be all lower case and hyphens will be *automatically converted* to camel case.
 
 For example
@@ -347,6 +355,7 @@ For Example
 
 This is handy if you need to share properties between habitats or you need to set JSON onto the page.
 
+**[⬆ back to top](#table-of-contents)**
 
 ## Passing values back again
 
@@ -369,6 +378,8 @@ this.props.proxy.value = '1234'
 
 Sometimes you may additionally need to call `this.props.proxy.onchange()` if you have other scripts listening for this event.
 
+**[⬆ back to top](#table-of-contents)**
+
 ## Options and Methods
 
 **Using ES5?** Read the [ES5 version here](readme-in-es5.md).
@@ -385,11 +396,15 @@ Will result in the following being rendered
 
 `<div data-habitat="C1" class="my-css-class">...</div>`
 
+**[⬆ back to top](#table-of-contents)**
+
 ### Replace original node
 
 By default only `<inputs />` are left in the DOM when a React Habitat is created.
 
 To keep a generic element in the DOM, set the `data-habitat-no-replace="true"` attribute.
+
+**[⬆ back to top](#table-of-contents)**
 
 ### Changing the habitat query selector
 
@@ -411,6 +426,8 @@ class MyApp extends ReactHabitat.Bootstrapper {
 	}
 }
 ```
+
+**[⬆ back to top](#table-of-contents)**
 
 ### Dynamic Updates
 
@@ -436,6 +453,8 @@ class MyApp extends ReactHabitat.Bootstrapper {
 }
 ```
 
+**[⬆ back to top](#table-of-contents)**
+
 ### Start Watcher
 
 Will start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
@@ -456,6 +475,8 @@ class MyApp extends ReactHabitat.Bootstrapper {
 **Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
 to use this feature. An alternative is to call [update](#update) manually.
 
+**[⬆ back to top](#table-of-contents)**
+
 ### Stop Watcher
 
 Will stop watching the DOM for any changes.
@@ -469,6 +490,8 @@ class MyApp extends ReactHabitat.Bootstrapper {
 	}
 }
 ```
+
+**[⬆ back to top](#table-of-contents)**
 
 ### Disposing the container
 
@@ -487,6 +510,8 @@ class MyApp extends ReactHabitat.Bootstrapper {
 	}
 }
 ```
+
+**[⬆ back to top](#table-of-contents)**
 
 ## Use encoded JSON in HTML attributes
 
@@ -520,6 +545,8 @@ example
 `<div data-props='{"restaurant": "Bob\'s bar and grill"}'></div>`
 
 *We will use this method in the docs to maintain readability. However, we strongly recommend you encode in production code.*
+
+**[⬆ back to top](#table-of-contents)**
 
 ## Want to contribute?
 
@@ -569,3 +596,5 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+**[⬆ back to top](#table-of-contents)**

@@ -228,7 +228,7 @@ To set props you have a few choices. You can use all of these or only some (they
 
 ### Prefix
 
-With a attribute *prefix* the **\*** may be replaced by any name. This allow's you to define the property the name.
+With an attribute *prefix* the **\*** may be replaced by any name. This allow's you to define the property name.
 Property names must be all lower case and hyphens will be *automatically converted* to camel case.
 
 For example
