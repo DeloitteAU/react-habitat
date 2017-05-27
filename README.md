@@ -25,6 +25,7 @@ This framework exists so you can get on with the fun stuff!
   - [Start the dom watcher](#start-watcher)
   - [Stop the dom watcher](#stop-watcher)
   - [Disposing the container](#disposing-the-container)
+- [Dynamic imports and code splitting](#dynamic-imports-and-code-splitting)
 - [Use encoded JSON in HTML attributes](#use-encoded-json-in-html-attributes)
 - [Contribute](#want-to-contribute)
 - [License information](#license-bsd-3-clause)
@@ -74,14 +75,10 @@ Typically if you're building a full-on one page React app that yanks data from r
 - ES5, ES6/7 & TypeScript
 - React v15 and up
 
-Older internet explorers may require these polyfill's
+Polyfills
 
-|Pollyfill|IE9|IE10|IE11
-|---|---|---|---|
-|[Object.assign](http://babeljs.io/docs/usage/polyfill/)|REQUIRED|REQUIRED|
-|[Promise](http://babeljs.io/docs/usage/polyfill/)|REQUIRED|REQUIRED|REQUIRED
-|[MutationObserver](https://github.com/megawac/MutationObserver.js/tree/master) **optional:** only needed if using watcher|OPTIONAL|OPTIONAL|
-
+- IE9-11 Will require a [Promise Polyfill](http://babeljs.io/docs/usage/polyfill/)
+- IE9-10 Will require a [Object.assign Polyfill](http://babeljs.io/docs/usage/polyfill/)
 
 We highly recommend you use something like [WebPack](https://webpack.github.io/) or [Browserify](http://browserify.org/) when using this framework.
 
@@ -452,7 +449,10 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 ### Start Watcher
 
-Will start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
+**Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
+to use this feature. An alternative is to call [update](#update) manually.
+
+Start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
 
 Example
 
@@ -466,9 +466,6 @@ class MyApp extends ReactHabitat.Bootstrapper {
     }
 }
 ```
-
-**Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
-to use this feature. An alternative is to call [update](#update) manually.
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -507,6 +504,70 @@ class MyApp extends ReactHabitat.Bootstrapper {
 ```
 
 **[⬆ back to top](#table-of-contents)**
+
+## Dynamic imports and code splitting
+
+React Habitat supports resolving components asynchronously by using Promises. To define async registrations just register a Promise (that resolves to a component) instead of a component.
+
+for example
+
+```
+container.register('AsynReactComponent', new Promise((resolve, reject) => {
+    // .. do async work to get 'component', then
+    resolve(component);
+}));
+```
+
+or with registerAll
+
+```
+container.registerAll({
+    'SomeReactComponent': new Promise((resolve, reject) => {
+        // .. do async work to get 'component', then
+        resolve(component);
+    })
+});
+```
+
+React Habitat has no restrictions on how you want to resolve your components however this does enable you to define code split points.
+
+**Code splitting** is one great feature that means our visitors dont need to download the entire app before they can use it.
+Think of code splitting as incrementally download your application only as its needed.
+
+While there are other methods for code splitting we will use Webpack for these examples.
+
+Webpack 2 treats `import()` as a [split-point](https://webpack.js.org/guides/code-splitting-async/) and puts the requested module into a separate chunk. 
+
+So for example, we could create a split point using `import()` like this:
+
+```
+container.register('AsynReactComponent', new Promise((resolve, reject) => {
+    import('./components/MyComponent').then((MyComponent) => {
+        resolve(MyComponent);
+    }).catch((err) => {
+        reject(err);
+    })
+}));
+```
+
+**However**, since `import()` returns a Promise, we can actually simplify the above to:
+
+```
+container.register('AsynReactComponent', import('./components/MyComponent'));
+```
+
+Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
+
+```
+container.register('AsynReactComponent', new Promise((resolve, reject) => {
+    require.ensure(['./components/MyComponent'], (MyComponent) => {
+        resolve(MyComponent);
+    });
+}));
+```
+
+**[⬆ back to top](#table-of-contents)**
+
 
 ## Use encoded JSON in HTML attributes
 

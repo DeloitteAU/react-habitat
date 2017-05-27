@@ -26,6 +26,7 @@ This framework exists so you can get on with the fun stuff!
   - [Start the dom watcher](#start-watcher)
   - [Stop the dom watcher](#stop-watcher)
   - [Disposing the container](#disposing-the-container)
+- [Dynamic imports and code splitting](#dynamic-imports-and-code-splitting)
 - [Use encoded JSON in HTML attributes](#use-encoded-json-in-html-attributes)
 - [Contribute](#want-to-contribute)
 - [License information](#license-bsd-3-clause)
@@ -71,9 +72,14 @@ Typically if you're building a full-on one page React app that yanks data from r
 
 ## Compatibility
 
-- Supports Browsers IE9+ and all the evergreens. (IE9-11 will require an "Object.assign" [Pollyfill](https://babeljs.io/docs/usage/polyfill/))
+- Supports Browsers IE9+ and all the evergreens.
 - ES5, ES6/7 & TypeScript
 - React v15 and up
+
+Polyfills
+
+- IE9-11 Will require a [Promise Polyfill](http://babeljs.io/docs/usage/polyfill/)
+- IE9-10 Will require a [Object.assign Polyfill](http://babeljs.io/docs/usage/polyfill/)
 
 We highly recommend you use something like [WebPack](https://webpack.github.io/) or [Browserify](http://browserify.org/) when using this framework.
 
@@ -212,6 +218,8 @@ Will render 3 instances of your component.
 
 **Note** It's important that the output built javascript file is included at the end of the DOM just before the closing body tag.
 
+**[⬆ back to top](#table-of-contents)**
+
 ## Passing properties *(props)* to your components
 
 Resolving and registering components alone is not all that special, but passing data to it via html attributes is pretty useful. This allows the backend to
@@ -329,6 +337,8 @@ For Example
 
 This is handy if you need to share properties between habitats or you need to set JSON onto the page.
 
+**[⬆ back to top](#table-of-contents)**
+
 ## Passing values back again
 
 It can be handy to pass values back again, particularly for inputs so the backend frameworks can see any changes or read data.
@@ -350,6 +360,8 @@ this.props.proxy.value = '1234'
 
 Sometimes you may additionally need to call `this.props.proxy.onchange()` if you have other scripts listening for this event.
 
+**[⬆ back to top](#table-of-contents)**
+
 ## Options & Methods
 
 ### Setting the habitat's css class
@@ -364,11 +376,15 @@ Will result in the following being rendered
 
 `<div data-habitat="C1" class="my-css-class">...</div>`
 
+**[⬆ back to top](#table-of-contents)**
+
 ### Replace original node
 
 By default only `<inputs />` are left in the DOM when a React Habitat is created.
 
 To keep a generic element in the DOM, set the `data-habitat-no-replace="true"` attribute.
+
+**[⬆ back to top](#table-of-contents)**
 
 ### Changing the habitat query selector
 
@@ -391,6 +407,8 @@ function MyApp() {
 
 }
 ```
+
+**[⬆ back to top](#table-of-contents)**
 
 ### Dynamic Updates
 
@@ -421,9 +439,14 @@ function MyApp() {
 }
 ```
 
+**[⬆ back to top](#table-of-contents)**
+
 ### Start Watcher
 
-Will start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
+**Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
+to use this feature. An alternative is to call [update](#update) manually.
+
+Start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
 
 Example
 
@@ -441,8 +464,7 @@ function MyApp() {
 }
 ```
 
-**Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
-to use this feature. An alternative is to call [update](#update) manually.
+**[⬆ back to top](#table-of-contents)**
 
 ### Stop Watcher
 
@@ -464,6 +486,8 @@ function MyApp() {
 }
 ```
 
+**[⬆ back to top](#table-of-contents)**
+
 ### Disposing the container
 
 To unload the container and remove all React Habitat instances. Call the `dispose()` method.
@@ -482,6 +506,70 @@ function MyApp() {
 
 }
 ```
+**[⬆ back to top](#table-of-contents)**
+
+## Dynamic imports and code splitting
+
+React Habitat supports resolving components asynchronously by using Promises. To define async registrations just register a Promise (that resolves to a component) instead of a component.
+
+for example
+
+```
+container.register('AsynReactComponent', new Promise(function(resolve, reject) {
+    // .. do async work to get 'component', then
+    resolve(component);
+}));
+```
+
+or with registerAll
+
+```
+container.registerAll({
+    'SomeReactComponent': new Promise(function(resolve, reject) {
+        // .. do async work to get 'component', then
+        resolve(component);
+    })
+});
+```
+
+React Habitat has no restrictions on how you want to resolve your components however this does enable you to define code split points.
+
+**Code splitting** is one great feature that means our visitors dont need to download the entire app before they can use it.
+Think of code splitting as incrementally download your application only as its needed.
+
+While there are other methods for code splitting we will use Webpack for these examples.
+
+Webpack 2 treats `import()` as a [split-point](https://webpack.js.org/guides/code-splitting-async/) and puts the requested module into a separate chunk. 
+
+So for example, we could create a split point using `import()` like this:
+
+```
+container.register('AsynReactComponent', new Promise(function(resolve, reject) {
+    import('./components/MyComponent').then(function(MyComponent) {
+        resolve(MyComponent);
+    }).catch(function(err) {
+        reject(err);
+    })
+}));
+```
+
+**However**, since `import()` returns a Promise, we can actually simplify the above to:
+
+```
+container.register('AsynReactComponent', import('./components/MyComponent'));
+```
+
+Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
+
+```
+container.register('AsynReactComponent', new Promise(function(resolve, reject) {
+    require.ensure(['./components/MyComponent'], function(MyComponent) {
+        resolve(MyComponent);
+    });
+}));
+```
+
+**[⬆ back to top](#table-of-contents)**
 
 ### Use encoded JSON in HTML attributes
 
@@ -515,6 +603,8 @@ example
 `<div data-props='{"restaurant": "Bob\'s bar and grill"}'></div>`
 
 *We will use this method in the docs to maintain readability. However, we strongly recommend you encode in production code.*
+
+**[⬆ back to top](#table-of-contents)**
 
 ## Want to contribute?
 
@@ -564,3 +654,5 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+**[⬆ back to top](#table-of-contents)**
