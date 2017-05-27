@@ -465,15 +465,15 @@ function MyApp() {
 React Habitat applications have update "lifecycle methods" that you can override to run code at particular times
 in the process.
 
-**shouldUpdate(node)**
+`shouldUpdate(node)`
 
 Called when an update has been requested. Return false to cancel the update.
 
-**willUpdate(node)**
+`willUpdate(node)`
 
 Called when and update is about to take place.
 
-**didUpdate(node)**
+`didUpdate(node)`
 
 Called after an update has taken place.
 
