@@ -235,29 +235,16 @@ describe('Bootstrapper', () => {
 			expect(componentLookup()).not.toEqual(null);
 			expect(componentLookup().length).toEqual(1);
 
-			app.dispose();
-
-			expect(componentLookup()).toEqual(null);
-			expect(node.innerHTML).toBe('<div data-component="IMochComponent"></div>');
-			done();
+			app.dispose(() => {
+				expect(componentLookup()).toEqual(null);
+				expect(node.innerHTML).toBe('<div data-component="IMochComponent"></div>');
+				done();
+			});
 		});
 
 		expect(app).toBeDefined();
 	});
 
-	it('should dispose with callback', () => {
-
-		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		const mochCallbackHandler = jasmine.createSpy('My Method');
-		// --------------------------- //
-
-		const app = new App(container);
-		app.dispose(mochCallbackHandler);
-
-		expect(app).toBeDefined();
-		expect(mochCallbackHandler).toHaveBeenCalledTimes(1);
-	});
 
 	it('should resolve components with a Promise', (done) => {
 
