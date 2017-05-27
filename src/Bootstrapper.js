@@ -22,6 +22,7 @@ function _callback(cb, context, ...args) {
 	}
 }
 
+
 /**
  * Apply a container to nodes and populate components
  * @param {array}     container             The container
@@ -32,14 +33,9 @@ function _callback(cb, context, ...args) {
  */
 function _applyContainer(container, nodes, componentSelector, cb = null) {
 
-	// Bail out early if no elements to parse
-	if (!nodes || !nodes.length) {
-		_callback(cb);
-		return;
-	}
-
 	const factory = container.domFactory();
 	const id = container.id();
+	const q = [];
 
 	// Iterate over component elements in the dom
 	for (let i = 0; i < nodes.length; ++i) {
@@ -51,26 +47,38 @@ function _applyContainer(container, nodes, componentSelector, cb = null) {
 		}
 
 		const componentName = ele.getAttribute(componentSelector);
-		const component = container.resolve(componentName);
-		if (component) {
-			// Expensive operation so only do on non prod builds
-			if (process.env.NODE_ENV !== 'production') {
-				if (ele.querySelector(`[${componentSelector}]`)) {
-					Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
+		q.push(
+			container
+			.resolve(componentName)
+			.then((component) => {
+				// This is an expensive operation so only do on non prod builds
+				if (process.env.NODE_ENV !== 'production') {
+					if (ele.querySelector(`[${componentSelector}]`)) {
+						Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
+					}
 				}
-			}
 
-			// Inject the component
-			factory.inject(
-				component,
-				Habitat.parseProps(ele),
-				Habitat.create(ele, id));
-		} else {
-			Logger.error('RHW01', `Cannot resolve component "${componentName}" for element.`, ele);
-		}
+				// Inject the component
+				factory.inject(
+					component,
+					Habitat.parseProps(ele),
+					Habitat.create(ele, id));
+			}).catch((err) => {
+				Logger.error('RHW01', `Cannot resolve component "${componentName}" for element.`, err, ele);
+			})
+		);
 	}
 
-	_callback(cb);
+	// Trigger callback when all promises are finished
+	// regardless if some fail
+	Promise
+		.all(q.map(p => p.catch(e => e)))
+		.then(() => {
+			_callback(cb);
+		}).catch((err) => {
+			// We should never get here.. if we do this is a bug
+			throw err;
+		});
 }
 
 /**
@@ -149,6 +157,17 @@ export default class Bootstrapper {
 			return;
 		}
 
+		const target = node || window.document.body.querySelectorAll(`[${this.componentSelector}]`);
+
+		// Lifecycle event
+		// Hook to allow developers to cancel operation
+		if (typeof this.shouldUpdate === 'function') {
+			if (this.shouldUpdate(target) === false) {
+				_callback(cb, this);
+				return;
+			}
+		}
+
 		// Temporarily stop the watcher from triggering from our own Habitat injections
 		// This is better for performance however, this could possibly miss any
 		// mutations during the parsing time.. possible bug maybe? dont know yet.
@@ -157,14 +176,24 @@ export default class Bootstrapper {
 			this.stopWatcher();
 		}
 
+		// Lifecycle event
+		if (typeof this.willUpdate === 'function') {
+			this.willUpdate(target);
+		}
+
 		_applyContainer(
 			this._container,
-			node || window.document.body.querySelectorAll(`[${this.componentSelector}]`),
+			target,
 			this.componentSelector,
 			() => {
 				// Restart the dom watcher if persisting
 				if (shouldWatcherPersist) {
 					this.startWatcher();
+				}
+
+				// Lifecycle event
+				if (typeof this.didUpdate === 'function') {
+					this.didUpdate(target);
 				}
 
 				_callback(cb, this);

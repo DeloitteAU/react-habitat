@@ -14,15 +14,25 @@ import Logger from './Logger';
  * Example 'C22'
  * @returns {string}
  */
-const assignId = (function idFactory() {
-	let _nextId = 0;
-
+const _assignId = (function idFactory() {
+	let nextId = 0;
 	return function _assignId() {
-		_nextId = _nextId + 1;
-		return `C${_nextId}`;
+		nextId = nextId + 1;
+		return `C${nextId}`;
 	};
 }());
 
+/**
+ * Determine if the object is a Promise
+ * @param {*}   obj     - The test object
+ * @returns {boolean}   - True if deemed to be a promise
+ * @private
+ */
+const _isPromise = function(obj) {
+	return !!obj &&
+		(typeof obj === 'object' || typeof obj === 'function') &&
+		typeof obj.then === 'function';
+};
 
 /**
  * The Container class
@@ -34,7 +44,7 @@ export default class Container {
 	*/
 	constructor() {
 		this._components = {};
-		this._id = assignId();
+		this._id = _assignId();
 	}
 
 	/**
@@ -47,8 +57,8 @@ export default class Container {
 
 	/**
 	* Register a component in the container
-	* @param {string}  name    - A unique component key
-	* @param {object}  comp    - The component
+	* @param {string}           name    - A unique component key
+	* @param {object|Promise}   comp    - The component or Promise
 	*/
 	register(name, comp) {
 		if (typeof name !== 'string') {
@@ -71,11 +81,21 @@ export default class Container {
 
 	/**
 	* Resolve a component from the container
-	* @param {string}    name    - The unique component key
-	* @returns {object}
+	* @param {string}       name        - The unique component key
+	* @returns {Promise}
 	*/
 	resolve(name) {
-		return this._components[name];
+		const registration = this._components[name];
+
+		if (!registration) {
+			return Promise.reject(new Error('Not Registered'));
+		}
+
+		if (_isPromise(registration)) {
+			return registration;
+		}
+
+		return Promise.resolve(registration);
 	}
 
 	/**
@@ -101,6 +121,7 @@ export default class Container {
 	/**
 	* Register multiple components to the container
 	* @param {object}  comps     - The components
+	 *@deprecated
 	*/
 	registerComponents(comps) {
 		Logger.warn('RHW03',
