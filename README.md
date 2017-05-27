@@ -568,11 +568,11 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 ## Dynamic imports and code splitting
 
-React Habitat supports resolving components asynchronously by using Promises. To define async registrations just register a Promise (that resolves to a component) instead of a component.
+React Habitat supports resolving components asynchronously by using Promises. To define async registrations, register a Promise (that resolves to a component) instead of a component.
 
 for example
 
-```
+```javascript
 container.register('AsynReactComponent', new Promise((resolve, reject) => {
     // .. do async work to get 'component', then
     resolve(component);
@@ -581,7 +581,7 @@ container.register('AsynReactComponent', new Promise((resolve, reject) => {
 
 or with registerAll
 
-```
+```javascript
 container.registerAll({
     'SomeReactComponent': new Promise((resolve, reject) => {
         // .. do async work to get 'component', then
@@ -601,7 +601,7 @@ Webpack 2 treats `import()` as a [split-point](https://webpack.js.org/guides/cod
 
 So for example, we could create a split point using `import()` like this:
 
-```
+```javascript
 container.register('AsynReactComponent', new Promise((resolve, reject) => {
     import('./components/MyComponent').then((MyComponent) => {
         resolve(MyComponent);
@@ -613,13 +613,13 @@ container.register('AsynReactComponent', new Promise((resolve, reject) => {
 
 **However**, since `import()` returns a Promise, we can actually simplify the above to:
 
-```
+```javascript
 container.register('AsynReactComponent', import('./components/MyComponent'));
 ```
 
 Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
 
-```
+```javascript
 container.register('AsynReactComponent', new Promise((resolve, reject) => {
     require.ensure(['./components/MyComponent'], (MyComponent) => {
         resolve(MyComponent);
@@ -636,12 +636,12 @@ When passing JSON to an attribute, you will need to encode the value so that con
 
 As a general rule, escape the following characters with HTML entity encoding:
 
-`&` --> `&amp`;  
-`<` --> `&lt`;  
-`>` --> `&gt`;  
-`"` --> `&quot`;  
-`'` --> `&#x27`;  
-`/` --> `&#x2F`;
+`&` --> `&amp;`  
+`<` --> `&lt;`  
+`>` --> `&gt;`  
+`"` --> `&quot;`  
+`'` --> `&#x27;`  
+`/` --> `&#x2F;`
 
 Example:
 
