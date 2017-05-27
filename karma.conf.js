@@ -1,11 +1,18 @@
 module.exports = function(config) {
-	config.set({
+	const configuration = {
 		basePath: './',
-		frameworks: ['polyfill', 'jasmine'],
-		polyfill: ['Object.assign', 'MutationObserver'],
+		frameworks: ['jasmine'],
+		//polyfill: ['Promise', 'Object.assign', 'MutationObserver'],
 		files: [
 			'tests/**/*.spec.js'
 		],
+
+		customLaunchers: {
+			Chrome_travis_ci: {
+				base: 'Chrome',
+				flags: ['--no-sandbox']
+			}
+		},
 
 		preprocessors: {
 			// add webpack as preprocessor
@@ -48,5 +55,14 @@ module.exports = function(config) {
 		}
 
 
-	});
+	};
+
+	if (process.env.TRAVIS) {
+		configuration.browsers = ['Chrome_travis_ci'];
+	} else {
+		configuration.browsers = ['Chrome'];
+	}
+
+	config.set(configuration);
 };
+

@@ -72,7 +72,7 @@
     "dist/"
   ],
   "scripts": {
-    "test": "npm run lint && karma start --single-run --browsers PhantomJS",
+    "test": "npm run lint && karma start --single-run",
     "test:debug": "NODE_ENV=development karma start --browsers Chrome",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "build:lib": "babel src --out-dir lib",
