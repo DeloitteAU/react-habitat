@@ -52,7 +52,6 @@
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.1",
     "karma-polyfill": "^1.0.0",
     "karma-webpack": "^1.8.0",
     "prop-types": "^15.5.10",
@@ -72,8 +71,8 @@
     "dist/"
   ],
   "scripts": {
-    "test": "npm run lint && karma start --single-run",
-    "test:debug": "NODE_ENV=development karma start --browsers Chrome",
+    "test": "npm run lint && karma start --single-run --browsers Chrome",
+    "debug": "NODE_ENV=development karma start --browsers Chrome",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "build:lib": "babel src --out-dir lib",
     "build:umd": "cross-env NODE_ENV=development webpack src/index.js dist/react-habitat.js",

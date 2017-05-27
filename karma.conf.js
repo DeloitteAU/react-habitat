@@ -43,25 +43,23 @@ module.exports = function(config) {
 			}
 		},
 
-		phantomjsLauncher: {
-			// Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
-			exitOnResourceError: true
-		},
+		// phantomjsLauncher: {
+		// 	// Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
+		// 	exitOnResourceError: true
+		// },
 
 		webpackMiddleware: {
 			// webpack-dev-middleware configuration
 			// i. e.
 			stats: 'errors-only'
 		}
-
-
 	};
 
-	if (process.env.TRAVIS) {
-		configuration.browsers = ['Chrome_travis_ci'];
-	} else {
-		configuration.browsers = ['Chrome'];
-	}
+	// if (process.env.TRAVIS) {
+	// 	configuration.browsers = ['Chrome_travis_ci'];
+	// } else {
+	// 	configuration.browsers = ['Chrome'];
+	// }
 
 	config.set(configuration);
 };
