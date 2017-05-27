@@ -219,13 +219,16 @@ easily pass data to your components in a modular fashion.
 
 To set props you have a few choices. You can use all of these or only some (they merge) so just use what's suits you best for setting properties.
 
-- [data-props](#data-props) Maps [encoded JSON](#use-encoded-json-in-html-attributes) to props.
-- [data-prop-*](#data-prop-) (Prefix) Maps in strings, booleans, null, array or [encoded JSON](#use-encoded-json-in-html-attributes) to a prop.
-- [data-n-prop-*](#data-n-prop-) (Prefix) Maps in numbers and floats to a prop.
-- [data-r-prop-*](#data-r-prop-) (Prefix) Maps in a reference to an object that exists on the global scope (window) to a prop.
+|Attribute|Description|
+|---|---|
+|[data-props](#data-props)|Maps [encoded JSON](#use-encoded-json-in-html-attributes) to props.
+|[data-prop-*](#data-prop-)|This [prefix](#prefix) maps in strings, booleans, null, array or [encoded JSON](#use-encoded-json-in-html-attributes) to a prop.
+|[data-n-prop-*](#data-n-prop-)|This [prefix](#prefix) maps in numbers and floats to a prop.
+|[data-r-prop-*](#data-r-prop-)|This [prefix](#prefix) in a reference to an object that exists on the global scope (window) to a prop.
 
-**PLEASE NOTE:**
-The last three options are attribute *prefixes* and the **\*** may be replaced by any name. This allow's you to define the property the name.
+### Prefix
+
+With a attribute *prefix* the **\*** may be replaced by any name. This allow's you to define the property the name.
 Property names must be all lower case and hyphens will be *automatically converted* to camel case.
 
 For example
