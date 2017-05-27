@@ -71,8 +71,8 @@
     "dist/"
   ],
   "scripts": {
-    "test": "npm run lint && karma start --single-run --browsers Chrome",
-    "debug": "NODE_ENV=development karma start --browsers Chrome",
+    "test": "npm run lint && karma start --single-run",
+    "debug": "NODE_ENV=development karma start",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "build:lib": "babel src --out-dir lib",
     "build:umd": "cross-env NODE_ENV=development webpack src/index.js dist/react-habitat.js",
