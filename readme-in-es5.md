@@ -621,9 +621,9 @@ container.register('AsynReactComponent', import('./components/MyComponent'));
 Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
 
 ```javascript
-container.register('AsynReactComponent', new Promise(function(resolve, reject) {
-    require.ensure(['./components/MyComponent'], function(MyComponent) {
-        resolve(MyComponent);
+container.register('AsynReactComponent', new Promise(function(resolve) {
+    require.ensure(['./components/MyComponent'], function() {
+        resolve(require('./components/MyComponent'));
     });
 }));
 ```
