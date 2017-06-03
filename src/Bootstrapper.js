@@ -14,6 +14,8 @@ const DEFAULT_HABITAT_SELECTOR = 'data-component';
 /**
  * Safe callback wrapper
  * @param {null|function}		cb			- The callback
+ * @param {object}				context		- The context of the callback
+ * @param {...object}			args		- Arguments to apply
  * @private
  */
 function _callback(cb, context, ...args) {
@@ -25,10 +27,10 @@ function _callback(cb, context, ...args) {
 
 /**
  * Apply a container to nodes and populate components
- * @param {array}     container             The container
- * @param {array}     nodes              	The elements to parse
- * @param {string}    componentSelector     The component selector
- * @param {function}  [cb=null]   			- Optional callback
+ * @param {array}		container			- The container
+ * @param {array}		nodes				- The elements to parse
+ * @param {string}		componentSelector 	- The component selector
+ * @param {function}	[cb=null]			- Optional callback
  * @private
  */
 function _applyContainer(container, nodes, componentSelector, cb = null) {
@@ -50,12 +52,21 @@ function _applyContainer(container, nodes, componentSelector, cb = null) {
 		resolveQueue.push(
 			container
 			.resolve(componentName)
-			.then((component) => {
+			.then((registration) => {
 				// This is an expensive operation so only do on non prod builds
 				if (process.env.NODE_ENV !== 'production') {
 					if (ele.querySelector(`[${componentSelector}]`)) {
 						Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
 					}
+				}
+
+				// Handle any esModule's with default exports
+				// This helps developers out with writing cleaner container code otherwise
+				// they will need to wrap `import()`'s in Promises that return the default.. yuk
+				// https://github.com/webpack/webpack.js.org/pull/213
+				let component = registration;
+				if (registration.__esModule && registration.default) {
+					component = registration.default;
 				}
 
 				// Inject the component
