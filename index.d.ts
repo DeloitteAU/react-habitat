@@ -81,9 +81,9 @@ declare module "react-habitat" {
 		stopWatcher: () => void;
 
 		/**
-		  * Dispose of the container
-		  */
-		 dispose: () => void;
+		 * Dispose of the container
+		*/
+		dispose: () => void;
 	}
 
 	class Bootstrapper implements IBootstrapper {
