@@ -55,7 +55,7 @@ React Habitat works great with:
 
 ### When *not* to use it
 
-Typically if you're building a full-on one page React app that yanks data from restful API's... then this framework isn't really going to bring much benefit to you. However you are definitely invited to use it if you want to.
+Typically if you're using a router... then this framework isn't really going to bring much benefit to you. However you are definitely invited to use it if you want to.
 
 ## Features
 
@@ -85,10 +85,6 @@ We highly recommend you use something like [WebPack](https://webpack.github.io/)
 Install with [NPM](http://npmjs.com/)
 
 `npm install --save-dev react-habitat`
-
-Install with [Yarn](https://yarnpkg.com/en/)
-
-`yarn add react-habitat`
 
 This assumes that you’re using a package manager with a module bundler like [Webpack](http://webpack.github.io) or [Browserify](http://browserify.org/).
 
