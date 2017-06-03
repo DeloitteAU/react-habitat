@@ -8,7 +8,7 @@
 
 import Container 			from '../src/Container';
 import Bootstrapper 		from '../src/Bootstrapper';
-import MochComponent 		from './mochs/MochComponent';
+import MochComponent 		from './mochs/MockComponent';
 
 let node = null;
 

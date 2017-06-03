@@ -7,8 +7,8 @@
  */
 
 import { createBootstrapper } from '../../src/classic/createBootstrapper';
-import MochComponent from '../mochs/MochComponent';
-import MochComponentTwo from '../mochs/MochComponentTwo';
+import MochComponent from '../mochs/MockComponent';
+import MochComponentTwo from '../mochs/MockComponentTwo';
 
 describe('Classic Bootstrapper', () => {
 	let node = null;

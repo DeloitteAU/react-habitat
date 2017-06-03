@@ -10,14 +10,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class MochComponent extends React.Component {
+class MockComponent extends React.Component {
 
 	innerText() {
 		if (this.props.title !== null) {
 			return `[component MochComponent](title='${this.props.title}')`;
 		}
 
-		return '[component MochComponent]';
+		return '[component MockComponent]';
 	}
 
 	render() {
@@ -25,8 +25,8 @@ class MochComponent extends React.Component {
 	}
 }
 
-MochComponent.propTypes = {
+MockComponent.propTypes = {
 	title: PropTypes.string,
 };
 
-export default MochComponent;
+export default MockComponent;

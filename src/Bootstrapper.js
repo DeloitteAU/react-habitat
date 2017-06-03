@@ -35,7 +35,7 @@ function _applyContainer(container, nodes, componentSelector, cb = null) {
 
 	const factory = container.domFactory();
 	const id = container.id();
-	const q = [];
+	const resolveQueue = [];
 
 	// Iterate over component elements in the dom
 	for (let i = 0; i < nodes.length; ++i) {
@@ -47,7 +47,7 @@ function _applyContainer(container, nodes, componentSelector, cb = null) {
 		}
 
 		const componentName = ele.getAttribute(componentSelector);
-		q.push(
+		resolveQueue.push(
 			container
 			.resolve(componentName)
 			.then((component) => {
@@ -72,7 +72,7 @@ function _applyContainer(container, nodes, componentSelector, cb = null) {
 	// Trigger callback when all promises are finished
 	// regardless if some fail
 	Promise
-		.all(q.map(p => p.catch(e => e)))
+		.all(resolveQueue.map(p => p.catch(e => e)))
 		.then(() => {
 			_callback(cb);
 		}).catch((err) => {

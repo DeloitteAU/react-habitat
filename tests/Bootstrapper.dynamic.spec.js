@@ -8,7 +8,7 @@
 
 import Container 			from '../src/Container';
 import Bootstrapper 		from '../src/Bootstrapper';
-import MochComponent 		from './mochs/MochComponent';
+import MochComponent 		from './mochs/MockComponent';
 
 let node = null;
 
@@ -37,11 +37,11 @@ describe('Dynamic Watcher', () => {
 	//
 	// 	// -- MOCH CONTAINER SET UP -- //
 	// 	const container = new Container();
-	// 	container.register('IMochComponent', MochComponent);
+	// 	container.register('IMochComponent', MockComponent);
 	// 	// --------------------------- //
 	//
 	// 	const app = new App(container, () => {
-	// 		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+	// 		const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 	//
 	// 		expect(componentLookup).toEqual(null);
 	//
@@ -54,7 +54,7 @@ describe('Dynamic Watcher', () => {
 	//
 	// 		// Give the watcher some grace time as it runs async
 	// 		window.setTimeout(() => {
-	// 			const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+	// 			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 	// 			expect(componentLookup.length).toEqual(1);
 	// 			app.dispose(); // Stop the watcher for other tests
 	// 			done();
