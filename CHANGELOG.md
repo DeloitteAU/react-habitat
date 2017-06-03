@@ -7,6 +7,7 @@
 - Deprecated elements property from Bootstrapper
 - Added dynamic html wire up support [#12](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/12)
 - Small optimisation wins for production builds
+- Removed all deprecated methods
 
 ### [0.4.2]
 
