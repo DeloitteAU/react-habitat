@@ -34,8 +34,8 @@ if (process.env.NODE_ENV !== 'production') {
 	concatArgs = (msg, args) => {
 		const throwArgs = [msg];
 
-		if (args && args.length > 2) {
-			for (let i = 2; i < args.length; i++) {
+		if (args && args.length) {
+			for (let i = 0; i < args.length; i++) {
 				throwArgs.push(args[i]);
 			}
 		}
@@ -58,7 +58,7 @@ export default class Logger {
 	static warn(code, msg, ...debugs) {
 		const args = concatArgs(
 			`WARNING: ${code} ${msg} ${WARN_DEFINITIONS_URL}#${code.toLowerCase()}`,
-			...debugs
+			debugs
 		);
 		log('warn', args);
 	}
@@ -72,7 +72,7 @@ export default class Logger {
 	static error(code, msg, ...debugs) {
 		const args = concatArgs(
 			`ERROR: ${code} ${msg} ${WARN_DEFINITIONS_URL}#${code.toLowerCase()}`,
-			...debugs
+			debugs
 		);
 		log('error', args);
 	}

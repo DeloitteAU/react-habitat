@@ -18,7 +18,7 @@ export class _Mixin extends Bootstrapper {
 	/*
 	* A Constructor that takes a spec
 	*/
-	constructor(spec) {
+	constructor(spec, callback) {
 		super();
 
 		// Check if a container spec was supplied
@@ -48,14 +48,36 @@ export class _Mixin extends Bootstrapper {
 			);
 		}
 
+		this._shouldUpdateProxy = spec.shouldUpdate || null;
+		this._willUpdateProxy = spec.willUpdate || null;
+		this._didUpdateProxy = spec.didUpdate || null;
+
 		// Finally, set the container
-		this.setContainer(container);
+		this.setContainer(container, callback);
+	}
+
+	shouldUpdate(node) {
+		if (this._shouldUpdateProxy) {
+			this._shouldUpdateProxy(node);
+		}
+	}
+
+	willUpdate() {
+		if (this._willUpdateProxy) {
+			this._willUpdateProxy();
+		}
+	}
+
+	didUpdate() {
+		if (this._didUpdateProxy) {
+			this._didUpdateProxy();
+		}
 	}
 }
 
 /*
 * The classic bootstrapper
 */
-export function createBootstrapper(spec) {
-	return new _Mixin(spec);
+export function createBootstrapper(spec, cb = null) {
+	return new _Mixin(spec, cb);
 }
