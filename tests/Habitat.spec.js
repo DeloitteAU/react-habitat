@@ -22,7 +22,7 @@ describe('Habitat parse', () => {
 	});
 
 
-	it('parse simple props', () => {
+	it('should parse simple props', () => {
 		node.setAttribute('data-prop-name', 'John Citizen');
 
 		const results = Habitat.parseProps(node);
@@ -31,7 +31,7 @@ describe('Habitat parse', () => {
 	});
 
 
-	it('converts hyphen props to camel case', () => {
+	it('should converts hyphen props to camel case', () => {
 		node.setAttribute('data-prop-first-name', 'John');
 		node.setAttribute('data-prop-first-name-initial', 'J');
 
@@ -42,7 +42,7 @@ describe('Habitat parse', () => {
 	});
 
 
-	it('parses booleans', () => {
+	it('should parses booleans', () => {
 		node.setAttribute('data-prop-is-active', 'true');
 		node.setAttribute('data-prop-is-active2', 'True');
 		node.setAttribute('data-prop-is-active3', 'TruE');
@@ -65,7 +65,7 @@ describe('Habitat parse', () => {
 		expect(results.isActive8).toEqual(false);
 	});
 
-	it('parses null strings', () => {
+	it('should parses null strings', () => {
 		node.setAttribute('data-prop-address', 'null');
 
 		const results = Habitat.parseProps(node);
@@ -74,7 +74,7 @@ describe('Habitat parse', () => {
 	});
 
 
-	it('parses json object', () => {
+	it('should parses json object', () => {
 		node.setAttribute('data-prop-user',
 			'{"name": "John Citizen", "isActive": true, "age": 22}');
 
@@ -86,7 +86,7 @@ describe('Habitat parse', () => {
 		expect(results.user.age).toEqual(22);
 	});
 
-	it('parses json array', () => {
+	it('should parses json array', () => {
 		node.setAttribute('data-prop-users',
 			'[{"name": "John"},{"name": "Sue"}]');
 
@@ -98,7 +98,7 @@ describe('Habitat parse', () => {
 		expect(results.users[1].name).toEqual('Sue');
 	});
 
-	it('parses empty json array', () => {
+	it('should parses empty json array', () => {
 		node.setAttribute('data-prop-users', '[]');
 
 		const results = Habitat.parseProps(node);
@@ -108,7 +108,7 @@ describe('Habitat parse', () => {
 		expect(results.users.length).toEqual(0);
 	});
 
-	it('parses empty json object', () => {
+	it('should parse empty json objects', () => {
 		node.setAttribute('data-prop-user', '{}');
 
 		const results = Habitat.parseProps(node);
@@ -117,7 +117,7 @@ describe('Habitat parse', () => {
 		expect(typeof results.user).toEqual('object');
 	});
 
-	it('parses json props', () => {
+	it('should parse json', () => {
 		node.setAttribute('data-props',
 			'{"user": {"name": "John Citizen", "isActive": true, "age": 22}}');
 
@@ -130,7 +130,7 @@ describe('Habitat parse', () => {
 	});
 
 
-	it('parses numbers', () => {
+	it('should parse numbers', () => {
 		node.setAttribute('data-n-prop-amount', '300');
 		node.setAttribute('data-n-prop-amount2', '300.43');
 		node.setAttribute('data-n-prop-amount3', 'abcd');
@@ -146,10 +146,10 @@ describe('Habitat parse', () => {
 	});
 
 
-	it('parses references', () => {
+	it('should parse references', () => {
 
 		// Our global variable
-		var myStates = window.myStates = ['VIC','QLD','NT', 'NSW', 'ACT', 'WA', 'SA', 'TAS'];
+		const myStates = window.myStates = ['VIC','QLD','NT', 'NSW', 'ACT', 'WA', 'SA', 'TAS'];
 
 		// Pass it in by the reference attribute
 		node.setAttribute('data-r-prop-states', 'myStates');

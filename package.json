@@ -43,7 +43,6 @@
     "babel-preset-stage-0": "^6.5.0",
     "cross-env": "^2.0.0",
     "eslint": "^3.2.2",
-    "eslint-config-airbnb": "^10.0.0",
     "eslint-config-deloitte": "^1.0.1",
     "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-jasmine": "^1.8.1",
@@ -52,10 +51,11 @@
     "jasmine-core": "^2.4.1",
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^1.0.1",
+    "karma-firefox-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.1",
     "karma-polyfill": "^1.0.0",
     "karma-webpack": "^1.8.0",
+    "prop-types": "^15.5.10",
     "webpack": "^1.13.0"
   },
   "dependencies": {
@@ -72,8 +72,8 @@
     "dist/"
   ],
   "scripts": {
-    "test": "karma start --single-run --browsers PhantomJS",
-    "test:debug": "karma start --browsers Chrome",
+    "test": "npm run lint && karma start --single-run",
+    "debug": "NODE_ENV=development karma start",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "build:lib": "babel src --out-dir lib",
     "build:umd": "cross-env NODE_ENV=development webpack src/index.js dist/react-habitat.js",
