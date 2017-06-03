@@ -467,7 +467,7 @@ Called when an update has been requested. Return false to cancel the update.
 
 `willUpdate(node)`
 
-Called when and update is about to take place.
+Called when an update is about to take place.
 
 `didUpdate(node)`
 
