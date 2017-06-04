@@ -7,7 +7,7 @@
  */
 
 import Bootstrapper from '../Bootstrapper';
-import Container from '../Container';
+import ContainerBuilder from '../builder/ContainerBuilder';
 
 /*
 * Mixin class used for extending the classic spec
@@ -38,14 +38,21 @@ export class _Mixin extends Bootstrapper {
 		}
 
 		// Create a new container
-		const container = new Container();
+		const containerBuilder = new ContainerBuilder(spec.defaultOptions || null);
 
 		// Map the components
 		for (let i = 0; i < spec.container.length; i++) {
-			container.register(
-				spec.container[i].register,
-				spec.container[i].for
-			);
+			const registration = containerBuilder
+				.register(() => spec.container[i].for)
+				.as(spec.container[i].register);
+
+			if (spec.container[i].withDefaultProps) {
+				registration.withDefaultProps(spec.container[i].withDefaultProps);
+			}
+
+			if (spec.container[i].withOptions) {
+				registration.withOptions(spec.container[i].withOptions);
+			}
 		}
 
 		this._shouldUpdateProxy = spec.shouldUpdate || null;
@@ -53,7 +60,7 @@ export class _Mixin extends Bootstrapper {
 		this._didUpdateProxy = spec.didUpdate || null;
 
 		// Finally, set the container
-		this.setContainer(container, callback);
+		this.setContainer(containerBuilder.build(), callback);
 	}
 
 	shouldUpdate(node) {

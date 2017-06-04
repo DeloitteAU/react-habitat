@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import Container 			from '../src/Container';
 import Bootstrapper 		from '../src/Bootstrapper';
-import MochComponent 		from './mochs/MockComponent';
+import ContainerBuilder		from '../src/builder/ContainerBuilder';
+import MockComponent 		from './mocks/MockComponent';
 
 let node = null;
 
@@ -24,7 +24,7 @@ describe('Bootstrapper Lifecycle', () => {
 	});
 
 	it('should trigger lifecycle events in order', (done) => {
-		node.innerHTML = '<div data-component="IMochComponent"></div>';
+		node.innerHTML = '<div data-component="IMockComponent"></div>';
 
 		const shouldUpdate = jasmine.createSpy();
 		const willUpdate = jasmine.createSpy();
@@ -33,9 +33,9 @@ describe('Bootstrapper Lifecycle', () => {
 		class App extends Bootstrapper {
 			constructor(cb = null) {
 				super();
-				const container = new Container();
-				container.register('IMochComponent', MochComponent);
-				this.setContainer(container, cb);
+				const containerBuilder = new ContainerBuilder();
+				containerBuilder.register(() => MockComponent).as('IMockComponent');
+				this.setContainer(containerBuilder.build(), cb);
 			}
 
 			shouldUpdate() {
@@ -67,21 +67,21 @@ describe('Bootstrapper Lifecycle', () => {
 	});
 
 	it('should trigger shouldUpdate with target', (done) => {
-		node.innerHTML = '<div data-component="IMochComponent"></div>';
+		node.innerHTML = '<div data-component="IMockComponent"></div>';
 
 		const shouldUpdate = jasmine.createSpy();
 
 		class App extends Bootstrapper {
 			constructor(cb = null) {
 				super();
-				const container = new Container();
-				container.register('IMochComponent', MochComponent);
-				this.setContainer(container, cb);
+				const containerBuilder = new ContainerBuilder();
+				containerBuilder.register(() => MockComponent).as('IMockComponent');
+				this.setContainer(containerBuilder.build(), cb);
 			}
 
 			shouldUpdate(target) {
 				expect(target).toBeDefined();
-				const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+				const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 				expect(componentLookup).toEqual(null);
 				shouldUpdate();
 			}
@@ -95,21 +95,21 @@ describe('Bootstrapper Lifecycle', () => {
 	});
 
 	it('should allow shouldUpdate to cancel update', (done) => {
-		node.innerHTML = '<div data-component="IMochComponent"></div>';
+		node.innerHTML = '<div data-component="IMockComponent"></div>';
 
 		const shouldUpdate = jasmine.createSpy();
 
 		class App extends Bootstrapper {
 			constructor(cb = null) {
 				super();
-				const container = new Container();
-				container.register('IMochComponent', MochComponent);
-				this.setContainer(container, cb);
+				const containerBuilder = new ContainerBuilder();
+				containerBuilder.register(() => MockComponent).as('IMockComponent');
+				this.setContainer(containerBuilder.build(), cb);
 			}
 
 			shouldUpdate(target) {
 				expect(target).toBeDefined();
-				const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+				const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 				expect(componentLookup).toEqual(null);
 				shouldUpdate();
 				return false;
@@ -117,7 +117,7 @@ describe('Bootstrapper Lifecycle', () => {
 		}
 
 		const app = new App(() => {
-			const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 			expect(componentLookup).toEqual(null);
 			expect(shouldUpdate).toHaveBeenCalledTimes(1);
 			done();
@@ -126,21 +126,21 @@ describe('Bootstrapper Lifecycle', () => {
 	});
 
 	it('should trigger willUpdate with target', (done) => {
-		node.innerHTML = '<div data-component="IMochComponent"></div>';
+		node.innerHTML = '<div data-component="IMockComponent"></div>';
 
 		const willUpdate = jasmine.createSpy();
 
 		class App extends Bootstrapper {
 			constructor(cb = null) {
 				super();
-				const container = new Container();
-				container.register('IMochComponent', MochComponent);
-				this.setContainer(container, cb);
+				const containerBuilder = new ContainerBuilder();
+				containerBuilder.register(() => MockComponent).as('IMockComponent');
+				this.setContainer(containerBuilder.build(), cb);
 			}
 
 			willUpdate(target) {
 				expect(target).toBeDefined();
-				const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+				const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 				expect(componentLookup).toEqual(null);
 				willUpdate();
 			}
@@ -154,21 +154,21 @@ describe('Bootstrapper Lifecycle', () => {
 	});
 
 	it('should trigger didUpdate with target', (done) => {
-		node.innerHTML = '<div data-component="IMochComponent"></div>';
+		node.innerHTML = '<div data-component="IMockComponent"></div>';
 
 		const didUpdate = jasmine.createSpy();
 
 		class App extends Bootstrapper {
 			constructor(cb = null) {
 				super();
-				const container = new Container();
-				container.register('IMochComponent', MochComponent);
-				this.setContainer(container, cb);
+				const containerBuilder = new ContainerBuilder();
+				containerBuilder.register(() => MockComponent).as('IMockComponent');
+				this.setContainer(containerBuilder.build(), cb);
 			}
 
 			didUpdate(target) {
 				expect(target).toBeDefined();
-				const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+				const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 				expect(componentLookup).not.toEqual(null);
 				expect(componentLookup.length).toEqual(1);
 				didUpdate();

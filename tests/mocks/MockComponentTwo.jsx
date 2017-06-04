@@ -14,7 +14,7 @@ class MockComponentTwo extends React.Component {
 
 	innerText() {
 		if (this.props.title !== null) {
-			return `[component MochComponentTwo](title='${this.props.title}')`;
+			return `[component MockComponentTwo](title='${this.props.title}')`;
 		}
 
 		return '[component MockComponentTwo]';

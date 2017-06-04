@@ -24,74 +24,6 @@ function _callback(cb, context, ...args) {
 	}
 }
 
-
-/**
- * Apply a container to nodes and populate components
- * @param {array}		container			- The container
- * @param {array}		nodes				- The elements to parse
- * @param {string}		componentSelector 	- The component selector
- * @param {function}	[cb=null]			- Optional callback
- * @private
- */
-function _applyContainer(container, nodes, componentSelector, cb = null) {
-
-	const factory = container.domFactory();
-	const id = container.id();
-	const resolveQueue = [];
-
-	// Iterate over component elements in the dom
-	for (let i = 0; i < nodes.length; ++i) {
-		const ele = nodes[i];
-
-		// Ignore elements that have already been connected
-		if (Habitat.hasHabitat(ele)) {
-			continue;
-		}
-
-		const componentName = ele.getAttribute(componentSelector);
-		resolveQueue.push(
-			container
-			.resolve(componentName)
-			.then((registration) => {
-				// This is an expensive operation so only do on non prod builds
-				if (process.env.NODE_ENV !== 'production') {
-					if (ele.querySelector(`[${componentSelector}]`)) {
-						Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
-					}
-				}
-
-				// Handle any esModule's with default exports
-				// This helps developers out with writing cleaner container code otherwise
-				// they will need to wrap `import()`'s in Promises that return the default.. yuk
-				// https://github.com/webpack/webpack.js.org/pull/213
-				let component = registration;
-				if (registration.__esModule && registration.default) {
-					component = registration.default;
-				}
-
-				// Inject the component
-				factory.inject(
-					component,
-					Habitat.parseProps(ele),
-					Habitat.create(ele, id));
-			}).catch((err) => {
-				Logger.error('RHW01', `Cannot resolve component "${componentName}" for element.`, err, ele);
-			})
-		);
-	}
-
-	// Trigger callback when all promises are finished
-	// regardless if some fail
-	Promise
-		.all(resolveQueue.map(p => p.catch(e => e)))
-		.then(() => {
-			_callback(cb);
-		}).catch((err) => {
-			// We should never get here.. if we do this is a bug
-			throw err;
-		});
-}
-
 /**
  *  Bootstrapper class
  */
@@ -114,10 +46,11 @@ export default class Bootstrapper {
 
 		/**
 		 * The container
+		 * Append trailing slash to avoid super collisions
 		 * @type {Container|null}
 		 * @private
 		 */
-		this._container = null;
+		this._container_ = null;
 
 		/**
 		 * The watcher's observer instance or null
@@ -135,25 +68,100 @@ export default class Bootstrapper {
 	}
 
 	/**
+	 * Apply the container to nodes
+	 * @param {array}		nodes				- The elements to parse
+	 * @param {function}	[cb=null]			- Optional callback
+	 * @private
+	 */
+	_apply(nodes, cb = null) {
+		// const factory = container.domFactory();
+		// const id = container.id();
+		const resolveQueue = [];
+
+		// Iterate over component elements in the dom
+		for (let i = 0; i < nodes.length; ++i) {
+			const ele = nodes[i];
+
+			// Ignore elements that have already been connected
+			if (Habitat.hasHabitat(ele)) {
+				continue;
+			}
+
+			// Resolve components using promises
+			const componentName = ele.getAttribute(this.componentSelector);
+			resolveQueue.push(
+				this._container_
+					.resolveWithMeta(componentName, this)
+					.then((registration) => {
+						// This is an expensive operation so only do on non prod builds
+						if (process.env.NODE_ENV !== 'production') {
+							if (ele.querySelector(`[${this.componentSelector}]`)) {
+								Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
+							}
+						}
+
+						// Generate props
+						let props = Habitat.parseProps(ele);
+						if (registration.meta.defaultProps) {
+							props = Object.assign({}, registration.meta.defaultProps, props);
+						}
+
+						// Options
+						const options = registration.meta.options || {};
+
+						// Inject the component
+						this._container_.factory.inject(
+							registration.component,
+							props,
+							Habitat.create(ele, this._container_.id, options));
+					}).catch((err) => {
+						Logger.error('RHW01', `Cannot resolve component "${componentName}" for element.`, err, ele);
+					})
+			);
+		}
+
+		// Trigger callback when all promises are finished
+		// regardless if some fail
+		Promise
+			.all(resolveQueue.map(p => p.catch(e => e)))
+			.then(() => {
+				_callback(cb);
+			}).catch((err) => {
+			// We should never get here.. if we do this is a bug
+				throw err;
+			});
+	}
+
+	/**
 	 * Set the container
 	 * @param {object}    container   - The container
 	 * @param {function}  [cb=null]   - Optional callback
 	 */
 	setContainer(container, cb = null) {
-
-		if (this._container !== null) {
+		if (this._container_ !== null) {
 			Logger.error('RHW02', 'A container is already set. ' +
 				'Please call dispose() before assigning a new one.');
 			return;
 		}
 
+		if (!container.factory ||
+			typeof container.factory.inject !== 'function' ||
+			typeof container.factory.dispose !== 'function') {
+			Logger.error('RHWXX', 'Incompatible factory');
+			return;
+		}
+
 		// Set the container
-		this._container = container;
+		this._container_ = container;
 
 		// Wire up the components from the container
 		this.update(null, () => {
 			_callback(cb, this);
 		});
+	}
+
+	get container() {
+		return this._container_;
 	}
 
 	/**
@@ -163,7 +171,7 @@ export default class Bootstrapper {
 	*/
 	update(node, cb = null) {
 		// Check if we have a container before attempting an update
-		if (!this._container) {
+		if (!this._container_) {
 			_callback(cb);
 			return;
 		}
@@ -192,10 +200,8 @@ export default class Bootstrapper {
 			this.willUpdate(target);
 		}
 
-		_applyContainer(
-			this._container,
+		this._apply(
 			target,
-			this.componentSelector,
 			() => {
 				// Restart the dom watcher if persisting
 				if (shouldWatcherPersist) {
@@ -278,25 +284,24 @@ export default class Bootstrapper {
 		// Stop dom watcher if any
 		this.stopWatcher();
 
-		// get the container's factory
-		const factory = this._container.domFactory();
-
-		// Look up open habitats for this container in the dom
-		const habitats = window
-			.document
-			.body
-			.querySelectorAll(`[data-habitat="${this._container.id()}"]`);
+		// Get open habitats for this container
+		const habitats = Habitat.listHabitats(this._container_.id);
 
 		// Clean up
 		for (let i = 0; i < habitats.length; ++i) {
-			factory.dispose(habitats[i]);
+			this._container_.factory.dispose(habitats[i]);
 			Habitat.destroy(habitats[i]);
 		}
 
 		// Reset and release
-		this._container = null;
+		this._container_ = null;
 		this._observer = null;
 		this._isWatching = false;
+
+		// Lifecycle event
+		if (typeof this.didDispose === 'function') {
+			this.didDispose();
+		}
 
 		// Handle callback
 		_callback(cb, this);
