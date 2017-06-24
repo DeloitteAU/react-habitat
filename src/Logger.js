@@ -58,8 +58,7 @@ export default class Logger {
 	static warn(code, msg, ...debugs) {
 		const args = concatArgs(
 			`WARNING: ${code} ${msg} ${WARN_DEFINITIONS_URL}#${code.toLowerCase()}`,
-			debugs
-		);
+			debugs);
 		log('warn', args);
 	}
 
@@ -72,8 +71,7 @@ export default class Logger {
 	static error(code, msg, ...debugs) {
 		const args = concatArgs(
 			`ERROR: ${code} ${msg} ${WARN_DEFINITIONS_URL}#${code.toLowerCase()}`,
-			debugs
-		);
+			debugs);
 		log('error', args);
 	}
 }

@@ -1,7 +1,6 @@
 {
-  "extends": "eslint-config-deloitte",
-  "rules": {
-  },
+  "parser": "babel-eslint",
+  "extends": "eslint-config-deloitte-react",
   "env": {
     "browser": true,
     "jasmine": true,

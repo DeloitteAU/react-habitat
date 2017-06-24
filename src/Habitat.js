@@ -61,7 +61,7 @@ export default class Habitat {
 	static parseProps(ele) {
 		// Default props with reference to the initiating node
 		const props = {
-			proxy: ele  // Pass in a reference to the original node
+			proxy: ele,  // Pass in a reference to the original node
 		};
 
 		// Populate custom props from reading any ele attributes that start with 'data-prop-'

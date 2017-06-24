@@ -223,7 +223,7 @@
 			this._elements = null;
 
 			// The container
-			this._container = null;
+			this._container_ = null;
 		}
 
 		/**
@@ -239,18 +239,18 @@
 				var cb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
 
-				if (this._container !== null) {
+				if (this._container_ !== null) {
 					throw new Error('A container is already set. Please call dispose() before assigning a new one.');
 				}
 
 				// Set the container
-				this._container = container;
+				this._container_ = container;
 
 				// Find all the elements in the dom with the component selector attribute
 				this._elements = window.document.body.querySelectorAll('[' + this.componentSelector + ']');
 
 				// Wire up the components from the container
-				parseContainer(this._container, this._elements, this.componentSelector, cb);
+				parseContainer(this._container_, this._elements, this.componentSelector, cb);
 			}
 
 			/**
@@ -265,10 +265,10 @@
 
 
 				// get the container's factory
-				var factory = this._container.domFactory();
+				var factory = this._container_.domFactory();
 
 				// Look up open habitats for this container in the dom
-				var habitats = window.document.body.querySelectorAll('[data-habitat="' + this._container.id() + '"]');
+				var habitats = window.document.body.querySelectorAll('[data-habitat="' + this._container_.id() + '"]');
 
 				// Clean up
 				for (var i = 0; i < habitats.length; ++i) {
@@ -277,7 +277,7 @@
 				}
 
 				// Reset and release
-				this._container = null;
+				this._container_ = null;
 				this._elements = null;
 
 				// Handle callback

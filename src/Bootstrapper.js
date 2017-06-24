@@ -116,7 +116,7 @@ export default class Bootstrapper {
 							Habitat.create(ele, this._container_.id, options));
 					}).catch((err) => {
 						Logger.error('RHW01', `Cannot resolve component "${componentName}" for element.`, err, ele);
-					})
+					}),
 			);
 		}
 
@@ -214,7 +214,7 @@ export default class Bootstrapper {
 				}
 
 				_callback(cb, this);
-			}
+			},
 		);
 	}
 
@@ -241,7 +241,7 @@ export default class Bootstrapper {
 			attributeOldValue: false,
 			characterData: false,
 			characterDataOldValue: false,
-			attributeFilter: [this.componentSelector]
+			attributeFilter: [this.componentSelector],
 		});
 
 		// Set flag for persistence during update's

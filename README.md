@@ -19,10 +19,11 @@ This framework exists so you can get on with the fun stuff!
 - [Passing props/properties to your components](#passing-properties-props-to-your-components)
 - [Passing data back again](#passing-values-back-again)
 - [Options and Methods](#options-and-methods)
+  - [Registering components](#registering-components)
   - [Setting the habitats css class](#setting-the-habitats-css-class)
   - [Replace original node](#replace-original-node)
-  - [Dynamic Updates](#dynamic-updates)
-  - [Update Lifecycle](#update-lifecycle)
+  - [Dynamic updates](#dynamic-updates)
+  - [Update lifecycle](#update-lifecycle)
   - [Start the dom watcher](#start-watcher)
   - [Stop the dom watcher](#stop-watcher)
   - [Disposing the container](#disposing-the-container)
@@ -99,8 +100,6 @@ If you don’t use a module bundler, and would prefer a single-file [UMD](https:
 
 The basic pattern for integrating React Habitat into your application is:
 
-- Structure your app with inversion of control (IoC) in mind.
-- At application startup...
 - Create a Container.
 - Register React components.
 - Set the container for later use in the DOM.
@@ -123,11 +122,13 @@ the container. The container is later bound to the DOM automatically so your Rea
 In React Habitat, you'd register a component for a key something like this
 
 ```javascript
-container.register('SomeReactComponent', SomeReactComponent);
+containerBuilder.register(() => SomeReactComponent).as('SomeReactComponent');
 ```
 
-So for our sample application we need to register all of our components (classes) to be exposed to the DOM so things get wired up nicely.
+So for our sample application we need to register all of our components to be exposed to the DOM so things get wired up nicely.
 Note in this example you can also define split points using React Habitat [dynamic imports](#dynamic-imports-and-code-splitting).
+
+We also need to build and store the container so it can be used to resolve components later
 
 ```javascript
 import ReactHabitat                 from 'react-habitat';
@@ -139,31 +140,19 @@ class MyApp extends ReactHabitat.Bootstrapper {
         super();
 
         // Create a new container builder
-        var container = new ReactHabitat.Container();
+        const builder = new ReactHabitat.ContainerBuilder();
 
-        // Register top level component(s) (ie mini/child apps)
-        container.register('SomeReactComponent', SomeReactComponent);
-        container.register('AnotherReactComponent', AnotherReactComponent);
-        
-        // Register a dynamic import
-        container.register('AsyncReactComponent', import('./AsyncReactComponent'));
+        // Register component(s)
+        builder.register(() => SomeReactComponent).as('SomeReactComponent');
+        builder.register(() => AnotherReactComponent).as('AnotherReactComponent');
 
         // Finally, set the container
-        this.setContainer(container);
+        this.setContainer(builder.build());
     }
 }
 
 // Always export a 'new' instance so it immediately evokes
 export default new MyApp();
-```
-
-You can also register multiple component's all at once with `registerAll` like this
-
-```javascript
-container.registerAll({
-    'SomeReactComponent': SomeReactComponent,
-    'AnotherReactComponent': AnotherReactComponent
-});
 ```
 
 **If you are using Redux**
@@ -191,7 +180,7 @@ For instance:
 Will be resolved by the following registration.
 
 ```javascript
-container.register('SomeReactComponent', SomeReactComponent);
+container.register(() => SomeReactComponent).as('SomeReactComponent');
 ```
 
 So, for our sample app we would do something like this
@@ -306,8 +295,9 @@ class SomeReactComponent extends React.Component {
 JSON Example
 
 ```html
-<div data-component="SomeReactComponent"
-        data-prop-person='{"name": "john", "age": 22}'>
+<div 
+    data-component="SomeReactComponent"
+    data-prop-person='{"name": "john", "age": 22}'>
 </div>
 ```
 
@@ -381,9 +371,63 @@ Sometimes you may additionally need to call `this.props.proxy.onchange()` if you
 
 **Using ES5?** Read the [ES5 version here](readme-in-es5.md).
 
+### Registering components
+
+You register components with React Habitat by creating `ReactHabitat.ContainerBuilder` and informing the builder which
+components to expose to the DOM.
+
+Each component is exposed to the DOM using the `as()` method on the `ContainerBuilder`.
+
+```javascript
+// Create a new builder
+const builder = new ReactHabit.ContainerBuilder();
+
+// Register SomeComponent and expose it to the DOM as 'MySomeComponent'
+builder.register(() => SomeComponent).as('MySomeComponent');
+
+// Build the container to finalise registrations
+const container = builder.build();
+```
+
+#### Passing options to Register
+
+You can pass ReactHabitat options with each registrations using the `withOptions()` method on the `ContainerBuilder`.
+
+```javascript
+// Register SomeComponent and expose it to the DOM as 'MySomeComponent'
+builder
+    .register(() => SomeComponent)
+    .as('MySomeComponent')
+    .withOptions({
+        tag: 'div', // The tag to use for the habitat eg 'span'
+        className: 'myHabitat', // The habitats css class name
+        replaceDisabled: true // If true, the original node will be left in the dom. False by default
+    });
+```
+
+#### Passing default props to Register
+
+Typically you would define the default props in the React component itself. However, there may be instances where you
+would like different defaults for multiple registrations.
+
+You can pass default props with each registrations using the `withDefaultProps()` method on the `ContainerBuilder`.
+
+```javascript
+// Register SomeComponent and expose it to the DOM as 'MySomeComponent'
+builder
+    .register(() => SomeComponent)
+    .as('MySomeComponent')
+    .withDefaultProps({
+        title: 'My new default title'
+    });
+```
+
+**[⬆ back to top](#table-of-contents)**
+
 ### Setting the habitat's css class
 
 You can set a custom css class on the habitat element by setting the `data-habitat-class` attribute on the target element.
+Alternatively you can use the [withOptions](#passing-options-to-register) method on the registration.
 
 Example
 
@@ -400,6 +444,8 @@ Will result in the following being rendered
 By default only `<inputs />` are left in the DOM when a React Habitat is created.
 
 To keep a generic element in the DOM, set the `data-habitat-no-replace="true"` attribute.
+
+Alternatively you can use the [withOptions](#passing-options-to-register) method on the registration.
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -518,14 +564,10 @@ Start watching the DOM for any changes and wire up future components automatical
 Example
 
 ```javascript
-class MyApp extends ReactHabitat.Bootstrapper {
-    constructor(){
-        this.setContainer(myContainer);
-
+    this.setContainer(builder.build(), () => {
         // Wire up any future habitat elements automatically
         this.startWatcher();
-    }
-}
+    });
 ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -568,26 +610,20 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 ## Dynamic imports and code splitting
 
-React Habitat supports resolving components asynchronously by using Promises. To define async registrations, register a Promise (that resolves to a component) instead of a component.
+React Habitat supports resolving components asynchronously by returning Promises. 
+To define async registrations, return a Promise (that resolves to a component) instead of a component.
 
 for example
 
 ```javascript
-container.register('AsynReactComponent', new Promise((resolve, reject) => {
-    // .. do async work to get 'component', then
-    resolve(component);
-}));
-```
-
-or with registerAll
-
-```javascript
-container.registerAll({
-    'SomeReactComponent': new Promise((resolve, reject) => {
-        // .. do async work to get 'component', then
-        resolve(component);
+container
+    .register(() => {
+        return new Promise((resolve, reject) => {
+            // .. do async work to get 'component', then
+            resolve(component);
+        }) 
     })
-});
+    .as('AsynReactComponent');
 ```
 
 React Habitat has no restrictions on how you want to resolve your components however this does enable you to define code split points.
@@ -602,29 +638,37 @@ Webpack 2 treats `import()` as a [split-point](https://webpack.js.org/guides/cod
 So for example, we could create a split point using `import()` like this:
 
 ```javascript
-container.register('AsynReactComponent', new Promise((resolve, reject) => {
-    import('./components/MyComponent').then((MyComponent) => {
-        resolve(MyComponent);
-    }).catch((err) => {
-        reject(err);
+container
+    .register(() => {
+	    return new Promise((resolve, reject) => {
+            import('./components/MyComponent').then((MyComponent) => {
+                resolve(MyComponent);
+            }).catch((err) => {
+                reject(err);
+            });
+        });
     })
-}));
+    .as('AsynReactComponent');
 ```
 
-**However**, since `import()` returns a Promise, we can actually simplify the above to:
+**HOWEVER**, since `import()` actually returns a Promise, we can actually simplify the above to:
 
 ```javascript
-container.register('AsynReactComponent', import('./components/MyComponent'));
+container.register(() => import('./components/MyComponent')).as('AsynReactComponent');
 ```
 
 Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
 
 ```javascript
-container.register('AsynReactComponent', new Promise((resolve) => {
-    require.ensure(['./components/MyComponent'], () => {
-        resolve(require('./components/MyComponent'));
-    });
-}));
+container
+    .register(() => {
+        return new Promise((resolve) => {
+            require.ensure(['./components/MyComponent'], () => {
+                resolve(require('./components/MyComponent'));
+            });
+        });
+    })
+    .as('AsynReactComponent');
 ```
 
 **[⬆ back to top](#table-of-contents)**

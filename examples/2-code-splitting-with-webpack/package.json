@@ -1,0 +1,28 @@
+{
+  "name": "react-habitat-code-splitting-with-webpack",
+  "version": "1.0.0",
+  "description": "Example setup with React Habitat with es5 and webpack",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --progress",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jenna Salau",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-habitat": "^0.4.0"
+  },
+  "devDependencies": {
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "mutationobserver-shim": "^0.3.2",
+    "open-browser-webpack-plugin": "0.0.2",
+    "react-habitat": "^0.5.0-beta2",
+    "webpack": "^2.6.1",
+    "webpack-dev-server": "^2.4.5"
+  }
+}

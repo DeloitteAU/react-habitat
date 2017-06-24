@@ -167,7 +167,7 @@ export default class Container {
 				.then((o) => {
 					resolve({
 						component: o,
-						meta: registration.meta
+						meta: registration.meta,
 					});
 				})
 				.catch(reject);

@@ -7,5 +7,5 @@ export default {
 	Bootstrapper,
 	Container,
 	ContainerBuilder,
-	createBootstrapper // Will be depreacted from this index soon
+	createBootstrapper, // Will be depreacted from this index soon
 };
