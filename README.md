@@ -311,6 +311,9 @@ builder
     });
 ```
 
+> **Note** `proxy` is a reserved prop name. Read more about using the proxy in [passing data back again](#passing-values-back-again).
+
+
 **[⬆ back to top](#table-of-contents)**
 
 ## Dynamic imports and code splitting
@@ -345,7 +348,7 @@ So for example, we could create a split point using `import()` like this:
 ```javascript
 container
     .register(() => {
-	    return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             import('./components/MyComponent').then((MyComponent) => {
                 resolve(MyComponent);
             }).catch((err) => {
@@ -387,16 +390,11 @@ the `data-component` attribute on a html element such as a `div`, `span` or `inp
 <div data-component="MyComponent"></div>
 ```
 
-This will resolve and render a component that was registered `as()` 'MyComponent'. It's important to note that
+This will resolve and render a component that was registered `as('MyComponent')`. It's important to note that
 this "target" type element by default will be replaced with what we refer to as a Habitat that houses your component.
-
 However, `<input />`'s will always remain in the DOM so it's data is available on a form post (see [passing data back again](#passing-values-back-again)).
 
-```html
-<input type="hidden" data-component="EmployeeSelector" />
-```
-
-In addition to [prop attributes](#passing-properties-props-to-your-components), some Habitat options can also be configured with attributes.
+In addition to the [prop attributes](#passing-properties-props-to-your-components) below, some Habitat options can also be configured with attributes.
 
 |Attribute|Description|
 |---|---|
@@ -418,7 +416,7 @@ best for setting properties.
 |[data-props](#data-props)|Maps [encoded JSON](#use-encoded-json-in-html-attributes) to props.
 |[data-prop-*](#data-prop-)|This [prefix](#prefix) maps in strings, booleans, null, array or [encoded JSON](#use-encoded-json-in-html-attributes) to a prop.
 |[data-n-prop-*](#data-n-prop-)|This [prefix](#prefix) maps in numbers and floats to a prop.
-|[data-r-prop-*](#data-r-prop-)|This [prefix](#prefix) in a reference to an object that exists on the global scope (window) to a prop.
+|[data-r-prop-*](#data-r-prop-)|This [prefix](#prefix) maps a reference to an object that exists on the global scope (window) to a prop.
 
 > **Note** `proxy` is a reserved prop name. Read more about using the proxy in [passing data back again](#passing-values-back-again).
 
