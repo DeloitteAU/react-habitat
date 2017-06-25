@@ -1,3 +1,5 @@
+*Looking for the [old docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64)?*
+
 ![Deloitte Digital](https://raw.githubusercontent.com/DeloitteDigital/DDBreakpoints/master/docs/deloittedigital-logo-white.png)
 
 # React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master)
@@ -8,35 +10,6 @@ React Habitat is designed for integrating React with your CMS using the DOM as t
 [container programming principles](https://en.wikipedia.org/wiki/Container_(abstract_data_type)) and brings peace and order to multi page apps.
 
 This framework exists so you can get on with the fun stuff!
-
-## Table of contents
-
-- [When to use React Habitat](#when-to-use-react-habitat)
-- [Features](#features)
-- [Compatibility](#compatibility)
-- [Installing](#installing)
-- [Getting Started](#getting-started)
-- [Registering components](#registering-components)
-  - [Passing options to register](#passing-options-to-register)
-  - [Passing default props to register](#passing-default-props-to-register)
-  - [Dynamic imports and code splitting](#dynamic-imports-and-code-splitting)
-- [Resolving components](#resolving-components)
-  - [Passing props/properties to your components](#passing-properties-props-to-your-components)
-  - [Passing data back again](#passing-values-back-again)
-  - [Setting the habitats css class](#setting-the-habitats-css-class)
-  - [Replace original node](#replace-original-node)
-  - [Use encoded JSON in HTML attributes](#use-encoded-json-in-html-attributes)
-- [Controlling Scope and Lifetime] 
-  - [Dynamic updates](#dynamic-updates)
-  - [Update lifecycle](#update-lifecycle)
-  - [Start the dom watcher](#start-watcher)
-  - [Stop the dom watcher](#stop-watcher)
-  - [Disposing the container](#disposing-the-container)
-- [Contribute](#want-to-contribute)
-- [License information](#license-bsd-3-clause)
-- [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/examples)
-- [Change log](https://github.com/DeloitteDigitalAPAC/react-habitat/blob/master/CHANGELOG.md)
-
 
 ## When to use React Habitat
 
@@ -60,12 +33,13 @@ React Habitat works great with:
 
 ### When *not* to use it
 
-Typically if you're using a router... then this framework isn't really going to bring much benefit to you. However you are definitely invited to use it if you want to.
+Typically if you're using a react router... then this framework isn't really going to bring much benefit to you. 
+However you are definitely invited to use it if you want to.
 
 ## Features
 
 - Tiny code footprint (only 8KB)
-- **Redux** supported by including [react-habitat-redux](https://github.com/DeloitteDigitalAPAC/react-habitat-redux)
+- **Redux** supported
 - Pass data (props) to your components directly from HTML attributes and back again
 - Automatic data/JSON parsing
 - All page child apps can still share the same components, stores, events etc. (Everything is connected)
@@ -73,6 +47,34 @@ Typically if you're using a router... then this framework isn't really going to 
 - For advanced users, you can use different components for different build environments
 - 100% W3C HTML5 Valid
 - TypeScript definitions included
+
+## Table of contents
+
+- [Compatibility](#compatibility)
+- [Installing](#installing)
+- [Getting Started](#getting-started)
+- [Registering components](#registering-components)
+  - [Passing options to register](#passing-options-to-register)
+  - [Passing default props to register](#passing-default-props-to-register)
+  - [Dynamic imports and code splitting](#dynamic-imports-and-code-splitting)
+- [Resolving components](#resolving-components)
+  - [Passing props/properties to your components](#passing-properties-props-to-your-components)
+  - [Passing data back again](#passing-values-back-again)
+  - [Setting the habitats css class](#setting-the-habitats-css-class)
+  - [Replace original node](#replace-original-node)
+  - [Use encoded JSON in HTML attributes](#use-encoded-json-in-html-attributes)
+- [Controlling Habitat's and Lifetime](#controlling-habitats-and-lifetime)
+  - [Changing the habitat query selector](#changing-the-habitat-query-selector)
+  - [Dynamic updates](#dynamic-updates)
+  - [Update lifecycle](#update-lifecycle)
+  - [Start the dom watcher](#start-watcher)
+  - [Stop the dom watcher](#stop-watcher)
+  - [Disposing the container](#disposing-the-container)
+- [Contribute](#want-to-contribute)
+- [License information](#license-bsd-3-clause)
+- [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/examples)
+- [Change log](https://github.com/DeloitteDigitalAPAC/react-habitat/blob/master/CHANGELOG.md)
+
 
 ## Compatibility
 
@@ -162,7 +164,6 @@ export default new MyApp();
 
 You will need to use a different container. Please install & configure the [react-habitat-redux library](https://github.com/DeloitteDigitalAPAC/react-habitat-redux). Then continue with step 2 below.
 
-
 #### 2. Application execution - resolve your components
 
 During the web application execution you will want to make use of the components you registered. You do this by *resolving* them in the DOM from a scope.
@@ -217,9 +218,11 @@ Will render 3 instances of your component.
 
 **Note** It's important that the output built javascript file is included at the end of the DOM just before the closing body tag.
 
-Rendering components is not all that special, but passing properties directly from html attributes is.
-To do this you use [predefined prefix's](#passing-properties-props-to-your-components) such as `data-prop`. 
-For example the following would create a new `MyReactComponent` with `title` and `colour` props.
+Resolving and registering components alone is not all that special, but passing data to it via html attributes is pretty useful. This allows the backend to
+easily pass data to your components in a modular fashion. To do this you use [predefined prefix's](#passing-properties-props-to-your-components) 
+such as `data-prop`. 
+
+For example the following would create a new `MyReactComponent` instance with `title` and `colour` props.
 
 ```html
 <div
@@ -247,7 +250,6 @@ Please ask questions on [StackOverflow](https://stackoverflow.com/questions/tagg
 **[⬆ back to top](#table-of-contents)**
 
 
-
 ## Registering components
 
 You register components with React Habitat by creating `ReactHabitat.ContainerBuilder` and informing the builder which
@@ -266,9 +268,17 @@ builder.register(() => SomeComponent).as('MySomeComponent');
 const container = builder.build();
 ```
 
-### Registering components with options
+### Passing options to register
 
 You can pass ReactHabitat options with each registrations using the `withOptions()` method on the `ContainerBuilder`.
+
+It accepts an object with the following properties.
+
+|Property|Type|Description|
+|---|---|---|
+|**tag**|string *(optional)*|The tag to use for the habitat eg 'span'
+|**className**|string *(optional)*|The habitats css class name
+|**replaceDisabled**|boolean *(optional)*|If true, the original node will be left in the dom. False by default
 
 ```javascript
 // Register SomeComponent and expose it to the DOM as 'MySomeComponent'
@@ -276,13 +286,12 @@ builder
     .register(() => SomeComponent)
     .as('MySomeComponent')
     .withOptions({
-        tag: 'div', // The tag to use for the habitat eg 'span'
-        className: 'myHabitat', // The habitats css class name
-        replaceDisabled: true // If true, the original node will be left in the dom. False by default
+        tag: 'div',
+        className: 'myHabitat',
     });
 ```
 
-### Registering components with default props
+### Passing default props to register
 
 Typically you would define the default props in the React component itself. However, there may be instances where you
 would like different defaults for multiple registrations.
@@ -301,13 +310,12 @@ builder
 
 **[⬆ back to top](#table-of-contents)**
 
-
 ## Dynamic imports and code splitting
 
 React Habitat supports resolving components asynchronously by returning Promises. 
 To define async registrations, return a Promise (that resolves to a component) instead of a component directly.
 
-for example
+For example
 
 ```javascript
 container
@@ -390,16 +398,14 @@ Habitat's have a few options and methods available:
 - [Passing props](#passing-properties-props-to-your-components) to your components.
 - Using the proxy prop to [pass data back again](#passing-data-back-again).
 - Setting the [Habitat's css class](#setting-the-habitats-css-class).
-- Turn on/off the original [node replacement](#replace-original-node)
+- Turn on/off the original [node replacement](#replace-original-node) feature.
 
 **[⬆ back to top](#table-of-contents)**
 
 ## Passing properties *(props)* to your components
 
-Resolving and registering components alone is not all that special, but passing data to it via html attributes is pretty useful. This allows the backend to
-easily pass data to your components in a modular fashion.
-
-To set props you have a few choices. You can use all of these or only some (they merge) so just use what's suits you best for setting properties.
+To set props you have a few choices. You can use all of these or only some (they merge) so just use what's suits you 
+best for setting properties.
 
 |Attribute|Description|
 |---|---|
@@ -543,11 +549,6 @@ Sometimes you may additionally need to call `this.props.proxy.onchange()` if you
 
 **[⬆ back to top](#table-of-contents)**
 
-## Controlling Habitat's and Lifetime
-
-**Using ES5?** Read the [ES5 version here](readme-in-es5.md).
-
-
 ### Setting the habitat's css class
 
 You can set a custom css class on the habitat element by setting the `data-habitat-class` attribute on the target element.
@@ -570,6 +571,46 @@ By default only `<inputs />` are left in the DOM when a React Habitat is created
 To keep a generic element in the DOM, set the `data-habitat-no-replace="true"` attribute.
 
 Alternatively you can use the [withOptions](#passing-options-to-register) method on the registration.
+
+## Use encoded JSON in HTML attributes
+
+When passing JSON to an attribute, you will need to encode the value so that content can be preserved and properly rendered.
+
+As a general rule, escape the following characters with HTML entity encoding:
+
+`&` --> `&amp;`  
+`<` --> `&lt;`  
+`>` --> `&gt;`  
+`"` --> `&quot;`  
+`'` --> `&#x27;`  
+`/` --> `&#x2F;`
+
+Example:
+
+`<div data-props="{&quot;foo&quot;&colon; &quot;bar&quot;}"></div>`
+
+Additionally, an encoder may replace [extended ASCII characters](https://en.wikipedia.org/wiki/Extended_ASCII) with the equivalent HTML entity encoding.
+
+Most backend systems are capable of doing this automatically. An alternative is to use the [data-r-prop-*](#data-r-prop-) option.
+
+**Single of Double Quotes?**
+
+Double quotes around attributes values are the most common and our recommendation for setting properties with React Habitat.
+
+However, there is a known hack of wrapping JSON attributes with single quotes and escaping nested single quotes.
+
+example
+
+`<div data-props='{"restaurant": "Bob\'s bar and grill"}'></div>`
+
+*We will use this method in the docs to maintain readability. However, we strongly recommend you encode in production code.*
+
+**[⬆ back to top](#table-of-contents)**
+
+
+## Controlling Habitat's and Lifetime
+
+
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -600,8 +641,8 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 `update()`
 
-The update method will scan the DOM and for any components that require wiring up (i.e after ajaxing in some HTML). 
-This can be evoked automatically by using a [watcher](#start-watcher).
+The update method will scan the DOM for any new targets that require wiring up (i.e after ajaxing in some HTML). 
+Alternatively, you can configure this to be evoked automatically by using a [watcher](#start-watcher).
 
 Example
 
@@ -637,23 +678,18 @@ import MyApp from './MyApp';
 MyApp.update();
 ```
 
+**[⬆ back to top](#table-of-contents)**
+
 ### Update Lifecycle
 
 React Habitat applications have update "lifecycle methods" that you can override to run code at particular times
 in the process.
 
-`shouldUpdate(node)`
-
-Called when an update has been requested. Return false to cancel the update.
-
-`willUpdate(node)`
-
-Called when an update is about to take place.
-
-`didUpdate(node)`
-
-Called after an update has taken place.
-
+|Method|Description
+|---|---
+|`shouldUpdate(node)`|Called when an update has been requested. Return false to cancel the update.
+|`willUpdate(node)`|Called when an update is about to take place.
+|`didUpdate(node)`|Called after an update has taken place.
 
 Example
 
@@ -681,7 +717,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
 ### Start Watcher
 
 **Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
-to use this feature. An alternative is to call [update](#update) manually.
+to use this feature. An alternative is to call [update](#dynamic-updates) manually.
 
 Start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
 
@@ -732,41 +768,6 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 **[⬆ back to top](#table-of-contents)**
 
-
-## Use encoded JSON in HTML attributes
-
-When passing JSON to an attribute, you will need to encode the value so that content can be preserved and properly rendered.
-
-As a general rule, escape the following characters with HTML entity encoding:
-
-`&` --> `&amp;`  
-`<` --> `&lt;`  
-`>` --> `&gt;`  
-`"` --> `&quot;`  
-`'` --> `&#x27;`  
-`/` --> `&#x2F;`
-
-Example:
-
-`<div data-props="{&quot;foo&quot;&colon; &quot;bar&quot;}"></div>`
-
-Additionally, an encoder may replace [extended ASCII characters](https://en.wikipedia.org/wiki/Extended_ASCII) with the equivalent HTML entity encoding.
-
-Most backend systems are capable of doing this automatically. An alternative is to use the [data-r-prop-*](#data-r-prop-) option.
-
-**Single of Double Quotes?**
-
-Double quotes around attributes values are the most common and our recommendation for setting properties with React Habitat.
-
-However, there is a known hack of wrapping JSON attributes with single quotes and escaping nested single quotes.
-
-example
-
-`<div data-props='{"restaurant": "Bob\'s bar and grill"}'></div>`
-
-*We will use this method in the docs to maintain readability. However, we strongly recommend you encode in production code.*
-
-**[⬆ back to top](#table-of-contents)**
 
 ## Want to contribute?
 
