@@ -20,7 +20,7 @@ This framework exists so you can get on with the fun stuff!
   - [Passing options to register](#passing-options-to-register)
   - [Passing default props to register](#passing-default-props-to-register)
   - [Dynamic imports and code splitting](#dynamic-imports-and-code-splitting)
-- Resolving components
+- [Resolving components](#resolving-components)
   - [Passing props/properties to your components](#passing-properties-props-to-your-components)
   - [Passing data back again](#passing-values-back-again)
   - [Setting the habitats css class](#setting-the-habitats-css-class)
@@ -217,14 +217,27 @@ Will render 3 instances of your component.
 
 **Note** It's important that the output built javascript file is included at the end of the DOM just before the closing body tag.
 
+Rendering components is not all that special, but passing properties directly from html attributes is.
+To do this you use [predefined prefix's](#passing-properties-props-to-your-components) such as `data-prop`. 
+For example the following would create a new `MyReactComponent` with `title` and `colour` props.
+
+```html
+<div
+    data-component="MyReactComponent"
+    data-prop-title="My Title"
+    data-prop-color="#BADA55"
+>
+</div>
+```
+
 **Going Further**
 
 The getting start guide gives you an idea how to use React Habitat, but there's a lot more you can do.
 
-- You can [pass props to your components]().
-- You can [pass data back again]().
-- Learn about the [ways to register components]() that adds flexibility.
-- Learn about the [options available to resolve components]().
+- Learn more about [passing props to your components](#passing-properties-props-to-your-components) including JSON.
+- Learn how you can [pass data back again](#passing-values-back-again).
+- Learn about the [ways to register components](#registering-components) that adds flexibility.
+- Learn about the [options available to resolve components](#resolving-components).
 
 **Still Need Help?**
 
@@ -530,7 +543,7 @@ Sometimes you may additionally need to call `this.props.proxy.onchange()` if you
 
 **[⬆ back to top](#table-of-contents)**
 
-## Options and Methods
+## Controlling Habitat's and Lifetime
 
 **Using ES5?** Read the [ES5 version here](readme-in-es5.md).
 
