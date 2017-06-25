@@ -2,7 +2,7 @@
 
 # React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master)
 
-*Looking for the [old docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64)?*
+*Looking for the [old docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64#react-habitat-)?*
 
 ## React Habitat <3 Your CMS
 
@@ -63,7 +63,7 @@ However you are definitely invited to use it if you want to.
   - [Setting the habitats css class](#setting-the-habitats-css-class)
   - [Replace original node](#replace-original-node)
   - [Use encoded JSON in HTML attributes](#use-encoded-json-in-html-attributes)
-- [Controlling Habitat's and Lifetime](#controlling-habitats-and-lifetime)
+- [Controlling Scope and Lifetime](#controlling-scope-and-lifetime)
   - [Changing the habitat query selector](#changing-the-habitat-query-selector)
   - [Dynamic updates](#dynamic-updates)
   - [Update lifecycle](#update-lifecycle)
@@ -273,13 +273,13 @@ const container = builder.build();
 
 You can pass options with each registrations using the `withOptions()` method on the `ContainerBuilder`.
 
-`withOptions()` must be passed an object with the following options.
-
 |Property|Type|Description|
 |---|---|---|
 |**tag**|string *(optional)*|The tag to use for the rendered habitat that houses the component eg 'span'
 |**className**|string *(optional)*|The habitats css class name
 |**replaceDisabled**|boolean *(optional)*|If true, the original node will be left in the dom. False by default
+
+Example
 
 ```javascript
 // Register SomeComponent and expose it to the DOM as 'MySomeComponent'
@@ -291,8 +291,8 @@ builder
         className: 'myHabitat',
     });
 ```
-> **Note** options can alternatively be configured [with HTML attributes](#resolving-components). 
-*Options defined with HTML attributes will take precedence.*
+> **Note** options can also be configured [with HTML attributes](#resolving-components). 
+*Any options defined with HTML attributes will always take precedence.*
 
 ### Passing default props to register
 
@@ -390,7 +390,7 @@ the `data-component` attribute on a html element such as a `div`, `span` or `inp
 This will resolve and render a component that was registered `as()` 'MyComponent'. It's important to note that
 this "target" type element by default will be replaced with what we refer to as a Habitat that houses your component.
 
-However, `input`'s will always remain in the DOM so it's data is available on a form post (see passing data back again).
+However, `<input />`'s will always remain in the DOM so it's data is available on a form post (see [passing data back again](#passing-values-back-again)).
 
 ```html
 <input type="hidden" data-component="EmployeeSelector" />
@@ -403,8 +403,8 @@ In addition to [prop attributes](#passing-properties-props-to-your-components), 
 |[data-habitat-class](#setting-the-habitats-css-class)|Set the Habitat's css class
 |[data-habitat-no-replace](#replace-original-node)|Control the original node replacement behaviour
 
-> **Note** options can alternatively be configured [with a registration](#passing-options-to-register). 
-*Options defined with HTML attributes will take precedence.*
+> **Note** options can also be configured [with a registration](#passing-options-to-register). 
+*Any options defined with HTML attributes will always take precedence.*
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -616,9 +616,14 @@ example
 **[⬆ back to top](#table-of-contents)**
 
 
-## Controlling Habitat's and Lifetime
+## Controlling Scope and Lifetime
 
-
+- [Changing the habitat query selector](#changing-the-habitat-query-selector)
+- [Dynamic updates](#dynamic-updates)
+- [Update lifecycle](#update-lifecycle)
+- [Start the dom watcher](#start-watcher)
+- [Stop the dom watcher](#stop-watcher)
+- [Disposing the container](#disposing-the-container)
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -690,8 +695,8 @@ MyApp.update();
 
 ### Update Lifecycle
 
-React Habitat applications have update "lifecycle methods" that you can override to run code at particular times
-in the process.
+`ReactHabitat.Bootstrapper` has update "lifecycle methods" that you can override to run code at particular times
+in the process. An update is the event that occurs when registrations are resolved.
 
 |Method|Description
 |---|---
@@ -797,7 +802,7 @@ Pioneered in Australia, Deloitte Digital is committed to helping clients unlock 
 [http://www.deloittedigital.com/au](http://www.deloittedigital.com/au)
 
 ## LICENSE (BSD-3-Clause)
-Copyright (C) 2015, Deloitte Digital. All rights reserved.
+Copyright (C) 2017, Deloitte Digital. All rights reserved.
 
 React Habitat can be downloaded from: https://github.com/DeloitteDigitalAPAC/react-habitat
 
