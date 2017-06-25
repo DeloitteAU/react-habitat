@@ -1,8 +1,8 @@
-*Looking for the [old docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64)?*
-
 ![Deloitte Digital](https://raw.githubusercontent.com/DeloitteDigital/DDBreakpoints/master/docs/deloittedigital-logo-white.png)
 
 # React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master)
+
+*Looking for the [old docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64)?*
 
 ## React Habitat <3 Your CMS
 
@@ -215,7 +215,7 @@ For example. This is perfectly valid.
 
 Will render 3 instances of your component.
 
-**Note** It's important that the output built javascript file is included at the end of the DOM just before the closing body tag.
+> **Note** It's important that the output built javascript file is included at the end of the DOM just before the closing body tag.
 
 Resolving and registering components alone is not all that special, but passing data to it via html attributes is pretty useful. This allows the backend to
 easily pass data to your components in a modular fashion. To do this you use [predefined prefix's](#passing-properties-props-to-your-components) 
@@ -291,7 +291,7 @@ builder
         className: 'myHabitat',
     });
 ```
-Please note options can alternatively be configured [with HTML attributes](#resolving-components). 
+> **Note** options can alternatively be configured [with HTML attributes](#resolving-components). 
 *Options defined with HTML attributes will take precedence.*
 
 ### Passing default props to register
@@ -403,7 +403,7 @@ In addition to [prop attributes](#passing-properties-props-to-your-components), 
 |[data-habitat-class](#setting-the-habitats-css-class)|Set the Habitat's css class
 |[data-habitat-no-replace](#replace-original-node)|Control the original node replacement behaviour
 
-Please note options can alternatively be configured [with a registration](#passing-options-to-register). 
+> **Note** options can alternatively be configured [with a registration](#passing-options-to-register). 
 *Options defined with HTML attributes will take precedence.*
 
 **[⬆ back to top](#table-of-contents)**
@@ -420,7 +420,7 @@ best for setting properties.
 |[data-n-prop-*](#data-n-prop-)|This [prefix](#prefix) maps in numbers and floats to a prop.
 |[data-r-prop-*](#data-r-prop-)|This [prefix](#prefix) in a reference to an object that exists on the global scope (window) to a prop.
 
-Please note `proxy` is a reserved prop name. Read more about using the proxy in [passing data back again](#passing-values-back-again).
+> **Note** `proxy` is a reserved prop name. Read more about using the proxy in [passing data back again](#passing-values-back-again).
 
 ### Prefix
 
@@ -724,7 +724,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 ### Start Watcher
 
-**Please Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
+> **Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master) 
 to use this feature. An alternative is to call [update](#dynamic-updates) manually.
 
 Start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
