@@ -60,15 +60,15 @@ return /******/ (function(modules) { // webpackBootstrap
 		value: true
 	});
 
-	var _Bootstrapper = __webpack_require__(3);
+	var _Bootstrapper = __webpack_require__(2);
 
 	var _Bootstrapper2 = _interopRequireDefault(_Bootstrapper);
 
-	var _Container = __webpack_require__(2);
+	var _Container = __webpack_require__(3);
 
 	var _Container2 = _interopRequireDefault(_Container);
 
-	var _ContainerBuilder = __webpack_require__(7);
+	var _ContainerBuilder = __webpack_require__(5);
 
 	var _ContainerBuilder2 = _interopRequireDefault(_ContainerBuilder);
 
@@ -78,9 +78,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = {
 		Bootstrapper: _Bootstrapper2.default,
-		Container: _Container2.default, // will be removed in future release
+		Container: _Container2.default,
 		ContainerBuilder: _ContainerBuilder2.default,
-		createBootstrapper: _createBootstrapper.createBootstrapper
+		createBootstrapper: _createBootstrapper.createBootstrapper // Will be depreacted from this index soon
 	};
 	module.exports = exports['default'];
 
@@ -207,299 +207,6 @@ return /******/ (function(modules) { // webpackBootstrap
 		value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
-	                                                                                                                                                                                                                                                                               * Copyright 2016-present, Deloitte Digital.
-	                                                                                                                                                                                                                                                                               * All rights reserved.
-	                                                                                                                                                                                                                                                                               *
-	                                                                                                                                                                                                                                                                               * This source code is licensed under the BSD-3-Clause license found in the
-	                                                                                                                                                                                                                                                                               * LICENSE file in the root directory of this source tree.
-	                                                                                                                                                                                                                                                                               */
-
-	var _ReactDomFactory = __webpack_require__(5);
-
-	var _ReactDomFactory2 = _interopRequireDefault(_ReactDomFactory);
-
-	var _Registration = __webpack_require__(4);
-
-	var _Registration2 = _interopRequireDefault(_Registration);
-
-	var _Logger = __webpack_require__(1);
-
-	var _Logger2 = _interopRequireDefault(_Logger);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * Creates a unique id
-	 * Example 'C22'
-	 * @returns {string}
-	 */
-	var _assignId = function idFactory() {
-		var nextId = 0;
-		return function _assignId() {
-			nextId = nextId + 1;
-			return 'C' + nextId;
-		};
-	}();
-
-	/**
-	 * Determine if the object is a Promise
-	 * @param {*}   obj     - The test object
-	 * @returns {boolean}   - True if deemed to be a promise
-	 * @private
-	 */
-	var _isPromise = function _isPromise(obj) {
-		return !!obj && ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
-	};
-
-	/**
-	 * The Container class
-	 */
-
-	var Container = function () {
-
-		/**
-	 * Constructor
-	 */
-		function Container() {
-			var registrations = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-			var factory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _ReactDomFactory2.default;
-
-			_classCallCheck(this, Container);
-
-			/**
-	   * The container id
-	   * @type {string}
-	   * @private
-	   */
-			this._id = _assignId();
-
-			/**
-	   * The containers registrations
-	   * @type {Object}
-	   * @private
-	   */
-			this._registrations = registrations;
-
-			/**
-	   * The containers dom factory
-	   * @type {ReactDomFactory}
-	   * @private
-	   */
-			this._factory = factory;
-		}
-
-		/**
-	 * The unique id for this container
-	 * @returns {*}
-	 */
-
-
-		_createClass(Container, [{
-			key: 'id',
-			value: function id() {
-				return this._id;
-			}
-
-			/**
-	  * Register a component in the container
-	  * @param {string}           key     - A unique component key
-	  * @param {object|Promise}   comp    - The component or Promise
-	  * @deprecated
-	  */
-
-		}, {
-			key: 'register',
-			value: function register(key, comp) {
-				if (typeof key !== 'string') {
-					throw new Error('Unexpected component key. Expects a string.', name);
-				}
-
-				//Logger.warn('RHW03', 'Direct container registrations are being deprecated. Please use a ContainerBuilder.');
-
-				this._registrations[key] = new _Registration2.default(function () {
-					return comp;
-				}).as(key);
-			}
-
-			/**
-	  * Register multiple components to the container
-	  * @param {object}  comps     - The components
-	  * @deprecated
-	  */
-
-		}, {
-			key: 'registerAll',
-			value: function registerAll(comps) {
-				var _this = this;
-
-				if ((typeof comps === 'undefined' ? 'undefined' : _typeof(comps)) !== 'object') {
-					throw new Error('Unexpected components type. Expects type object', comps);
-				}
-
-				//Logger.warn('RHW03', 'Direct container registrations are being deprecated. Please use a ContainerBuilder.');
-
-				Object.keys(comps).forEach(function (key) {
-					_this._registrations[key] = new _Registration2.default(function () {
-						return comps[key];
-					}).as(key);
-				});
-			}
-
-			/**
-	   * Gets a registration for a key
-	   * @param {string}      key          - The registration key
-	   * @returns {null|Registration}      - Returns registration otherwise null if not found
-	   * @private
-	   */
-
-		}, {
-			key: '_getRegistration',
-			value: function _getRegistration(key) {
-				var registration = this._registrations[key];
-
-				if (!registration || !registration.operator) {
-					return null;
-				}
-
-				return registration;
-			}
-
-			/**
-	   * Resolves the operator for a registration
-	   * @param {Registration}        registration        - The registration
-	   * @param {*}                   context             - The context the operator is run in
-	   * @returns {Promise}
-	   * @private
-	   */
-
-		}, {
-			key: '_applyOperatorFor',
-			value: function _applyOperatorFor(registration, context) {
-				var assignedOperator = registration.operator.call(context, this);
-
-				// Wrap in a promise if the component resolved without one
-				if (!_isPromise(assignedOperator)) {
-					return Promise.resolve(assignedOperator);
-				}
-
-				return new Promise(function (resolve, reject) {
-					assignedOperator.then(function (o) {
-
-						// Handle any esModule's with default exports
-						// This helps developers write cleaner container code otherwise
-						// they will need to wrap `import()`'s in Promises that return the default.. yuk
-						// https://github.com/webpack/webpack.js.org/pull/213
-						var component = o;
-						if (o.__esModule && o.default) {
-							component = o.default;
-						}
-
-						resolve(component);
-						return component;
-					}).catch(reject);
-				});
-			}
-
-			/**
-	  * Resolve a component from the container
-	  * @param {string}       name        - The unique component key
-	  * @param {*}           [inContext=undefined]   - The context the operator is run in
-	  * @returns {Promise}
-	  */
-
-		}, {
-			key: 'resolve',
-			value: function resolve(name) {
-				var _this2 = this;
-
-				var inContext = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-
-				return new Promise(function (resolve, reject) {
-					var registration = _this2._getRegistration(name);
-					if (!registration) {
-						reject(new Error('Cannot resolve registration.'));
-						return null;
-					}
-
-					_this2._applyOperatorFor(registration, inContext).then(resolve).catch(reject);
-				});
-			}
-
-			/**
-	   * Resolve a component from the container with its meta data
-	   * @param {string}      name                    - The unique component key
-	   * @param {*}           [inContext=undefined]   - The context the operator is run in
-	   * @returns {Promise}
-	   */
-
-		}, {
-			key: 'resolveWithMeta',
-			value: function resolveWithMeta(name) {
-				var _this3 = this;
-
-				var inContext = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-
-				return new Promise(function (resolve, reject) {
-					var registration = _this3._getRegistration(name);
-					if (!registration) {
-						reject(new Error('Cannot resolve registration.'));
-						return null;
-					}
-
-					_this3._applyOperatorFor(registration, inContext).then(function (o) {
-						resolve({
-							component: o,
-							meta: registration.meta
-						});
-					}).catch(reject);
-				});
-			}
-
-			/**
-	   * The containers factory
-	   * @returns {ReactDomFactory}
-	   */
-
-		}, {
-			key: 'domFactory',
-
-
-			/**
-	  * The containers dom factory
-	  * @returns {ReactDomFactory}
-	    @deprecated
-	  */
-			value: function domFactory() {
-				return this.factory;
-			}
-		}, {
-			key: 'factory',
-			get: function get() {
-				return this._factory;
-			}
-		}]);
-
-		return Container;
-	}();
-
-	exports.default = Container;
-	module.exports = exports['default'];
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016-present, Deloitte Digital.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * All rights reserved.
@@ -508,7 +215,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LICENSE file in the root directory of this source tree.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
-	var _Habitat = __webpack_require__(6);
+	var _Habitat = __webpack_require__(7);
 
 	var _Habitat2 = _interopRequireDefault(_Habitat);
 
@@ -634,7 +341,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						var options = registration.meta.options || {};
 
 						// Inject the component
-						_this._container_.factory.inject(registration.component, props, _Habitat2.default.create(ele, _this._container_.id(), options));
+						_this._container_.factory.inject(registration.component, props, _Habitat2.default.create(ele, _this._container_.id, options));
 					}).catch(function (err) {
 						_Logger2.default.error('RHW01', 'Cannot resolve component "' + componentName + '" for element.', err, ele);
 					}));
@@ -833,7 +540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				this.stopWatcher();
 
 				// Get open habitats for this container
-				var habitats = _Habitat2.default.listHabitats(this._container_.id());
+				var habitats = _Habitat2.default.listHabitats(this._container_.id);
 
 				// Clean up
 				for (var i = 0; i < habitats.length; ++i) {
@@ -868,7 +575,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -879,6 +586,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
+	                                                                                                                                                                                                                                                                               * Copyright 2016-present, Deloitte Digital.
+	                                                                                                                                                                                                                                                                               * All rights reserved.
+	                                                                                                                                                                                                                                                                               *
+	                                                                                                                                                                                                                                                                               * This source code is licensed under the BSD-3-Clause license found in the
+	                                                                                                                                                                                                                                                                               * LICENSE file in the root directory of this source tree.
+	                                                                                                                                                                                                                                                                               */
+
+	var _ReactDomFactory = __webpack_require__(6);
+
+	var _ReactDomFactory2 = _interopRequireDefault(_ReactDomFactory);
+
+	var _Registration = __webpack_require__(4);
+
+	var _Registration2 = _interopRequireDefault(_Registration);
+
 	var _Logger = __webpack_require__(1);
 
 	var _Logger2 = _interopRequireDefault(_Logger);
@@ -887,6 +610,363 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	/**
+	 * Creates a unique id
+	 * Example 'C22'
+	 * @returns {string}
+	 */
+	var _assignId = function idFactory() {
+		var nextId = 0;
+		return function _assignId() {
+			nextId = nextId + 1;
+			return 'C' + nextId;
+		};
+	}();
+
+	/**
+	 * Determine if the object is a Promise
+	 * @param {*}   obj     - The test object
+	 * @returns {boolean}   - True if deemed to be a promise
+	 * @private
+	 */
+	var _isPromise = function _isPromise(obj) {
+		return !!obj && ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+	};
+
+	var hasOldAPIWarning = false;
+	var OLD_API_WARNING = 'Direct container registrations are being deprecated. Please use a ContainerBuilder.';
+
+	/**
+	 * The Container class
+	 */
+
+	var Container = function () {
+
+		/**
+	 * Constructor
+	 */
+		function Container() {
+			var registrations = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+			var factory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _ReactDomFactory2.default;
+
+			_classCallCheck(this, Container);
+
+			/**
+	   * The container id
+	   * @type {string}
+	   * @private
+	   */
+			this._id = _assignId();
+
+			/**
+	   * The containers registrations
+	   * @type {Object}
+	   * @private
+	   */
+			this._registrations = registrations;
+
+			/**
+	   * The containers dom factory
+	   * @type {ReactDomFactory}
+	   * @private
+	   */
+			this._factory = factory;
+		}
+
+		/**
+	 * The unique id for this container
+	 * @returns {*}
+	 */
+
+
+		_createClass(Container, [{
+			key: '_getRegistration',
+
+
+			/**
+	   * Gets a registration for a key
+	   * @param {string}      key          - The registration key
+	   * @returns {null|Registration}      - Returns registration otherwise null if not found
+	   * @private
+	   */
+			value: function _getRegistration(key) {
+				var registration = this._registrations[key];
+
+				if (!registration || !registration.operator) {
+					return null;
+				}
+
+				return registration;
+			}
+
+			/**
+	   * Resolves the operator for a registration
+	   * @param {Registration}        registration        - The registration
+	   * @param {*}                   context             - The context the operator is run in
+	   * @returns {Promise}
+	   * @private
+	   */
+
+		}, {
+			key: '_applyOperatorFor',
+			value: function _applyOperatorFor(registration, context) {
+				var assignedOperator = registration.operator.call(context, this);
+
+				// Wrap in a promise if the component resolved without one
+				if (!_isPromise(assignedOperator)) {
+					return Promise.resolve(assignedOperator);
+				}
+
+				return new Promise(function (resolve, reject) {
+					assignedOperator.then(function (o) {
+
+						// Handle any esModule's with default exports
+						// This helps developers write cleaner container code otherwise
+						// they will need to wrap `import()`'s in Promises that return the default.. yuk
+						// https://github.com/webpack/webpack.js.org/pull/213
+						var component = o;
+						if (o.__esModule && o.default) {
+							component = o.default;
+						}
+
+						resolve(component);
+						return component;
+					}).catch(reject);
+				});
+			}
+
+			/**
+	  * Resolve a component from the container
+	  * @param {string}       name        - The unique component key
+	  * @param {*}           [inContext=undefined]   - The context the operator is run in
+	  * @returns {Promise}
+	  */
+
+		}, {
+			key: 'resolve',
+			value: function resolve(name) {
+				var _this = this;
+
+				var inContext = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+
+				return new Promise(function (resolve, reject) {
+					var registration = _this._getRegistration(name);
+					if (!registration) {
+						reject(new Error('Cannot resolve registration.'));
+						return null;
+					}
+
+					_this._applyOperatorFor(registration, inContext).then(resolve).catch(reject);
+				});
+			}
+
+			/**
+	   * Resolve a component from the container with its meta data
+	   * @param {string}      name                    - The unique component key
+	   * @param {*}           [inContext=undefined]   - The context the operator is run in
+	   * @returns {Promise}
+	   */
+
+		}, {
+			key: 'resolveWithMeta',
+			value: function resolveWithMeta(name) {
+				var _this2 = this;
+
+				var inContext = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+
+				return new Promise(function (resolve, reject) {
+					var registration = _this2._getRegistration(name);
+					if (!registration) {
+						reject(new Error('Cannot resolve registration.'));
+						return null;
+					}
+
+					_this2._applyOperatorFor(registration, inContext).then(function (o) {
+						resolve({
+							component: o,
+							meta: registration.meta
+						});
+					}).catch(reject);
+				});
+			}
+
+			/**
+	   * The containers factory
+	   * @returns {ReactDomFactory}
+	   */
+
+		}, {
+			key: 'register',
+
+
+			//region Deprecated
+
+			/**
+	   * Register a component in the container
+	   * @param {string}           key     - A unique component key
+	   * @param {object|Promise}   comp    - The component or Promise
+	   * @deprecated
+	   */
+			value: function register(key, comp) {
+				if (typeof key !== 'string') {
+					throw new Error('Unexpected component key. Expects a string.', name);
+				}
+
+				if (!hasOldAPIWarning) {
+					hasOldAPIWarning = true;
+					_Logger2.default.warn('RHW03', OLD_API_WARNING);
+				}
+
+				this._registrations[key] = new _Registration2.default(function () {
+					return comp;
+				}).as(key);
+			}
+
+			/**
+	   * Register multiple components to the container
+	   * @param {object}  comps     - The components
+	   * @deprecated
+	   */
+
+		}, {
+			key: 'registerAll',
+			value: function registerAll(comps) {
+				var _this3 = this;
+
+				if ((typeof comps === 'undefined' ? 'undefined' : _typeof(comps)) !== 'object') {
+					throw new Error('Unexpected components type. Expects type object', comps);
+				}
+
+				if (!hasOldAPIWarning) {
+					hasOldAPIWarning = true;
+					_Logger2.default.warn('RHW03', OLD_API_WARNING);
+				}
+
+				Object.keys(comps).forEach(function (key) {
+					_this3._registrations[key] = new _Registration2.default(function () {
+						return comps[key];
+					}).as(key);
+				});
+			}
+
+			/**
+	   * Register a component in the container
+	   * @param {string}  name    - A unique component key
+	   * @param {object}  comp    - The component
+	   * @deprecated
+	   */
+
+		}, {
+			key: 'registerComponent',
+			value: function registerComponent(name, comp) {
+				if (!hasOldAPIWarning) {
+					hasOldAPIWarning = true;
+					_Logger2.default.warn('RHW03', OLD_API_WARNING);
+				}
+				this.register(name, comp);
+			}
+
+			/**
+	   * Register multiple components to the container
+	   * @param {object}  comps     - The components
+	   */
+
+		}, {
+			key: 'registerComponents',
+			value: function registerComponents(comps) {
+				if (!hasOldAPIWarning) {
+					hasOldAPIWarning = true;
+					_Logger2.default.warn('RHW03', OLD_API_WARNING);
+				}
+				this.registerAll(comps);
+			}
+
+			/**
+	   * Gets a component for key
+	   * @param name
+	   * @returns {Object}
+	   * @deprecated
+	   */
+
+		}, {
+			key: 'getComponent',
+			value: function getComponent(name) {
+				_Logger2.default.warn('RHW03', 'getComponent is being deprecated. Please use "resolve" instead.');
+				return this.resolve(name);
+			}
+
+			/**
+	   * The containers dom factory
+	   * @returns {ReactDomFactory}
+	   @deprecated
+	   */
+
+		}, {
+			key: 'domFactory',
+			value: function domFactory() {
+				_Logger2.default.warn('RHW03', 'domFactory() is being deprecated. Please use `factory`.');
+				return this.factory;
+			}
+
+			//endregion
+
+		}, {
+			key: 'id',
+			get: function get() {
+				return this._id;
+			}
+		}, {
+			key: 'factory',
+			get: function get() {
+				return this._factory;
+			}
+
+			/**
+	   * Returns the number of registrations in the container
+	   */
+
+		}, {
+			key: 'length',
+			get: function get() {
+				return Object.keys(this._registrations).length;
+			}
+		}]);
+
+		return Container;
+	}();
+
+	exports.default = Container;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016-present, Deloitte Digital.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * All rights reserved.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This source code is licensed under the BSD-3-Clause license found in the
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LICENSE file in the root directory of this source tree.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+	var _Logger = __webpack_require__(1);
+
+	var _Logger2 = _interopRequireDefault(_Logger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * Registration
+	 */
 	var Registration = function () {
 		function Registration(operator) {
 			_classCallCheck(this, Registration);
@@ -897,33 +977,107 @@ return /******/ (function(modules) { // webpackBootstrap
 				return;
 			}
 
-			this.key = null;
-			this.operator = operator;
+			/**
+	   * Operator reference
+	   * @type {function}
+	   * @private
+	   */
+			this._operator = operator;
 
-			this.meta = {};
+			/**
+	   * The registration key
+	   * @type {string}
+	   * @private
+	   */
+			this._key = null;
+
+			/**
+	   * Registration meta data
+	   * @type {object}
+	   * @private
+	   */
+			this._meta = {};
 		}
+
+		/**
+	  * The registration operator
+	  * @returns {Function}
+	  */
+
 
 		_createClass(Registration, [{
 			key: 'as',
+
+
+			/**
+	   * Set the registration key, must be unique
+	   * @param {string}  key     - The key
+	   * @returns {Registration}
+	   */
 			value: function as(key) {
 				if (typeof key !== 'string') {
-					throw new Error('Unexpected key. Expects a string.');
+					_Logger2.default.error('RHE', 'Unexpected key type. Expected a string.', key);
+					return;
 				}
-				this.key = key;
+				this._key = key;
 
 				return this;
 			}
+
+			/**
+	   * Set the registration default props
+	   * @param {object}      props       - The default props
+	   * @returns {Registration}
+	   */
+
 		}, {
 			key: 'withDefaultProps',
 			value: function withDefaultProps(props) {
-				this.meta.defaultProps = props;
+				this._meta.defaultProps = props;
 				return this;
 			}
+
+			/**
+	   * Set the habitat options
+	   * @param {object}      options                     - The habitat options
+	   * @param {string}      [options.tag]               - The tag to use eg 'span'
+	   * @param {string}      [options.className]         - The habitats class name
+	   * @param {boolean}     [options.replaceDisabled]   - If true, the original node will be left in the dom
+	   * @returns {Registration}
+	   */
+
 		}, {
 			key: 'withOptions',
 			value: function withOptions(options) {
-				this.meta.options = options;
+				this._meta.options = options;
 				return this;
+			}
+		}, {
+			key: 'operator',
+			get: function get() {
+				return this._operator;
+			}
+
+			/**
+	   * The registration key
+	   * @returns {string|*}
+	   */
+
+		}, {
+			key: 'key',
+			get: function get() {
+				return this._key;
+			}
+
+			/**
+	   * The registration meta data
+	   * @returns {Object}
+	   */
+
+		}, {
+			key: 'meta',
+			get: function get() {
+				return this._meta;
 			}
 		}]);
 
@@ -935,6 +1089,114 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016-present, Deloitte Digital.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * All rights reserved.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This source code is licensed under the BSD-3-Clause license found in the
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LICENSE file in the root directory of this source tree.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+	var _Logger = __webpack_require__(1);
+
+	var _Logger2 = _interopRequireDefault(_Logger);
+
+	var _Registration = __webpack_require__(4);
+
+	var _Registration2 = _interopRequireDefault(_Registration);
+
+	var _Container = __webpack_require__(3);
+
+	var _Container2 = _interopRequireDefault(_Container);
+
+	var _ReactDomFactory = __webpack_require__(6);
+
+	var _ReactDomFactory2 = _interopRequireDefault(_ReactDomFactory);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ContainerBuilder = function () {
+		function ContainerBuilder() {
+			var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+			_classCallCheck(this, ContainerBuilder);
+
+			this._registrations = [];
+			this._defaultOptions = options;
+			this._factory = _ReactDomFactory2.default;
+		}
+
+		/**
+	  * Register new component
+	  * @param {function}        operator    - function that returns either a React Component or a Promise that resolves one
+	  * @returns {Registration}
+	  */
+
+
+		_createClass(ContainerBuilder, [{
+			key: 'register',
+			value: function register(operator) {
+				var registration = new _Registration2.default(operator);
+				if (this._defaultOptions) {
+					registration.withOptions(this._defaultOptions);
+				}
+				this._registrations.push(registration);
+				return registration;
+			}
+
+			/**
+	   * Set the container factory
+	   * @param {Object}  factory - The factory
+	   */
+
+		}, {
+			key: 'build',
+
+
+			/**
+	   * Build the container
+	   * @returns {Container}
+	   */
+			value: function build() {
+				return new _Container2.default(this._registrations.reduce(function (acc, registration) {
+					if (!registration.key) {
+						_Logger2.default.error('RHEXX', 'Missing key for registration.');
+						return acc;
+					}
+
+					if (acc[registration.key]) {
+						_Logger2.default.warn('RHEXX', 'Duplicate key', registration.key);
+					}
+
+					acc[registration.key] = registration;
+					return acc;
+				}, {}), this._factory);
+			}
+		}, {
+			key: 'factory',
+			set: function set(factory) {
+				this._factory = factory;
+			}
+		}]);
+
+		return ContainerBuilder;
+	}();
+
+	exports.default = ContainerBuilder;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1015,7 +1277,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1309,109 +1571,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Habitat;
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Logger = __webpack_require__(1);
-
-	var _Logger2 = _interopRequireDefault(_Logger);
-
-	var _Registration = __webpack_require__(4);
-
-	var _Registration2 = _interopRequireDefault(_Registration);
-
-	var _Container = __webpack_require__(2);
-
-	var _Container2 = _interopRequireDefault(_Container);
-
-	var _ReactDomFactory = __webpack_require__(5);
-
-	var _ReactDomFactory2 = _interopRequireDefault(_ReactDomFactory);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var ContainerBuilder = function () {
-		function ContainerBuilder() {
-			var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-			_classCallCheck(this, ContainerBuilder);
-
-			this._registrations = [];
-			this._defaultOptions = options;
-		}
-
-		/**
-	  * Register new component
-	  * @param {function}        operator    - function that returns either a React Component or a Promise that resolves one
-	  * @returns {Registration}
-	  */
-
-
-		_createClass(ContainerBuilder, [{
-			key: 'register',
-			value: function register(operator) {
-				var registration = new _Registration2.default(operator);
-				if (this._defaultOptions) {
-					registration.withOptions(this._defaultOptions);
-				}
-				this._registrations.push(registration);
-				this._factory = _ReactDomFactory2.default;
-				return registration;
-			}
-
-			/**
-	   * Set the container factory
-	   * @param {Object}  factory - The factory
-	   */
-
-		}, {
-			key: 'build',
-
-
-			/**
-	   * Build the container
-	   * @returns {Container}
-	   */
-			value: function build() {
-				return new _Container2.default(this._registrations.reduce(function (acc, registration) {
-					if (!registration.key) {
-						_Logger2.default.error('RHEXX', 'Missing key for registration.');
-						return acc;
-					}
-
-					if (acc[registration.key]) {
-						_Logger2.default.error('RHEXX', 'Registration for key already exists.', registration.key);
-						return acc;
-					}
-
-					acc[registration.key] = registration;
-					return acc;
-				}, {}), this._factory);
-			}
-		}, {
-			key: 'factory',
-			set: function set(factory) {
-				this._factory = factory;
-			}
-		}]);
-
-		return ContainerBuilder;
-	}();
-
-	exports.default = ContainerBuilder;
-	module.exports = exports['default'];
-
-/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1426,13 +1585,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.createBootstrapper = createBootstrapper;
 
-	var _Bootstrapper2 = __webpack_require__(3);
+	var _Bootstrapper2 = __webpack_require__(2);
 
 	var _Bootstrapper3 = _interopRequireDefault(_Bootstrapper2);
 
-	var _Container = __webpack_require__(2);
+	var _ContainerBuilder = __webpack_require__(5);
 
-	var _Container2 = _interopRequireDefault(_Container);
+	var _ContainerBuilder2 = _interopRequireDefault(_ContainerBuilder);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1480,11 +1639,26 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			// Create a new container
-			var container = new _Container2.default();
+			var containerBuilder = new _ContainerBuilder2.default(spec.defaultOptions || null);
 
 			// Map the components
+
+			var _loop = function _loop(i) {
+				var registration = containerBuilder.register(function () {
+					return spec.container[i].for;
+				}).as(spec.container[i].register);
+
+				if (spec.container[i].withDefaultProps) {
+					registration.withDefaultProps(spec.container[i].withDefaultProps);
+				}
+
+				if (spec.container[i].withOptions) {
+					registration.withOptions(spec.container[i].withOptions);
+				}
+			};
+
 			for (var i = 0; i < spec.container.length; i++) {
-				container.register(spec.container[i].register, spec.container[i].for);
+				_loop(i);
 			}
 
 			_this._shouldUpdateProxy = spec.shouldUpdate || null;
@@ -1492,7 +1666,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			_this._didUpdateProxy = spec.didUpdate || null;
 
 			// Finally, set the container
-			_this.setContainer(container, callback);
+			_this.setContainer(containerBuilder.build(), callback);
 			return _this;
 		}
 

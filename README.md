@@ -38,7 +38,7 @@ However you are definitely invited to use it if you want to.
 
 ## Features
 
-- Tiny code footprint (only 8KB)
+- Tiny code footprint (only 4.4kb)
 - **Redux** supported
 - Pass data (props) to your components directly from HTML attributes and back again
 - Automatic data/JSON parsing
