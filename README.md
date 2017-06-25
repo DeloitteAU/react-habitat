@@ -131,7 +131,6 @@ containerBuilder.register(() => SomeReactComponent).as('SomeReactComponent');
 ```
 
 So for our sample application we need to register all of our components to be exposed to the DOM so things get wired up nicely.
-Note in this example you can also define split points using React Habitat [dynamic imports](#dynamic-imports-and-code-splitting).
 
 We also need to build and store the container so it can be used to resolve components later
 
@@ -240,7 +239,7 @@ The getting start guide gives you an idea how to use React Habitat, but there's 
 - Learn more about [passing props to your components](#passing-properties-props-to-your-components) including JSON.
 - Learn how you can [pass data back again](#passing-values-back-again).
 - Learn about the [ways to register components](#registering-components) that adds flexibility.
-- Learn about the [options available to resolve components](#resolving-components).
+- Learn about the [options available when resolving components](#resolving-components).
 
 **Still Need Help?**
 
@@ -252,7 +251,7 @@ Please ask questions on [StackOverflow](https://stackoverflow.com/questions/tagg
 
 ## Registering components
 
-You register components with React Habitat by creating `ReactHabitat.ContainerBuilder` and informing the builder which
+You register components with React Habitat by creating a `ReactHabitat.ContainerBuilder` and informing the builder which
 components to expose to the DOM.
 
 Each component is exposed to the DOM using the `as()` method on the `ContainerBuilder`.
@@ -268,15 +267,17 @@ builder.register(() => SomeComponent).as('MySomeComponent');
 const container = builder.build();
 ```
 
+`register()` must be passed a function that returns a React component OR a Promise that resolves with a React component.
+
 ### Passing options to register
 
-You can pass ReactHabitat options with each registrations using the `withOptions()` method on the `ContainerBuilder`.
+You can pass options with each registrations using the `withOptions()` method on the `ContainerBuilder`.
 
-It accepts an object with the following properties.
+`withOptions()` must be passed an object with the following options.
 
 |Property|Type|Description|
 |---|---|---|
-|**tag**|string *(optional)*|The tag to use for the habitat eg 'span'
+|**tag**|string *(optional)*|The tag to use for the rendered habitat that houses the component eg 'span'
 |**className**|string *(optional)*|The habitats css class name
 |**replaceDisabled**|boolean *(optional)*|If true, the original node will be left in the dom. False by default
 
@@ -290,6 +291,8 @@ builder
         className: 'myHabitat',
     });
 ```
+Please note options can alternatively be configured [with HTML attributes](#resolving-components). 
+*Options defined with HTML attributes will take precedence.*
 
 ### Passing default props to register
 
@@ -380,7 +383,7 @@ container
 After you have registered your components, you can resolve components from the built container inside your DOM. You do this by setting 
 the `data-component` attribute on a html element such as a `div`, `span` or `input` etc. 
 
-```js
+```html
 <div data-component="MyComponent"></div>
 ```
 
@@ -389,16 +392,19 @@ this "target" type element by default will be replaced with what we refer to as 
 
 However, `input`'s will always remain in the DOM so it's data is available on a form post (see passing data back again).
 
-```js
+```html
 <input type="hidden" data-component="EmployeeSelector" />
 ```
 
-Habitat's have a few options and methods available:
+In addition to [prop attributes](#passing-properties-props-to-your-components), some Habitat options can also be configured with attributes.
 
-- [Passing props](#passing-properties-props-to-your-components) to your components.
-- Using the proxy prop to [pass data back again](#passing-data-back-again).
-- Setting the [Habitat's css class](#setting-the-habitats-css-class).
-- Turn on/off the original [node replacement](#replace-original-node) feature.
+|Attribute|Description|
+|---|---|
+|[data-habitat-class](#setting-the-habitats-css-class)|Set the Habitat's css class
+|[data-habitat-no-replace](#replace-original-node)|Control the original node replacement behaviour
+
+Please note options can alternatively be configured [with a registration](#passing-options-to-register). 
+*Options defined with HTML attributes will take precedence.*
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -413,6 +419,8 @@ best for setting properties.
 |[data-prop-*](#data-prop-)|This [prefix](#prefix) maps in strings, booleans, null, array or [encoded JSON](#use-encoded-json-in-html-attributes) to a prop.
 |[data-n-prop-*](#data-n-prop-)|This [prefix](#prefix) maps in numbers and floats to a prop.
 |[data-r-prop-*](#data-r-prop-)|This [prefix](#prefix) in a reference to an object that exists on the global scope (window) to a prop.
+
+Please note `proxy` is a reserved prop name. Read more about using the proxy in [passing data back again](#passing-values-back-again).
 
 ### Prefix
 
