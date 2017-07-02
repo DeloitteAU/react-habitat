@@ -6,26 +6,27 @@ import Featurette   from './components/Featurette';
 
 class Main extends ReactHabitat.Bootstrapper {
 
-  constructor(){
+	constructor() {
 
-    super();
+		super();
 
-    // Create a new container
-    var container = new ReactHabitat.Container();
+		// Create a new container
+		const containerBuilder = new ReactHabitat.ContainerBuilder();
 
-    // Register our components that we want to expose to the DOM
-    container.register('RBanner', Banner);
-    container.register('RFeaturette', Featurette);
+		// Register our components that we want to expose to the DOM
+		containerBuilder.register(() => Banner).as('RBanner');
+		containerBuilder.register(() => Featurette).as('RFeaturette');
 
-    // Set the DOM container
-    this.setContainer(container);
-
-    // Optionally start a dom watcher to automatically wire up any new elements
-    // that may be injected later (eg ajaxed HTML)
-    // See dynamic.html for demo of this
-    this.startWatcher();
-
-  }
+		// Set the DOM container
+		this.setContainer(containerBuilder.build(), () => {
+			// Optionally start a dom watcher to automatically wire up any new elements
+			// that may be injected later (eg ajaxed HTML)
+			// See dynamic.html for demo of this
+			this.startWatcher();
+		});
+	}
 }
 
-export var main = new Main();
+const instance = new Main();
+
+export default instance;
