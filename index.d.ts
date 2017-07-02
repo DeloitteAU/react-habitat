@@ -49,6 +49,11 @@ declare module "react-habitat" {
 		resolve: (name: string) => any;
 
 		/**
+		 * Resolve a component with its meta data
+		 */
+		resolveWithMeta: (name: string) => any;
+
+		/**
 		* The container's unique id
 		*/
 		id: string;
@@ -56,7 +61,7 @@ declare module "react-habitat" {
 		/**
 		 * The containers dom factory
 		 */
-		domFactory: () => IDomFactory;
+		factory: IDomFactory;
 	}
 
 	interface IBootstrapper {
@@ -181,6 +186,8 @@ declare module "react-habitat" {
 
 	class Container implements IContainer {
 
+		constructor: (factory: IDomFactory, registrations?: any) => IContainer;
+
 		/**
 		 * The containers unique id
 		 */
@@ -188,11 +195,13 @@ declare module "react-habitat" {
 
 		/**
 		 * Register a component
+		 * @deprecated Use an IContainerBuilder for registrations
 		 */
 		register: (name: string, comp: any) => void;
 
 		/**
 		 * Register a component
+		 * @deprecated Use an IContainerBuilder for registrations
 		 */
 		registerAll: (comps: {}) => void;
 
@@ -202,9 +211,19 @@ declare module "react-habitat" {
 		resolve: (name: string) => any;
 
 		/**
+		 * Resolve a component with its meta data
+		 */
+		resolveWithMeta: (name: string) => any;
+
+		/**
 		 * The containers dom factory
 		 */
-		domFactory: () => IDomFactory;
+		factory: IDomFactory;
+
+		/**
+		 * Returns the number of registrations in the container
+		 */
+		length: Number;
 	}
 
 	class ContainerBuilder implements IContainerBuilder {
