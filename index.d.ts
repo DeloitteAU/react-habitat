@@ -31,12 +31,14 @@ declare module "react-habitat" {
 		 * Register a new component in the container
 		 * @param {string}      name        - The key that identifies this component
 		 * @param {*}           comp        - The component class
+		 * @deprecated Use an IContainerBuilder for registrations
 		 */
 		register: (name: string, comp: any) => void;
 
 		/**
 		 * Register multiple components in the container
 		 * @param {object}      comps        - The components
+		 * @deprecated Use an IContainerBuilder for registrations
 		 */
 		registerAll: (comps: {}) => void;
 
@@ -49,7 +51,7 @@ declare module "react-habitat" {
 		/**
 		* The container's unique id
 		*/
-		id: () => string;
+		id: string;
 
 		/**
 		 * The containers dom factory
@@ -84,6 +86,64 @@ declare module "react-habitat" {
 		 * Dispose of the container
 		*/
 		dispose: () => void;
+	}
+
+	interface IRegistrationOptions extends Object {
+
+		/**
+		 * The tag to render with eg 'span'
+		 */
+		tag: string;
+
+		/**
+		 * The habitats class name
+		 */
+		className: string;
+
+		/**
+		 * If true, the original node will remain in the dom
+		 */
+		replaceDisabled: boolean;
+
+	}
+
+	interface IRegistration {
+
+		/**
+		 * Set the registration key, must be unique
+		 * @param {string}  key     - The key
+		 */
+		as: (key: string) => IRegistration;
+
+		/**
+		 * Set the registration default props
+		 */
+		withDefaultProps: (defaultProps: any) => IRegistration;
+
+		/**
+		 * Set the habitat options
+		 */
+		withOptions: (options: IRegistrationOptions) => IRegistration;
+
+	}
+
+	interface IContainerBuilder {
+
+		/**
+		 * Register new component
+		 */
+		register: (operator: any) => IRegistration;
+
+		/**
+		 * The container factory
+		 */
+		factory: IDomFactory;
+
+		/**
+		 * Build the container
+		 */
+		build: () => IContainer;
+
 	}
 
 	class Bootstrapper implements IBootstrapper {
@@ -124,7 +184,7 @@ declare module "react-habitat" {
 		/**
 		 * The containers unique id
 		 */
-		id: () => string;
+		id: string;
 
 		/**
 		 * Register a component
@@ -145,5 +205,26 @@ declare module "react-habitat" {
 		 * The containers dom factory
 		 */
 		domFactory: () => IDomFactory;
+	}
+
+	class ContainerBuilder implements IContainerBuilder {
+
+		constructor(defaultOptions?: IRegistrationOptions);
+
+		/**
+		 * Register new component
+		 */
+		register: (operator: any) => IRegistration;
+
+		/**
+		 * The container factory
+		 */
+		factory: IDomFactory;
+
+		/**
+		 * Build the container
+		 */
+		build: () => IContainer;
+
 	}
 }
