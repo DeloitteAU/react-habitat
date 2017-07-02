@@ -646,8 +646,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Constructor
 	 */
 		function Container() {
-			var registrations = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-			var factory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _ReactDomFactory2.default;
+			var factory = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _ReactDomFactory2.default;
+			var registrations = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 			_classCallCheck(this, Container);
 
@@ -1168,7 +1168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @returns {Container}
 	   */
 			value: function build() {
-				return new _Container2.default(this._registrations.reduce(function (acc, registration) {
+				return new _Container2.default(this._factory, this._registrations.reduce(function (acc, registration) {
 					if (!registration.key) {
 						_Logger2.default.error('RHEXX', 'Missing key for registration.');
 						return acc;
@@ -1180,7 +1180,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 					acc[registration.key] = registration;
 					return acc;
-				}, {}), this._factory);
+				}, {}));
 			}
 		}, {
 			key: 'factory',
