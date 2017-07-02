@@ -94,7 +94,7 @@ Install with [NPM](http://npmjs.com/)
 
 `npm install --save-dev react-habitat`
 
-This assumes that you’re using a package manager with a module bundler like [Webpack](http://webpack.github.io) or [Browserify](http://browserify.org/).
+This assumes that you’re using a package manager with a module bundler like [Webpack](http://webpack.github.io) or [Rollup](https://rollupjs.org/).
 
 If you don’t use a module bundler, and would prefer a single-file [UMD](https://github.com/umdjs/umd) build that makes `ReactHabitat` available as a global object, you can grab a pre-built version from the dist folder.
 
