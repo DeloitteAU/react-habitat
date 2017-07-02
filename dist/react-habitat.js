@@ -1666,7 +1666,11 @@ return /******/ (function(modules) { // webpackBootstrap
 			_this._didUpdateProxy = spec.didUpdate || null;
 
 			// Finally, set the container
-			_this.setContainer(containerBuilder.build(), callback);
+			_this.setContainer(containerBuilder.build(), function () {
+				if (typeof callback === 'function') {
+					callback.call(_this);
+				}
+			});
 			return _this;
 		}
 
