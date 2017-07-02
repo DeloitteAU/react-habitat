@@ -60,7 +60,11 @@ export class _Mixin extends Bootstrapper {
 		this._didUpdateProxy = spec.didUpdate || null;
 
 		// Finally, set the container
-		this.setContainer(containerBuilder.build(), callback);
+		this.setContainer(containerBuilder.build(), () => {
+			if (typeof callback === 'function') {
+				callback();
+			}
+		});
 	}
 
 	shouldUpdate(node) {
