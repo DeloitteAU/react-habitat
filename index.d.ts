@@ -93,7 +93,7 @@ declare module "react-habitat" {
 		dispose: () => void;
 	}
 
-	interface IRegistrationOptions extends Object {
+	interface IRegistrationOptions {
 
 		/**
 		 * The tag to render with eg 'span'
@@ -128,7 +128,7 @@ declare module "react-habitat" {
 		/**
 		 * Set the habitat options
 		 */
-		withOptions: (options: IRegistrationOptions) => IRegistration;
+		withOptions: (options: Partial<IRegistrationOptions>) => IRegistration;
 
 	}
 
@@ -228,7 +228,7 @@ declare module "react-habitat" {
 
 	class ContainerBuilder implements IContainerBuilder {
 
-		constructor(defaultOptions?: IRegistrationOptions);
+		constructor(defaultOptions?: Partial<IRegistrationOptions>);
 
 		/**
 		 * Register new component
