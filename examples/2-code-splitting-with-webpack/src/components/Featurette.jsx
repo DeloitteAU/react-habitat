@@ -3,14 +3,14 @@ import React from 'react';
 class Featurette extends React.Component {
 
 	imageView(){
-	return (
-		<div className="col-md-5">
-			<img src={this.props.imgSrc} />
-		</div>
-	);
+		return (
+			<div className="col-md-5">
+				<img src={this.props.imgSrc} />
+			</div>
+		);
 	}
 
-	textView(){
+	textView() {
 		return (
 			<div className="col-md-7">
 				<h2 className="featurette-heading">
@@ -37,7 +37,7 @@ class Featurette extends React.Component {
 Featurette.defaultProps = {
 	title: 'Donec ullamcorper nulla non',
 	imgSrc: 'http://placehold.it/400x400',
-	layout: 'ltr'
+	layout: 'ltr',
 };
 
 

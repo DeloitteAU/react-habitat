@@ -10,6 +10,7 @@
   },
   "author": "Jenna Salau",
   "license": "BSD-3-Clause",
+  "private": true,
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",

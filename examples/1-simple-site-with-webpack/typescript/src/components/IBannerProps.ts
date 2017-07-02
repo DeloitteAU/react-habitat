@@ -1,3 +1,3 @@
 export interface IBannerProps {
-    title: string;
+	title: string;
 }

@@ -1,9 +1,9 @@
 export interface IFeaturetteProps {
-    title: string;
+	title: string;
 
-    subTitle: string;
+	subTitle: string;
 
-    imgSrc: string;
+	imgSrc: string;
 
-    layout: string;
+	layout: string;
 }
