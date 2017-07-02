@@ -45,18 +45,21 @@ export default class ContainerBuilder {
 	 * @returns {Container}
 	 */
 	build() {
-		return new Container(this._registrations.reduce((acc, registration) => {
-			if (!registration.key) {
-				Logger.error('RHEXX', 'Missing key for registration.');
+		return new Container(
+			this._factory,
+			this._registrations.reduce((acc, registration) => {
+				if (!registration.key) {
+					Logger.error('RHEXX', 'Missing key for registration.');
+					return acc;
+				}
+
+				if (acc[registration.key]) {
+					Logger.warn('RHEXX', 'Duplicate key', registration.key);
+				}
+
+				acc[registration.key] = registration;
 				return acc;
-			}
-
-			if (acc[registration.key]) {
-				Logger.warn('RHEXX', 'Duplicate key', registration.key);
-			}
-
-			acc[registration.key] = registration;
-			return acc;
-		}, {}), this._factory);
+			}, {}),
+		);
 	}
 }

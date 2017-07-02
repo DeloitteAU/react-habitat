@@ -46,7 +46,7 @@ export default class Container {
 	/**
 	* Constructor
 	*/
-	constructor(registrations = {}, factory = ReactDomFactory) {
+	constructor(factory = ReactDomFactory, registrations = {}) {
 
 		/**
 		 * The container id
