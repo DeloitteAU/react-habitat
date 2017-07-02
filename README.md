@@ -67,8 +67,7 @@ However, you are definitely invited to use it if you want to.
   - [Changing the habitat query selector](#changing-the-habitat-query-selector)
   - [Dynamic updates](#dynamic-updates)
   - [Update lifecycle](#update-lifecycle)
-  - [Start the dom watcher](#start-watcher)
-  - [Stop the dom watcher](#stop-watcher)
+  - [DOM watcher](#dom-watcher)
   - [Disposing the container](#disposing-the-container)
 - [Contribute](#want-to-contribute)
 - [License information](#license-bsd-3-clause)
@@ -634,8 +633,7 @@ example
 - [Changing the habitat query selector](#changing-the-habitat-query-selector)
 - [Dynamic updates](#dynamic-updates)
 - [Update lifecycle](#update-lifecycle)
-- [Start the dom watcher](#start-watcher)
-- [Stop the dom watcher](#stop-watcher)
+- [DOM watcher](#dom-watcher)
 - [Disposing the container](#disposing-the-container)
 
 **[⬆ back to top](#table-of-contents)**
@@ -668,7 +666,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
 `update()`
 
 The update method will scan the DOM for any new targets that require wiring up (i.e after ajaxing in some HTML).
-Alternatively, you can configure this to be evoked automatically by using a [watcher](#start-watcher).
+Alternatively, you can configure this to be evoked automatically by using a [DOM watcher](#dom-watcher).
 
 Example
 
@@ -740,10 +738,14 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 **[⬆ back to top](#table-of-contents)**
 
-### Start Watcher
+### DOM Watcher
 
 > **Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master)
 to use this feature. An alternative is to call [update](#dynamic-updates) manually.
+
+Use a DOM watcher to automatically wire up any new components that are dynamically added to the page.
+
+#### Start Watcher
 
 Start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
 
@@ -758,7 +760,7 @@ Example
 
 **[⬆ back to top](#table-of-contents)**
 
-### Stop Watcher
+#### Stop Watcher
 
 Will stop watching the DOM for any changes.
 
