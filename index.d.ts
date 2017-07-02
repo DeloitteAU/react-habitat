@@ -98,17 +98,17 @@ declare module "react-habitat" {
 		/**
 		 * The tag to render with eg 'span'
 		 */
-		tag: string;
+		tag?: string;
 
 		/**
 		 * The habitats class name
 		 */
-		className: string;
+		className?: string;
 
 		/**
 		 * If true, the original node will remain in the dom
 		 */
-		replaceDisabled: boolean;
+		replaceDisabled?: boolean;
 
 	}
 
@@ -156,7 +156,7 @@ declare module "react-habitat" {
 		/**
 		 * Sets the container
 		 */
-		setContainer: (container: IContainer) => void;
+		setContainer: (container: IContainer, callback?: Function) => void;
 
 		/**
 		 * The component selector
@@ -186,7 +186,7 @@ declare module "react-habitat" {
 
 	class Container implements IContainer {
 
-		constructor: (factory: IDomFactory, registrations?: any) => IContainer;
+		constructor(factory: IDomFactory, registrations?: any);
 
 		/**
 		 * The containers unique id
