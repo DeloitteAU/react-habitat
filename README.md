@@ -598,12 +598,12 @@ When passing JSON to an attribute, you will need to encode the value so that con
 
 As a general rule, escape the following characters with HTML entity encoding:
 
-`&` --> `&amp;`
-`<` --> `&lt;`
-`>` --> `&gt;`
-`"` --> `&quot;`
-`'` --> `&#x27;`
-`/` --> `&#x2F;`
+- `&` --> `&amp;`
+- `<` --> `&lt;`
+- `>` --> `&gt;`
+- `"` --> `&quot;`
+- `'` --> `&#x27;`
+- `/` --> `&#x2F;`
 
 Example:
 
