@@ -14,16 +14,11 @@ class Main extends ReactHabitat.Bootstrapper {
 		const containerBuilder = new ReactHabitat.ContainerBuilder();
 
 		// Register our components that we want to expose to the DOM
-		containerBuilder.register(() => Banner).as('RBanner');
-		containerBuilder.register(() => Featurette).as('RFeaturette');
+		containerBuilder.register(Banner).as('RBanner');
+		containerBuilder.register(Featurette).as('RFeaturette');
 
 		// Set the DOM container
-		this.setContainer(containerBuilder.build(), () => {
-			// Optionally start a dom watcher to automatically wire up any new elements
-			// that may be injected later (eg ajaxed HTML)
-			// See dynamic.html for demo of this
-			this.startWatcher();
-		});
+		this.setContainer(containerBuilder.build());
 	}
 }
 

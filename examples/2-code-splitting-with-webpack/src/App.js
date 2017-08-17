@@ -2,16 +2,16 @@ import ReactHabitat   from 'react-habitat';
 
 class Main extends ReactHabitat.Bootstrapper {
 
-	constructor(){
+	constructor() {
 
 		super();
 
 		// Create a new container builder
 		const containerBuilder = new ReactHabitat.ContainerBuilder();
 
-	    // Register our components that we want to expose to the DOM
-		containerBuilder.register(() => import('./components/Featurette')).as('RFeaturette');
-		containerBuilder.register(() => import('./components/Banner')).as('RBanner');
+		// Register our components that we want to expose to the DOM
+		containerBuilder.registerAsync(import('./components/Featurette')).as('RFeaturette');
+		containerBuilder.registerAsync(import('./components/Banner')).as('RBanner');
 
 		this.setContainer(containerBuilder.build(), () => {
 			this.startWatcher();
@@ -19,4 +19,4 @@ class Main extends ReactHabitat.Bootstrapper {
 	}
 }
 
-export const main = new Main();
+export default new Main();
