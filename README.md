@@ -383,7 +383,7 @@ Here is an example using `require.ensure()` to define a [split-point in webpack 
 
 ```javascript
 container
-    .register(new Promise((resolve) => {
+    .registerAsync(new Promise((resolve) => {
         require.ensure(['./components/MyComponent'], () => {
             resolve(require('./components/MyComponent'));
         });
