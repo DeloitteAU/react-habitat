@@ -125,7 +125,7 @@ the container. The container is later bound to the DOM automatically so your Rea
 In React Habitat, you'd register a component 'as' a unique key something like this
 
 ```javascript
-containerBuilder.register(() => SomeReactComponent).as('SomeReactComponent');
+containerBuilder.register(SomeReactComponent).as('SomeReactComponent');
 ```
 
 So for our sample application, we need to register all of our components to be exposed to the DOM so things get wired up nicely.
