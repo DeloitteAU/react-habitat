@@ -67,7 +67,6 @@ However, you are definitely invited to use it if you want to.
   - [Changing the habitat query selector](#changing-the-habitat-query-selector)
   - [Dynamic updates](#dynamic-updates)
   - [Update lifecycle](#update-lifecycle)
-  - [DOM watcher](#dom-watcher)
   - [Disposing the container](#disposing-the-container)
 - [Contribute](#want-to-contribute)
 - [License information](#license-bsd-3-clause)
@@ -133,10 +132,11 @@ So for our sample application, we need to register all of our components to be e
 
 We also need to build and store the container so it can be used to resolve components later
 
+ 
+
 ```javascript
 import ReactHabitat                 from 'react-habitat';
 import SomeReactComponent           from './SomeReactComponent';
-import AnotherReactComponent        from './AnotherReactComponent';
 
 class MyApp extends ReactHabitat.Bootstrapper {
     constructor(){
@@ -145,9 +145,11 @@ class MyApp extends ReactHabitat.Bootstrapper {
         // Create a new container builder
         const builder = new ReactHabitat.ContainerBuilder();
 
-        // Register component(s)
-        builder.register(() => SomeReactComponent).as('SomeReactComponent');
-        builder.register(() => AnotherReactComponent).as('AnotherReactComponent');
+        // Register a component
+        builder.register(SomeReactComponent).as('SomeReactComponent');
+        
+        // or Register a component to load on demand asynchronously 
+        builder.registerAsync(import('./AnotherReactComponent')).as('AnotherReactComponent');
 
         // Finally, set the container
         this.setContainer(builder.build());
@@ -182,7 +184,7 @@ For instance:
 Will be resolved by the following registration.
 
 ```javascript
-container.register(() => SomeReactComponent).as('SomeReactComponent');
+container.register(SomeReactComponent).as('SomeReactComponent');
 ```
 
 So, for our sample app, we would do something like this
@@ -326,7 +328,7 @@ builder
     });
 ```
 
-> **Note** `proxy` is a reserved prop name. Read more about using the proxy in [passing data back again](#passing-values-back-again).
+> **Note** `proxy` is a React Habitat reserved prop name. Read more about using the proxy in [passing data back again](#passing-values-back-again).
 
 
 **[⬆ back to top](#table-of-contents)**
@@ -334,18 +336,16 @@ builder
 ## Dynamic imports and code splitting
 
 React Habitat supports resolving components asynchronously by returning Promises.
-To define async registrations, return a Promise (that resolves to a component) instead of a component directly.
+Use `registerAsync` to define asynchronous registrations, pass in a Promise that resolves to a React component.
 
 For example
 
 ```javascript
 container
-    .register(() => {
-        return new Promise((resolve, reject) => {
-            // .. do async work to get 'component', then
-            resolve(component);
-        })
-    })
+    .registerAsync(new Promise((resolve, reject) => {
+        // .. do async work to get 'component', then
+        resolve(component);
+    }))
     .as('AsynReactComponent');
 ```
 
@@ -362,23 +362,24 @@ So for example, we could create a split point using `import()` like this:
 
 ```javascript
 container
-    .register(() => {
-        return new Promise((resolve, reject) => {
-            import('./components/MyComponent').then((MyComponent) => {
+    .registerAsync(new Promise((resolve, reject) => {
+        import('./components/MyComponent')
+            .then((MyComponent) => {
                 resolve(MyComponent);
             }).catch((err) => {
                 reject(err);
             });
-        });
-    })
-    .as('AsynReactComponent');
+    }))
+    .as('MyComponent');
 ```
 
-**HOWEVER**, since `import()` actually returns a Promise, we can actually simplify the above to:
+**BUT**, since `import()` actually returns a Promise, we can actually simplify the above to:
 
 ```javascript
-container.register(() => import('./components/MyComponent')).as('AsynReactComponent');
+container.registerAsync(import('./components/MyComponent')).as('MyComponent');
 ```
+
+Neat!
 
 Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
 
@@ -408,7 +409,7 @@ This will resolve and render a component that was registered `as('MyComponent')`
 this "target" type element by default will be replaced with what we refer to as a Habitat that houses your component.
 However, `<input />`'s will always remain in the DOM so it's data is available on a form post (see [passing data back again](#passing-values-back-again)).
 
-In addition to the [prop attributes](#passing-properties-props-to-your-components) below, some Habitat options can also be configured with attributes.
+In addition to the [prop attributes](#passing-properties-props-to-your-components), some Habitat options can also be configured with attributes.
 
 |Attribute|Description|
 |---|---|
@@ -594,7 +595,9 @@ Alternatively you can use the [withOptions](#passing-options-to-register) method
 
 ## Use encoded JSON in HTML attributes
 
-When passing JSON to an attribute, you will need to encode the value so that content can be preserved and properly rendered.
+When passing JSON to an attribute you need to remember its actually JSON inside a string, 
+you will need to encode the value so that content can be preserved and properly rendered. 
+Please note using `data-r-prop` instead may be better suited for you.
 
 As a general rule, escape the following characters with HTML entity encoding:
 
@@ -613,17 +616,16 @@ Additionally, an encoder may replace [extended ASCII characters](https://en.wiki
 
 Most backend systems are capable of doing this automatically. An alternative is to use the [data-r-prop-*](#data-r-prop-) option.
 
-**Single of Double Quotes?**
+**Should I use attribute Single of Double Quotes?**
 
-Double quotes around attributes values are the most common and our recommendation for setting properties with React Habitat.
-
-However, there is a known hack of wrapping JSON attributes with single quotes and escaping nested single quotes.
+Double quotes around attributes values are the most common. There is a known hack of wrapping JSON attributes 
+with single quotes and escaping nested single quotes.
 
 example
 
 `<div data-props='{"restaurant": "Bob\'s bar and grill"}'></div>`
 
-*We will use this method in the docs to maintain readability. However, we strongly recommend you encode in production code.*
+*We will use this method in the docs to maintain readability. However, we strongly recommend you encode all JSON inside attributes.*
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -633,7 +635,6 @@ example
 - [Changing the habitat query selector](#changing-the-habitat-query-selector)
 - [Dynamic updates](#dynamic-updates)
 - [Update lifecycle](#update-lifecycle)
-- [DOM watcher](#dom-watcher)
 - [Disposing the container](#disposing-the-container)
 
 **[⬆ back to top](#table-of-contents)**
@@ -666,7 +667,6 @@ class MyApp extends ReactHabitat.Bootstrapper {
 `update()`
 
 The update method will scan the DOM for any new targets that require wiring up (i.e after ajaxing in some HTML).
-Alternatively, you can configure this to be evoked automatically by using a [DOM watcher](#dom-watcher).
 
 Example
 
@@ -678,7 +678,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
     }
 }
 ```
-By default *update()* will scan the entire body, however, a parent node can optionally be passed in for better
+By default *update()* will scan the entire body, however, a node can optionally be passed in for better
 performance if you know where the update has occurred.
 
 Example
@@ -732,44 +732,6 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
     didUpdate(node) {
         console.log('I just updated', node);
-    }
-}
-```
-
-**[⬆ back to top](#table-of-contents)**
-
-### DOM Watcher
-
-> **Note** IE 9 & 10 will require a [MutationObserver polyfill](https://github.com/megawac/MutationObserver.js/tree/master)
-to use this feature. An alternative is to call [update](#dynamic-updates) manually.
-
-Use a DOM watcher to automatically wire up any new components that are dynamically added to the page.
-
-#### Start Watcher
-
-Start watching the DOM for any changes and wire up future components automatically (eg ajaxed HTML).
-
-Example
-
-```javascript
-    this.setContainer(builder.build(), () => {
-        // Wire up any future habitat elements automatically
-        this.startWatcher();
-    });
-```
-
-**[⬆ back to top](#table-of-contents)**
-
-#### Stop Watcher
-
-Will stop watching the DOM for any changes.
-
-Example
-
-```javascript
-class MyApp extends ReactHabitat.Bootstrapper {
-    someMethod(){
-        this.stopWatcher();
     }
 }
 ```
