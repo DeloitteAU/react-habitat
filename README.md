@@ -262,7 +262,7 @@ Each component is exposed to the DOM using the `as()` method on the `ContainerBu
 const builder = new ReactHabit.ContainerBuilder();
 
 // Register SomeComponent and expose it to the DOM as 'MySomeComponent'
-builder.register(() => SomeComponent).as('MySomeComponent');
+builder.register(SomeComponent).as('MySomeComponent');
 
 // Build the container to finalise registrations
 const container = builder.build();
@@ -287,7 +287,7 @@ Example using `withOptions()`
 ```javascript
 // Register SomeComponent and expose it to the DOM as 'MySomeComponent'
 builder
-    .register(() => SomeComponent)
+    .register(SomeComponent)
     .as('MySomeComponent')
     .withOptions({
         tag: 'div',
@@ -321,7 +321,7 @@ You can pass default props with each registrations using the `withDefaultProps()
 ```javascript
 // Register SomeComponent and expose it to the DOM as 'MySomeComponent'
 builder
-    .register(() => SomeComponent)
+    .register(SomeComponent)
     .as('MySomeComponent')
     .withDefaultProps({
         title: 'My new default title'
@@ -373,25 +373,21 @@ container
     .as('MyComponent');
 ```
 
-**BUT**, since `import()` actually returns a Promise, we can actually simplify the above to:
+**!!BUT**, since `import()` actually returns a Promise, we can actually simplify the above to:
 
 ```javascript
 container.registerAsync(import('./components/MyComponent')).as('MyComponent');
 ```
 
-Neat!
-
 Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
 
 ```javascript
 container
-    .register(() => {
-        return new Promise((resolve) => {
-            require.ensure(['./components/MyComponent'], () => {
-                resolve(require('./components/MyComponent'));
-            });
+    .register(new Promise((resolve) => {
+        require.ensure(['./components/MyComponent'], () => {
+            resolve(require('./components/MyComponent'));
         });
-    })
+    }))
     .as('AsynReactComponent');
 ```
 
