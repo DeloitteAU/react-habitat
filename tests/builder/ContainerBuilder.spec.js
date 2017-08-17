@@ -43,13 +43,30 @@ describe('ContainerBuilder', () => {
 
 	it('should build registrations', (done) => {
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() => MockComponent).as('aComponent');
+		containerBuilder.register(MockComponent).as('aComponent');
 		const container = containerBuilder.build();
 
 		expect(container.length).toBe(1);
 
-		container.resolve('aComponent').then((component) => {
-			expect(component).toBe(MockComponent);
+		container.resolve('aComponent').then((r) => {
+			expect(r.component).toBe(MockComponent);
+			done();
+		});
+	});
+
+	it('should build async registrations', (done) => {
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.registerAsync(new Promise((resolve) => {
+			setTimeout(() => {
+				resolve(MockComponent);
+			}, 200);
+		})).as('aComponent');
+		const container = containerBuilder.build();
+
+		expect(container.length).toBe(1);
+
+		container.resolve('aComponent').then((r) => {
+			expect(r.component).toBe(MockComponent);
 			done();
 		});
 	});
@@ -58,17 +75,17 @@ describe('ContainerBuilder', () => {
 	it('does resolve distinct components', (done) => {
 
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() => MockComponent).as('aComponent');
-		containerBuilder.register(() => MockComponentTwo).as('aComponent2');
+		containerBuilder.register(MockComponent).as('aComponent');
+		containerBuilder.register(MockComponentTwo).as('aComponent2');
 
 		const container = containerBuilder.build();
 
-		const t1 = container.resolve('aComponent').then((component) => {
-			expect(component).toBe(MockComponent);
+		const t1 = container.resolve('aComponent').then((r) => {
+			expect(r.component).toBe(MockComponent);
 		});
 
-		const t2 = container.resolve('aComponent2').then((component) => {
-			expect(component).toBe(MockComponentTwo);
+		const t2 = container.resolve('aComponent2').then((r) => {
+			expect(r.component).toBe(MockComponentTwo);
 		});
 
 		Promise.all([t1, t2]).then(done);

@@ -36,7 +36,7 @@ describe('Classic Bootstrapper', () => {
 		node.innerHTML = '<div data-component="aUnknownComponent"></div>';
 
 		createBootstrapper({
-			container: []
+			container: [],
 		}, () => {
 			expect(console.error).toHaveBeenCalled();
 			done();
@@ -48,14 +48,14 @@ describe('Classic Bootstrapper', () => {
 
 		createBootstrapper({
 			container: [
-				{ register: 'IMockComponent', for: MockComponent }
+				{ register: 'IMockComponent', for: MockComponent },
 			]},
 			() => {
 				const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 				expect(componentLookup).not.toEqual(null);
 				expect(componentLookup.length).toEqual(1);
 				done();
-			}
+			},
 		);
 	});
 
@@ -67,8 +67,30 @@ describe('Classic Bootstrapper', () => {
 
 		createBootstrapper({
 			container: [
-				{ register: 'IMockComponent', for: MockComponent }
-			]
+				{ register: 'IMockComponent', for: MockComponent },
+			],
+		}, () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+
+			expect(componentLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(2);
+			done();
+		});
+	});
+
+	it('should render multiple components async', (done) => {
+		node.innerHTML =
+			'<div data-component="IMockComponent"></div>' +
+			'<div data-component="IMockComponent"></div>';
+
+		createBootstrapper({
+			container: [
+				{ register: 'IMockComponent', forAsync: new Promise((resolve) => {
+					window.setTimeout(() => {
+						resolve(MockComponent);
+					});
+				}, 300) },
+			],
 		}, () => {
 			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 
@@ -87,8 +109,8 @@ describe('Classic Bootstrapper', () => {
 		createBootstrapper({
 			container: [
 				{ register: 'IMockComponent', for: MockComponent },
-				{ register: 'IMockComponentTwo', for: MockComponentTwo }
-			]
+				{ register: 'IMockComponentTwo', for: MockComponentTwo },
+			],
 		}, () => {
 			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 			const component2Lookup = node.innerHTML.match(/\[component MockComponentTwo\]/g);
@@ -107,8 +129,8 @@ describe('Classic Bootstrapper', () => {
 
 		createBootstrapper({
 			container: [
-				{ register: 'IMockComponent', for: MockComponent }
-			]
+				{ register: 'IMockComponent', for: MockComponent },
+			],
 		}, () => {
 			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 			const propLookup = node.innerHTML.match(/title='test'/g);
@@ -126,8 +148,8 @@ describe('Classic Bootstrapper', () => {
 
 		const app = createBootstrapper({
 			container: [
-				{ register: 'IMockComponent', for: MockComponent }
-			]
+				{ register: 'IMockComponent', for: MockComponent },
+			],
 		}, () => {
 			function componentLookup() { return node.innerHTML.match(/\[component MockComponent\]/g); }
 

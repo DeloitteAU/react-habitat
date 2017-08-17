@@ -42,9 +42,16 @@ export class _Mixin extends Bootstrapper {
 
 		// Map the components
 		for (let i = 0; i < spec.container.length; i++) {
-			const registration = containerBuilder
-				.register(() => spec.container[i].for)
-				.as(spec.container[i].register);
+			let registration;
+			if (spec.container[i].forAsync) {
+				registration = containerBuilder
+					.registerAsync(spec.container[i].forAsync)
+					.as(spec.container[i].register);
+			} else {
+				registration = containerBuilder
+					.register(spec.container[i].for)
+					.as(spec.container[i].register);
+			}
 
 			if (spec.container[i].withDefaultProps) {
 				registration.withDefaultProps(spec.container[i].withDefaultProps);

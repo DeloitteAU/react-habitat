@@ -19,17 +19,26 @@ export default class ContainerBuilder {
 	}
 
 	/**
-	 * Register new component
-	 * @param {function}        operator    - function that returns either a React Component or a Promise that resolves one
+	 * Register new component asynchronously
+	 * @param {Promise}        operator    - promise that returns a React Component
 	 * @returns {Registration}
 	 */
-	register(operator) {
+	registerAsync(operator) {
 		const registration = new Registration(operator);
 		if (this._defaultOptions) {
 			registration.withOptions(this._defaultOptions);
 		}
 		this._registrations.push(registration);
 		return registration;
+	}
+
+	/**
+	 * Register new component
+	 * @param {object}        component    - a React Component to register
+	 * @returns {Registration}
+	 */
+	register(component) {
+		return this.registerAsync(Promise.resolve(component));
 	}
 
 	/**

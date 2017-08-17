@@ -11,14 +11,14 @@ import Registration			from '../src/Registration';
 describe('Registration', () => {
 
 	it('should construct with operator', () => {
-		const operator = () => {};
+		const operator = new Promise((resolve) => { resolve(); });
 		const registration = new Registration(operator);
 
 		expect(registration.operator).toEqual(operator);
 	});
 
 	it('should set the key', () => {
-		const operator = () => {};
+		const operator = new Promise((resolve) => { resolve(); });
 		const registration = new Registration(operator).as('KEY');
 
 		expect(registration.operator).toEqual(operator);
@@ -26,7 +26,7 @@ describe('Registration', () => {
 	});
 
 	it('should set the habitat options', () => {
-		const operator = () => {};
+		const operator = new Promise((resolve) => { resolve(); });
 		const options = {};
 		const registration = new Registration(operator).withOptions(options);
 
@@ -34,7 +34,7 @@ describe('Registration', () => {
 	});
 
 	it('should set the react default props', () => {
-		const operator = () => {};
+		const operator = new Promise((resolve) => { resolve(); });
 		const props = {};
 		const registration = new Registration(operator).withDefaultProps(props);
 

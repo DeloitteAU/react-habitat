@@ -13,9 +13,9 @@ import Logger from './Logger';
  */
 export default class Registration {
 	constructor(operator) {
-		if (typeof operator !== 'function') {
+		if (typeof operator !== 'object') {
 			//TODO: ERROR CODE
-			Logger.error('RHE', 'Unexpected operator.', operator);
+			Logger.error('RHE', 'Unexpected registration. Expects Promise', operator);
 			return;
 		}
 

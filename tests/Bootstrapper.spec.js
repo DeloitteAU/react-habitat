@@ -50,7 +50,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() => MockComponent).as('IMockComponent');
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
 		const app = new App(containerBuilder.build(), () => {
@@ -72,7 +72,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() => MockComponent).as('IMockComponent');
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
 		const app = new App(containerBuilder.build(), () => {
@@ -93,8 +93,8 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() => MockComponent).as('IMockComponent');
-		containerBuilder.register(() => MockComponentTwo).as('IMockComponentTwo');
+		containerBuilder.register(MockComponent).as('IMockComponent');
+		containerBuilder.register(MockComponentTwo).as('IMockComponentTwo');
 		// --------------------------- //
 
 		const app = new App(containerBuilder.build(), () => {
@@ -116,7 +116,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() => MockComponent).as('IMockComponent');
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
 		spyOn(console, 'warn');
@@ -135,7 +135,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() => MockComponent).as('IMockComponent');
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
 		const app = new App(containerBuilder.build(), () => {
@@ -152,7 +152,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() => MockComponent).as('IMockComponent');
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
 		const app = new App(containerBuilder.build(), () => {
@@ -173,7 +173,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() => MockComponent).as('IMockComponent');
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
 		const app = new App(containerBuilder.build(), () => {
@@ -191,7 +191,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() => MockComponent).as('IMockComponent');
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
 		const app = new App(containerBuilder.build(), () => {
@@ -227,7 +227,7 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() => MockComponent).as('IMockComponent');
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
 		const app = new App(containerBuilder.build(), () => {
@@ -254,21 +254,19 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() =>
-			new Promise((resolve) => {
-				window.setTimeout(() => {
-					resolve(MockComponent);
-				}, 200);
-			})
-		).as('IMockComponent');
+		containerBuilder.registerAsync(new Promise((resolve) => {
+			window.setTimeout(() => {
+				resolve(MockComponent);
+			}, 200);
+		}))
+		.as('IMockComponent');
 
-		containerBuilder.register(() =>
-			new Promise((resolve) => {
-				window.setTimeout(() => {
-					resolve(MockComponentTwo);
-				}, 200);
-			})
-		).as('IMockComponentTwo');
+		containerBuilder.registerAsync(new Promise((resolve) => {
+			window.setTimeout(() => {
+				resolve(MockComponentTwo);
+			}, 200);
+		}))
+		.as('IMockComponentTwo');
 		// --------------------------- //
 
 		const app = new App(containerBuilder.build(), () => {
@@ -292,21 +290,19 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.register(() =>
-			new Promise((resolve) => {
-				window.setTimeout(() => {
-					resolve(MockComponent);
-				}, 200);
-			})
-		).as('IMockComponent');
+		containerBuilder.registerAsync(new Promise((resolve) => {
+			window.setTimeout(() => {
+				resolve(MockComponent);
+			}, 200);
+		}))
+		.as('IMockComponent');
 
-		containerBuilder.register(() =>
-			new Promise((resolve, reject) => {
-				window.setTimeout(() => {
-					reject(new Error('Testing'));
-				}, 200);
-			})
-		).as('IMockComponentTwo');
+		containerBuilder.registerAsync(new Promise((resolve, reject) => {
+			window.setTimeout(() => {
+				reject(new Error('Testing'));
+			}, 200);
+		}))
+		.as('IMockComponentTwo');
 		// --------------------------- //
 
 		spyOn(console, 'error');

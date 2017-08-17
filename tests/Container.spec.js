@@ -6,8 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 import Container 			from '../src/Container';
-import MockComponent 		from './mocks/MockComponent';
-import MockComponentTwo 	from './mocks/MockComponentTwo';
 
 let container = null;
 

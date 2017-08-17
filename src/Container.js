@@ -23,18 +23,6 @@ const _assignId = (function idFactory() {
 	};
 }());
 
-/**
- * Determine if the object is a Promise
- * @param {*}   obj     - The test object
- * @returns {boolean}   - True if deemed to be a promise
- * @private
- */
-const _isPromise = function(obj) {
-	return !!obj &&
-		(typeof obj === 'object' || typeof obj === 'function') &&
-		typeof obj.then === 'function';
-};
-
 let hasOldAPIWarning = false;
 const OLD_API_WARNING = 'Direct container registrations are being deprecated. Please use a ContainerBuilder.';
 
@@ -79,96 +67,37 @@ export default class Container {
 	}
 
 	/**
-	 * Gets a registration for a key
-	 * @param {string}      key          - The registration key
-	 * @returns {null|Registration}      - Returns registration otherwise null if not found
-	 * @private
-	 */
-	_getRegistration(key) {
-		const registration = this._registrations[key];
-
-		if (!registration || !registration.operator) {
-			return null;
-		}
-
-		return registration;
-	}
-
-	/**
-	 * Resolves the operator for a registration
-	 * @param {Registration}        registration        - The registration
-	 * @param {*}                   context             - The context the operator is run in
-	 * @returns {Promise}
-	 * @private
-	 */
-	_applyOperatorFor(registration, context) {
-		const assignedOperator = registration.operator.call(context, this);
-
-		// Wrap in a promise if the component resolved without one
-		if (!_isPromise(assignedOperator)) {
-			return Promise.resolve(assignedOperator);
-		}
-
+	* Resolve a component from the container
+	* @param {string}       key                     - The unique component key
+	* @param {*}           [context=undefined]      - The context the operator is run in
+	* @returns {object}                             - Component with meta
+	*/
+	resolve(key, context = undefined) {
 		return new Promise((resolve, reject) => {
-			assignedOperator
-				.then((o) => {
+			const registration = this._registrations[key];
 
+			if (!registration || !registration.operator) {
+				reject(new Error('Cannot resolve registration.'));
+				return null;
+			}
+
+			registration
+				.operator
+				.then((o) => {
 					// Handle any esModule's with default exports
 					// This helps developers write cleaner container code otherwise
-					// they will need to wrap `import()`'s in Promises that return the default.. yuk
+					// they will need to wrap `import()`'s in Promises that return the default..
 					// https://github.com/webpack/webpack.js.org/pull/213
 					let component = o;
 					if (o.__esModule && o.default) {
 						component = o.default;
 					}
 
-					resolve(component);
-					return component;
-				})
-				.catch(reject);
-		});
-	}
-
-	/**
-	* Resolve a component from the container
-	* @param {string}       name        - The unique component key
-	* @param {*}           [inContext=undefined]   - The context the operator is run in
-	* @returns {Promise}
-	*/
-	resolve(name, inContext = undefined) {
-		return new Promise((resolve, reject) => {
-			const registration = this._getRegistration(name);
-			if (!registration) {
-				reject(new Error('Cannot resolve registration.'));
-				return null;
-			}
-
-			this._applyOperatorFor(registration, inContext)
-				.then(resolve)
-				.catch(reject);
-		});
-	}
-
-	/**
-	 * Resolve a component from the container with its meta data
-	 * @param {string}      name                    - The unique component key
-	 * @param {*}           [inContext=undefined]   - The context the operator is run in
-	 * @returns {Promise}
-	 */
-	resolveWithMeta(name, inContext = undefined) {
-		return new Promise((resolve, reject) => {
-			const registration = this._getRegistration(name);
-			if (!registration) {
-				reject(new Error('Cannot resolve registration.'));
-				return null;
-			}
-
-			this._applyOperatorFor(registration, inContext)
-				.then((o) => {
 					resolve({
-						component: o,
+						component,
 						meta: registration.meta,
 					});
+					return component;
 				})
 				.catch(reject);
 		});

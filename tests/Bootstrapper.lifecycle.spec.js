@@ -34,7 +34,7 @@ describe('Bootstrapper Lifecycle', () => {
 			constructor(cb = null) {
 				super();
 				const containerBuilder = new ContainerBuilder();
-				containerBuilder.register(() => MockComponent).as('IMockComponent');
+				containerBuilder.register(MockComponent).as('IMockComponent');
 				this.setContainer(containerBuilder.build(), cb);
 			}
 
@@ -75,7 +75,7 @@ describe('Bootstrapper Lifecycle', () => {
 			constructor(cb = null) {
 				super();
 				const containerBuilder = new ContainerBuilder();
-				containerBuilder.register(() => MockComponent).as('IMockComponent');
+				containerBuilder.register(MockComponent).as('IMockComponent');
 				this.setContainer(containerBuilder.build(), cb);
 			}
 
@@ -103,7 +103,7 @@ describe('Bootstrapper Lifecycle', () => {
 			constructor(cb = null) {
 				super();
 				const containerBuilder = new ContainerBuilder();
-				containerBuilder.register(() => MockComponent).as('IMockComponent');
+				containerBuilder.register(MockComponent).as('IMockComponent');
 				this.setContainer(containerBuilder.build(), cb);
 			}
 
@@ -134,7 +134,7 @@ describe('Bootstrapper Lifecycle', () => {
 			constructor(cb = null) {
 				super();
 				const containerBuilder = new ContainerBuilder();
-				containerBuilder.register(() => MockComponent).as('IMockComponent');
+				containerBuilder.register(MockComponent).as('IMockComponent');
 				this.setContainer(containerBuilder.build(), cb);
 			}
 
@@ -162,7 +162,7 @@ describe('Bootstrapper Lifecycle', () => {
 			constructor(cb = null) {
 				super();
 				const containerBuilder = new ContainerBuilder();
-				containerBuilder.register(() => MockComponent).as('IMockComponent');
+				containerBuilder.register(MockComponent).as('IMockComponent');
 				this.setContainer(containerBuilder.build(), cb);
 			}
 
