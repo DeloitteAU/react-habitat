@@ -1,9 +1,7 @@
-import 'babel-polyfill'; // React Habitat requires Object.assign pollyfill for old IE support
-
-import ReactHabitat   from 'react-habitat';
-
-// Our top level react components
-import Banner       from './components/Banner';
+import 'babel-polyfill';    // React Habitat requires Object.assign pollyfill for old IE support
+import ReactHabitat         from 'react-habitat';
+import Banner               from './components/Banner';
+import Featurette           from './components/Featurette';
 
 class App extends ReactHabitat.Bootstrapper {
 
@@ -16,7 +14,7 @@ class App extends ReactHabitat.Bootstrapper {
 
 		// Register our components that we want to expose to the DOM
 		containerBuilder.register(Banner).as('RBanner');
-		containerBuilder.registerAsync(System.import('./components/Featurette')).as('RFeaturette');
+		containerBuilder.register(Featurette).as('RFeaturette');
 
 		// Set the DOM container
 		this.setContainer(containerBuilder.build());

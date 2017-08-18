@@ -1,15 +1,14 @@
 {
   "name": "react-habitat-simple-example-with-webpack-es6",
-  "version": "1.0.0",
-  "description": "Example setup with React Habitat with es5 and webpack",
+  "version": "1.1.0",
+  "description": "Example setup with React Habitat with es6 and webpack",
   "main": "index.js",
   "babel": {
     "presets": ["env", "react"]
   },
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --progress",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server --progress"
   },
   "author": "Jenna Salau",
   "license": "BSD-3-Clause",
