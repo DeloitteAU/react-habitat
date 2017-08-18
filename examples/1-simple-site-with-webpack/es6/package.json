@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Example setup with React Habitat with es5 and webpack",
   "main": "index.js",
+  "babel": {
+    "presets": ["env", "react"]
+  },
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server --progress",
@@ -15,23 +18,14 @@
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
     "babel-polyfill": "^6.16.0",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "mutationobserver-shim": "^0.3.2",
     "open-browser-webpack-plugin": "0.0.2",
     "prop-types": "^15.5.10",
-    "react": "^15.3.2",
+    "react": "^15.6.1",
     "react-dom": "^15.3.2",
     "react-habitat": "^0.5.0",
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.1"
-  },
-  "babel": {
-    "presets": [
-      "stage-0",
-      "es2015",
-      "react"
-    ]
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
   }
 }

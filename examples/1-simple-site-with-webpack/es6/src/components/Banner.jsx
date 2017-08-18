@@ -14,7 +14,7 @@ class Banner extends React.PureComponent {
 					</p>
 					<p>
 						This banner and the following featurettes
-						are all React Components. Check out index.html in a text editor to see
+						are all React Components. View this page source or Check out index.html in a text editor to see
 						how they are implemented
 					</p>
 					<p>

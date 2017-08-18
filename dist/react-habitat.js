@@ -271,25 +271,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			/**
 	   * The container
-	   * Append trailing slash to avoid super collisions
+	   * Slashes to avoid super collisions
 	   * @type {Container|null}
 	   * @private
 	   */
-			this._container_ = null;
-
-			/**
-	   * The watcher's observer instance or null
-	   * @type {MutationObserver|null}
-	   * @private
-	   */
-			this._observer = null;
-
-			/**
-	   * Observing persistence status flag
-	   * @type {boolean}
-	   * @private
-	   */
-			this._isWatching = false;
+			this.__container__ = null;
 		}
 
 		/**
@@ -323,7 +309,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 					// Resolve components using promises
 					var componentName = ele.getAttribute(_this.componentSelector);
-					resolveQueue.push(_this._container_.resolveWithMeta(componentName, _this).then(function (registration) {
+					resolveQueue.push(_this.__container__.resolve(componentName, _this).then(function (registration) {
 						// This is an expensive operation so only do on non prod builds
 						if (true) {
 							if (ele.querySelector('[' + _this.componentSelector + ']')) {
@@ -341,7 +327,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						var options = registration.meta.options || {};
 
 						// Inject the component
-						_this._container_.factory.inject(registration.component, props, _Habitat2.default.create(ele, _this._container_.id, options));
+						_this.__container__.factory.inject(registration.component, props, _Habitat2.default.create(ele, _this.__container__.id, options));
 					}).catch(function (err) {
 						_Logger2.default.error('RHW01', 'Cannot resolve component "' + componentName + '" for element.', err, ele);
 					}));
@@ -380,7 +366,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				var cb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-				if (this._container_ !== null) {
+				if (this.__container__ !== null) {
 					_Logger2.default.error('RHW02', 'A container is already set. ' + 'Please call dispose() before assigning a new one.');
 					return;
 				}
@@ -391,13 +377,19 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 
 				// Set the container
-				this._container_ = container;
+				this.__container__ = container;
 
 				// Wire up the components from the container
 				this.update(null, function () {
 					_callback(cb, _this2);
 				});
 			}
+
+			/**
+	   * The container
+	   * @returns {Container}
+	   */
+
 		}, {
 			key: 'update',
 
@@ -413,7 +405,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				var cb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
 				// Check if we have a container before attempting an update
-				if (!this._container_) {
+				if (!this.__container__) {
 					_callback(cb);
 					return;
 				}
@@ -429,25 +421,12 @@ return /******/ (function(modules) { // webpackBootstrap
 					}
 				}
 
-				// Temporarily stop the watcher from triggering from our own Habitat injections
-				// This is better for performance however, this could possibly miss any
-				// mutations during the parsing time.. possible bug maybe? dont know yet.
-				var shouldWatcherPersist = this._isWatching;
-				if (shouldWatcherPersist) {
-					this.stopWatcher();
-				}
-
 				// Lifecycle event
 				if (typeof this.willUpdate === 'function') {
 					this.willUpdate(target);
 				}
 
 				this._apply(target, function () {
-					// Restart the dom watcher if persisting
-					if (shouldWatcherPersist) {
-						_this3.startWatcher();
-					}
-
 					// Lifecycle event
 					if (typeof _this3.didUpdate === 'function') {
 						_this3.didUpdate(target);
@@ -455,74 +434,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 					_callback(cb, _this3);
 				});
-			}
-
-			/**
-	   * Start DOM watcher for auto wire ups
-	   */
-
-		}, {
-			key: 'startWatcher',
-			value: function startWatcher() {
-				// Feature available?
-				if (typeof MutationObserver === 'undefined') {
-					_Logger2.default.error('RHE09', 'MutationObserver not available.');
-					return;
-				}
-
-				// Create observer if not assigned already
-				if (!this._observer) {
-					this._observer = new MutationObserver(this._handleDomMutation.bind(this));
-				}
-
-				// Start observing for dom changes filtered by our component selector
-				this._observer.observe(window.document.body, {
-					childList: true,
-					attributes: true,
-					subtree: true,
-					attributeOldValue: false,
-					characterData: false,
-					characterDataOldValue: false,
-					attributeFilter: [this.componentSelector]
-				});
-
-				// Set flag for persistence during update's
-				this._isWatching = true;
-			}
-
-			/**
-	   * Stop the DOM watcher if running
-	   */
-
-		}, {
-			key: 'stopWatcher',
-			value: function stopWatcher() {
-				if (this._observer && this._observer.disconnect) {
-					this._observer.disconnect();
-				}
-				this._isWatching = false;
-			}
-
-			/**
-	  * Handle dom mutation event
-	  * @param {MutationRecord}		mutationRecord		- The mutation record
-	  */
-
-		}, {
-			key: '_handleDomMutation',
-			value: function _handleDomMutation(mutationRecord) {
-				if (typeof mutationRecord !== 'undefined') {
-					// Only run update if nodes have been added
-					var diff = mutationRecord.filter(function (r) {
-						return r.addedNodes.length;
-					});
-					if (diff.length) {
-						this.update();
-					}
-				} else {
-					// Fallback
-					this.update();
-				}
 			}
 
 			/**
@@ -536,22 +447,17 @@ return /******/ (function(modules) { // webpackBootstrap
 				var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
 
-				// Stop dom watcher if any
-				this.stopWatcher();
-
 				// Get open habitats for this container
-				var habitats = _Habitat2.default.listHabitats(this._container_.id);
+				var habitats = _Habitat2.default.listHabitats(this.__container__.id);
 
 				// Clean up
 				for (var i = 0; i < habitats.length; ++i) {
-					this._container_.factory.dispose(habitats[i]);
+					this.__container__.factory.dispose(habitats[i]);
 					_Habitat2.default.destroy(habitats[i]);
 				}
 
 				// Reset and release
-				this._container_ = null;
-				this._observer = null;
-				this._isWatching = false;
+				this.__container__ = null;
 
 				// Lifecycle event
 				if (typeof this.didDispose === 'function') {
@@ -564,7 +470,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}, {
 			key: 'container',
 			get: function get() {
-				return this._container_;
+				return this.__container__;
 			}
 		}]);
 
@@ -584,15 +490,15 @@ return /******/ (function(modules) { // webpackBootstrap
 		value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /**
-	                                                                                                                                                                                                                                                                               * Copyright 2016-present, Deloitte Digital.
-	                                                                                                                                                                                                                                                                               * All rights reserved.
-	                                                                                                                                                                                                                                                                               *
-	                                                                                                                                                                                                                                                                               * This source code is licensed under the BSD-3-Clause license found in the
-	                                                                                                                                                                                                                                                                               * LICENSE file in the root directory of this source tree.
-	                                                                                                                                                                                                                                                                               */
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016-present, Deloitte Digital.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * All rights reserved.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This source code is licensed under the BSD-3-Clause license found in the
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LICENSE file in the root directory of this source tree.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
 	var _ReactDomFactory = __webpack_require__(6);
 
@@ -622,16 +528,6 @@ return /******/ (function(modules) { // webpackBootstrap
 			return 'C' + nextId;
 		};
 	}();
-
-	/**
-	 * Determine if the object is a Promise
-	 * @param {*}   obj     - The test object
-	 * @returns {boolean}   - True if deemed to be a promise
-	 * @private
-	 */
-	var _isPromise = function _isPromise(obj) {
-		return !!obj && ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
-	};
 
 	var hasOldAPIWarning = false;
 	var OLD_API_WARNING = 'Direct container registrations are being deprecated. Please use a ContainerBuilder.';
@@ -680,112 +576,43 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 		_createClass(Container, [{
-			key: '_getRegistration',
+			key: 'resolve',
 
 
 			/**
-	   * Gets a registration for a key
-	   * @param {string}      key          - The registration key
-	   * @returns {null|Registration}      - Returns registration otherwise null if not found
-	   * @private
-	   */
-			value: function _getRegistration(key) {
-				var registration = this._registrations[key];
+	  * Resolve a component from the container
+	  * @param {string}       key                     - The unique component key
+	  * @param {*}           [context=undefined]      - The context the operator is run in
+	  * @returns {object}                             - Component with meta
+	  */
+			value: function resolve(key) {
+				var _this = this;
 
-				if (!registration || !registration.operator) {
-					return null;
-				}
-
-				return registration;
-			}
-
-			/**
-	   * Resolves the operator for a registration
-	   * @param {Registration}        registration        - The registration
-	   * @param {*}                   context             - The context the operator is run in
-	   * @returns {Promise}
-	   * @private
-	   */
-
-		}, {
-			key: '_applyOperatorFor',
-			value: function _applyOperatorFor(registration, context) {
-				var assignedOperator = registration.operator.call(context, this);
-
-				// Wrap in a promise if the component resolved without one
-				if (!_isPromise(assignedOperator)) {
-					return Promise.resolve(assignedOperator);
-				}
+				var context = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
 
 				return new Promise(function (resolve, reject) {
-					assignedOperator.then(function (o) {
+					var registration = _this._registrations[key];
 
+					if (!registration || !registration.operator) {
+						reject(new Error('Cannot resolve registration.'));
+						return null;
+					}
+
+					registration.operator.then(function (o) {
 						// Handle any esModule's with default exports
 						// This helps developers write cleaner container code otherwise
-						// they will need to wrap `import()`'s in Promises that return the default.. yuk
+						// they will need to wrap `import()`'s in Promises that return the default..
 						// https://github.com/webpack/webpack.js.org/pull/213
 						var component = o;
 						if (o.__esModule && o.default) {
 							component = o.default;
 						}
 
-						resolve(component);
-						return component;
-					}).catch(reject);
-				});
-			}
-
-			/**
-	  * Resolve a component from the container
-	  * @param {string}       name        - The unique component key
-	  * @param {*}           [inContext=undefined]   - The context the operator is run in
-	  * @returns {Promise}
-	  */
-
-		}, {
-			key: 'resolve',
-			value: function resolve(name) {
-				var _this = this;
-
-				var inContext = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-
-				return new Promise(function (resolve, reject) {
-					var registration = _this._getRegistration(name);
-					if (!registration) {
-						reject(new Error('Cannot resolve registration.'));
-						return null;
-					}
-
-					_this._applyOperatorFor(registration, inContext).then(resolve).catch(reject);
-				});
-			}
-
-			/**
-	   * Resolve a component from the container with its meta data
-	   * @param {string}      name                    - The unique component key
-	   * @param {*}           [inContext=undefined]   - The context the operator is run in
-	   * @returns {Promise}
-	   */
-
-		}, {
-			key: 'resolveWithMeta',
-			value: function resolveWithMeta(name) {
-				var _this2 = this;
-
-				var inContext = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-
-				return new Promise(function (resolve, reject) {
-					var registration = _this2._getRegistration(name);
-					if (!registration) {
-						reject(new Error('Cannot resolve registration.'));
-						return null;
-					}
-
-					_this2._applyOperatorFor(registration, inContext).then(function (o) {
 						resolve({
-							component: o,
+							component: component,
 							meta: registration.meta
 						});
+						return component;
 					}).catch(reject);
 				});
 			}
@@ -831,7 +658,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}, {
 			key: 'registerAll',
 			value: function registerAll(comps) {
-				var _this3 = this;
+				var _this2 = this;
 
 				if ((typeof comps === 'undefined' ? 'undefined' : _typeof(comps)) !== 'object') {
 					throw new Error('Unexpected components type. Expects type object', comps);
@@ -843,7 +670,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 
 				Object.keys(comps).forEach(function (key) {
-					_this3._registrations[key] = new _Registration2.default(function () {
+					_this2._registrations[key] = new _Registration2.default(function () {
 						return comps[key];
 					}).as(key);
 				});
@@ -948,6 +775,8 @@ return /******/ (function(modules) { // webpackBootstrap
 		value: true
 	});
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016-present, Deloitte Digital.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * All rights reserved.
@@ -971,9 +800,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		function Registration(operator) {
 			_classCallCheck(this, Registration);
 
-			if (typeof operator !== 'function') {
+			if ((typeof operator === 'undefined' ? 'undefined' : _typeof(operator)) !== 'object') {
 				//TODO: ERROR CODE
-				_Logger2.default.error('RHE', 'Unexpected operator.', operator);
+				_Logger2.default.error('RHE', 'Unexpected registration. Expects Promise', operator);
 				return;
 			}
 
@@ -1137,21 +966,33 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 
 		/**
-	  * Register new component
-	  * @param {function}        operator    - function that returns either a React Component or a Promise that resolves one
+	  * Register new component asynchronously
+	  * @param {Promise}        operator    - promise that returns a React Component
 	  * @returns {Registration}
 	  */
 
 
 		_createClass(ContainerBuilder, [{
-			key: 'register',
-			value: function register(operator) {
+			key: 'registerAsync',
+			value: function registerAsync(operator) {
 				var registration = new _Registration2.default(operator);
 				if (this._defaultOptions) {
 					registration.withOptions(this._defaultOptions);
 				}
 				this._registrations.push(registration);
 				return registration;
+			}
+
+			/**
+	   * Register new component
+	   * @param {object}        component    - a React Component to register
+	   * @returns {Registration}
+	   */
+
+		}, {
+			key: 'register',
+			value: function register(component) {
+				return this.registerAsync(Promise.resolve(component));
 			}
 
 			/**
@@ -1642,11 +1483,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			var containerBuilder = new _ContainerBuilder2.default(spec.defaultOptions || null);
 
 			// Map the components
-
-			var _loop = function _loop(i) {
-				var registration = containerBuilder.register(function () {
-					return spec.container[i].for;
-				}).as(spec.container[i].register);
+			for (var i = 0; i < spec.container.length; i++) {
+				var registration = void 0;
+				if (spec.container[i].forAsync) {
+					registration = containerBuilder.registerAsync(spec.container[i].forAsync).as(spec.container[i].register);
+				} else {
+					registration = containerBuilder.register(spec.container[i].for).as(spec.container[i].register);
+				}
 
 				if (spec.container[i].withDefaultProps) {
 					registration.withDefaultProps(spec.container[i].withDefaultProps);
@@ -1655,10 +1498,6 @@ return /******/ (function(modules) { // webpackBootstrap
 				if (spec.container[i].withOptions) {
 					registration.withOptions(spec.container[i].withOptions);
 				}
-			};
-
-			for (var i = 0; i < spec.container.length; i++) {
-				_loop(i);
 			}
 
 			_this._shouldUpdateProxy = spec.shouldUpdate || null;
@@ -1668,7 +1507,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			// Finally, set the container
 			_this.setContainer(containerBuilder.build(), function () {
 				if (typeof callback === 'function') {
-					callback.call(_this);
+					callback();
 				}
 			});
 			return _this;

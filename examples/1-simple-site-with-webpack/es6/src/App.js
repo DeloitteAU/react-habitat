@@ -1,10 +1,11 @@
+import 'babel-polyfill'; // React Habitat requires Object.assign pollyfill for old IE support
+
 import ReactHabitat   from 'react-habitat';
 
 // Our top level react components
 import Banner       from './components/Banner';
-import Featurette   from './components/Featurette';
 
-class Main extends ReactHabitat.Bootstrapper {
+class App extends ReactHabitat.Bootstrapper {
 
 	constructor() {
 
@@ -15,13 +16,23 @@ class Main extends ReactHabitat.Bootstrapper {
 
 		// Register our components that we want to expose to the DOM
 		containerBuilder.register(Banner).as('RBanner');
-		containerBuilder.register(Featurette).as('RFeaturette');
+		containerBuilder.registerAsync(System.import('./components/Featurette')).as('RFeaturette');
 
 		// Set the DOM container
 		this.setContainer(containerBuilder.build());
+
+		// Bind the update method onto the window for the dynamic demo
+		// Alternatively we could have imported this file into another
+		// eg
+		//
+		// import App from './App';
+		//
+		// App.update();
+		//
+		window.updateHabitat = this.update.bind(this);
 	}
 }
 
-const instance = new Main();
+const instance = new App();
 
 export default instance;
