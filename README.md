@@ -52,12 +52,14 @@ However, you are definitely invited to use it if you want to.
 
 - [Compatibility](#compatibility)
 - [Installing](#installing)
-- [Getting Started](#getting-started)
+- 🎓 [Getting Started](#getting-started)
 - [Registering components](#registering-components)
+  - [Concept](#registering-components)
   - [Passing options to register](#passing-options-to-register)
   - [Passing default props to register](#passing-default-props-to-register)
   - [Dynamic imports and code splitting](#dynamic-imports-and-code-splitting)
 - [Resolving components](#resolving-components)
+  - [Concept](#resolving-components)
   - [Passing props/properties to your components](#passing-properties-props-to-your-components)
   - [Passing data back again](#passing-values-back-again)
   - [Setting the habitats css class](#setting-the-habitats-css-class)
@@ -97,7 +99,7 @@ This assumes that you’re using a package manager with a module bundler like [W
 
 If you don’t use a module bundler, and would prefer a single-file [UMD](https://github.com/umdjs/umd) build that makes `ReactHabitat` available as a global object, you can grab a pre-built version from the dist folder.
 
-## Getting Started
+## 🎓Getting Started
 
 **Using ES5?** Read the [ES5 version here](readme-in-es5.md#getting-started).
 
@@ -162,7 +164,9 @@ export default new MyApp();
 
 **If you are using Redux**
 
-You will need to use a different container. Please install & configure the [react-habitat-redux library](https://github.com/DeloitteDigitalAPAC/react-habitat-redux). Then continue with step 2 below.
+You will need to use a different factory. Please install & configure the [react-habitat-redux library](https://github.com/DeloitteDigitalAPAC/react-habitat-redux). Then continue with step 2 below.
+
+Alternatively learn how to write your own custom factory. TODO
 
 #### 2. Application execution - resolve your components
 
@@ -237,10 +241,12 @@ For example, the following would create a new `MyReactComponent` instance with `
 
 The getting start guide gives you an idea how to use React Habitat, but there's a lot more you can do.
 
-- Learn more about [passing props to your components](#passing-properties-props-to-your-components) including JSON.
-- Learn how you can [pass data back again](#passing-values-back-again).
-- Learn about the [ways to register components](#registering-components) that adds flexibility.
-- Learn about the [options available when resolving components](#resolving-components).
+Learn more about:
+
+- [Passing props to your components](#passing-properties-props-to-your-components) including JSON.
+- [Passing data back again](#passing-values-back-again).
+- [Ways to register components](#registering-components) that adds flexibility.
+- [Options available when resolving components](#resolving-components).
 
 **Still Need Help?**
 
@@ -249,6 +255,7 @@ Please ask questions on [StackOverflow](https://stackoverflow.com/questions/tagg
 
 **[⬆ back to top](#table-of-contents)**
 
+# API
 
 ## Registering components
 
