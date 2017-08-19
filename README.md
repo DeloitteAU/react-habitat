@@ -6,7 +6,7 @@
 
 If you are on v0.4, Please read [v0.4 to v0.5 migration guide](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki/v0.4-to-v0.5-Migration-Guide). While there are *zero* breaking changes in this release we are moving closer to the official v1 API and we want you up to date.
 
-> *Looking for the older [v0.4 docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64#react-habitat-)?*
+> *Looking for the [v0.4 docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64#react-habitat-)?*
 
 ## React Habitat <3 Your CMS
 
@@ -75,9 +75,9 @@ However, you are definitely invited to use it if you want to.
   - [Dynamic updates](#dynamic-updates)
   - [Update lifecycle](#update-lifecycle)
   - [Disposing the container](#disposing-the-container)
+- [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/examples)
 - [Contribute](#want-to-contribute)
 - [License information](#license-bsd-3-clause)
-- [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/examples)
 - [Change log](https://github.com/DeloitteDigitalAPAC/react-habitat/blob/master/CHANGELOG.md)
 
 
