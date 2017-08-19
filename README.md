@@ -102,7 +102,7 @@ If you don’t use a module bundler, and would prefer a single-file [UMD](https:
 
 ## 🎓 Getting Started 
 
-**Using ES5?** Read the [ES5 version here](readme-in-es5.md#getting-started).
+**Using ES5?** Read the [ES5 spec here](readme-in-es5.md#getting-started).
 
 The basic pattern for integrating React Habitat into your application is:
 
