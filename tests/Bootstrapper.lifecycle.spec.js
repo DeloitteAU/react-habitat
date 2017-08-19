@@ -66,7 +66,7 @@ describe('Bootstrapper Lifecycle', () => {
 		expect(app).toBeDefined();
 	});
 
-	it('should trigger shouldUpdate with target', (done) => {
+	it('should trigger shouldUpdate with target and query', (done) => {
 		node.innerHTML = '<div data-component="IMockComponent"></div>';
 
 		const shouldUpdate = jasmine.createSpy();
@@ -79,8 +79,10 @@ describe('Bootstrapper Lifecycle', () => {
 				this.setContainer(containerBuilder.build(), cb);
 			}
 
-			shouldUpdate(target) {
+			shouldUpdate(target, query) {
 				expect(target).toBeDefined();
+				expect(query).toBeDefined();
+				expect(query.length).toBe(1);
 				const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 				expect(componentLookup).toEqual(null);
 				shouldUpdate();
@@ -107,8 +109,10 @@ describe('Bootstrapper Lifecycle', () => {
 				this.setContainer(containerBuilder.build(), cb);
 			}
 
-			shouldUpdate(target) {
+			shouldUpdate(target, query) {
 				expect(target).toBeDefined();
+				expect(query).toBeDefined();
+				expect(query.length).toBe(1);
 				const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 				expect(componentLookup).toEqual(null);
 				shouldUpdate();
@@ -125,7 +129,7 @@ describe('Bootstrapper Lifecycle', () => {
 		expect(app).toBeDefined();
 	});
 
-	it('should trigger willUpdate with target', (done) => {
+	it('should trigger willUpdate with target and query', (done) => {
 		node.innerHTML = '<div data-component="IMockComponent"></div>';
 
 		const willUpdate = jasmine.createSpy();
@@ -138,8 +142,10 @@ describe('Bootstrapper Lifecycle', () => {
 				this.setContainer(containerBuilder.build(), cb);
 			}
 
-			willUpdate(target) {
+			willUpdate(target, query) {
 				expect(target).toBeDefined();
+				expect(query).toBeDefined();
+				expect(query.length).toBe(1);
 				const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
 				expect(componentLookup).toEqual(null);
 				willUpdate();

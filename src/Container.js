@@ -69,10 +69,9 @@ export default class Container {
 	/**
 	* Resolve a component from the container
 	* @param {string}       key                     - The unique component key
-	* @param {*}           [context=undefined]      - The context the operator is run in
 	* @returns {object}                             - Component with meta
 	*/
-	resolve(key, context = undefined) {
+	resolve(key) {
 		return new Promise((resolve, reject) => {
 			const registration = this._registrations[key];
 

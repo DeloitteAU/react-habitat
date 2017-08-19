@@ -80,7 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		Bootstrapper: _Bootstrapper2.default,
 		Container: _Container2.default,
 		ContainerBuilder: _ContainerBuilder2.default,
-		createBootstrapper: _createBootstrapper.createBootstrapper // Will be depreacted from this index soon
+		createBootstrapper: _createBootstrapper.createBootstrapper
 	};
 	module.exports = exports['default'];
 
@@ -410,12 +410,18 @@ return /******/ (function(modules) { // webpackBootstrap
 					return;
 				}
 
-				var target = node || window.document.body.querySelectorAll('[' + this.componentSelector + ']');
+				var target = node || window.document.body;
+				var query = target.querySelectorAll('[' + this.componentSelector + ']');
+
+				if (!query.length) {
+					// Nothing to update
+					return;
+				}
 
 				// Lifecycle event
 				// Hook to allow developers to cancel operation
 				if (typeof this.shouldUpdate === 'function') {
-					if (this.shouldUpdate(target) === false) {
+					if (this.shouldUpdate(target, query) === false) {
 						_callback(cb, this);
 						return;
 					}
@@ -423,10 +429,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				// Lifecycle event
 				if (typeof this.willUpdate === 'function') {
-					this.willUpdate(target);
+					this.willUpdate(target, query);
 				}
 
-				this._apply(target, function () {
+				this._apply(query, function () {
 					// Lifecycle event
 					if (typeof _this3.didUpdate === 'function') {
 						_this3.didUpdate(target);
@@ -559,7 +565,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @type {Object}
 	   * @private
 	   */
-			this._registrations = registrations;
+			this._registrations = registrations || {};
 
 			/**
 	   * The containers dom factory
@@ -644,9 +650,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					_Logger2.default.warn('RHW03', OLD_API_WARNING);
 				}
 
-				this._registrations[key] = new _Registration2.default(function () {
-					return comp;
-				}).as(key);
+				this._registrations[key] = new _Registration2.default(comp).as(key);
 			}
 
 			/**
@@ -670,9 +674,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 
 				Object.keys(comps).forEach(function (key) {
-					_this2._registrations[key] = new _Registration2.default(function () {
-						return comps[key];
-					}).as(key);
+					_this2._registrations[key] = new _Registration2.default(comps[key]).as(key);
 				});
 			}
 
@@ -1515,7 +1517,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 			});
 
-			_Logger2.default.warn('RHW03', 'createBootstrapper is being deprecated. Please use upgrade to ES6+.');
+			_Logger2.default.warn('RHW03', 'createBootstrapper is being deprecated. Please use a plain JavaScript class that extends Bootstrapper instead.');
 			return _this;
 		}
 

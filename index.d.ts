@@ -137,7 +137,12 @@ declare module "react-habitat" {
 		/**
 		 * Register new component
 		 */
-		register: (operator: any) => IRegistration;
+		register: (component: any) => IRegistration;
+
+		/**
+		 * Register new component asycnrosly
+		 */
+		registerAsync: (operator: Promise<any>) => IRegistration;
 
 		/**
 		 * The container factory
@@ -233,7 +238,13 @@ declare module "react-habitat" {
 		/**
 		 * Register new component
 		 */
-		register: (operator: any) => IRegistration;
+		register: (component: any) => IRegistration;
+
+		/**
+		 * Register new component asycnrosly
+		 * @param operator
+		 */
+		registerAsync: (operator: Promise<any>) => IRegistration;
 
 		/**
 		 * The container factory

@@ -166,12 +166,18 @@ export default class Bootstrapper {
 			return;
 		}
 
-		const target = node || window.document.body.querySelectorAll(`[${this.componentSelector}]`);
+		const target = node || window.document.body;
+		const query = target.querySelectorAll(`[${this.componentSelector}]`);
+
+		if (!query.length) {
+			// Nothing to update
+			return;
+		}
 
 		// Lifecycle event
 		// Hook to allow developers to cancel operation
 		if (typeof this.shouldUpdate === 'function') {
-			if (this.shouldUpdate(target) === false) {
+			if (this.shouldUpdate(target, query) === false) {
 				_callback(cb, this);
 				return;
 			}
@@ -179,11 +185,11 @@ export default class Bootstrapper {
 
 		// Lifecycle event
 		if (typeof this.willUpdate === 'function') {
-			this.willUpdate(target);
+			this.willUpdate(target, query);
 		}
 
 		this._apply(
-			target,
+			query,
 			() => {
 				// Lifecycle event
 				if (typeof this.didUpdate === 'function') {
