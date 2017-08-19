@@ -407,6 +407,22 @@ class MyCustomFactory {
 }
 ```
 
+#### Inject
+
+`inject(module, props, target)`
+
+- **module** is the component that was registered.
+- **props** is the props for the component.
+- **target** is the html node intended for the module/component.
+
+#### Dispose
+
+`dispose(target)`
+
+- **target** is the html node containing the module/component that needs to be teared down.
+
+### Using factories
+
 To define a factory, just set `factory` on the container builder before calling build.
 
 ```javascript
@@ -416,20 +432,6 @@ containerBuilder.factory = MyCustomFactory;
 ```
 
 > If you create a compatible factory, please let us know so we can include a link to it from this page.
-
-### Inject
-
-`inject(module, props, target)`
-
-- **module** is the component that was registered.
-- **props** is the props for the component.
-- **target** is the html node intended for the module/component.
-
-### Dispose
-
-`dispose(target)`
-
-- **target** is the html node containing the module/component that needs to be teared down.
 
 **[⬆ back to top](#table-of-contents)**
 
