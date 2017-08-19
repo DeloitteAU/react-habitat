@@ -5,9 +5,12 @@
 - Updated packages in examples
 - Code Splitting Support and Dynamic imports [#2](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/2)
 - Updated readme with JSON encoding information [#11](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/11). Thanks @joshuakelly
+- Add new container builder
+- Register components with default props and options
 - Deprecated elements property from Bootstrapper
-- Added Redux example
+- Added update lifecycle methods
 - Added dynamic html wire up support [#12](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/12)
+- Added Redux example app
 - Small optimisation wins for production builds
 
 ### [0.4.2]

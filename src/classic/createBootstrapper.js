@@ -74,9 +74,6 @@ export class _Mixin extends Bootstrapper {
 				callback();
 			}
 		});
-
-		Logger.warn('RHW03',
-			'createBootstrapper is being deprecated. Please use a plain JavaScript class that extends Bootstrapper instead.');
 	}
 
 	shouldUpdate(node) {

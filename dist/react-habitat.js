@@ -372,7 +372,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 
 				if (!container.factory || typeof container.factory.inject !== 'function' || typeof container.factory.dispose !== 'function') {
-					_Logger2.default.error('RHWXX', 'Incompatible factory');
+					_Logger2.default.error('RHE10', 'Incompatible factory');
 					return;
 				}
 
@@ -774,8 +774,6 @@ return /******/ (function(modules) { // webpackBootstrap
 		value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016-present, Deloitte Digital.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * All rights reserved.
@@ -798,12 +796,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Registration = function () {
 		function Registration(operator) {
 			_classCallCheck(this, Registration);
-
-			if ((typeof operator === 'undefined' ? 'undefined' : _typeof(operator)) !== 'object') {
-				//TODO: ERROR CODE
-				_Logger2.default.error('RHE', 'Unexpected registration. Expects Promise', operator);
-				return;
-			}
 
 			/**
 	   * Operator reference
@@ -844,7 +836,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 			value: function as(key) {
 				if (typeof key !== 'string') {
-					_Logger2.default.error('RHE', 'Unexpected key type. Expected a string.', key);
+					_Logger2.default.error('RHE13', 'Unexpected key type. Expected a string.', key);
 					return;
 				}
 				this._key = key;
@@ -1010,12 +1002,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			value: function build() {
 				return new _Container2.default(this._factory, this._registrations.reduce(function (acc, registration) {
 					if (!registration.key) {
-						_Logger2.default.error('RHEXX', 'Missing key for registration.');
+						_Logger2.default.error('RHE11', 'Missing key for registration.');
 						return acc;
 					}
 
 					if (acc[registration.key]) {
-						_Logger2.default.warn('RHEXX', 'Duplicate key', registration.key);
+						_Logger2.default.warn('RHW12', 'Duplicate key', registration.key);
 					}
 
 					acc[registration.key] = registration;
@@ -1513,8 +1505,6 @@ return /******/ (function(modules) { // webpackBootstrap
 					callback();
 				}
 			});
-
-			_Logger2.default.warn('RHW03', 'createBootstrapper is being deprecated. Please use a plain JavaScript class that extends Bootstrapper instead.');
 			return _this;
 		}
 
