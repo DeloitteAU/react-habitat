@@ -8,7 +8,7 @@ var Featurette = require('./components/Featurette');
 function MyApp() {
 
     // Create a new react habitat bootstrapper
-    this.domContainer = ReactHabitat.createBootstrapper({
+    this.app = ReactHabitat.createBootstrapper({
 
         // Create a new container
         container: [
@@ -19,6 +19,8 @@ function MyApp() {
         ]
     });
 
+    // Bind the update method onto the window for the dynamic demo
+    window.updateHabitat = this.app.update.bind(this.app);
 }
 
 // Always export a 'new' instance so it immediately evokes

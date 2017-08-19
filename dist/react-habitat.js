@@ -1426,6 +1426,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.createBootstrapper = createBootstrapper;
 
+	var _Logger = __webpack_require__(1);
+
+	var _Logger2 = _interopRequireDefault(_Logger);
+
 	var _Bootstrapper2 = __webpack_require__(2);
 
 	var _Bootstrapper3 = _interopRequireDefault(_Bootstrapper2);
@@ -1510,6 +1514,8 @@ return /******/ (function(modules) { // webpackBootstrap
 					callback();
 				}
 			});
+
+			_Logger2.default.warn('RHW03', 'createBootstrapper is being deprecated. Please use upgrade to ES6+.');
 			return _this;
 		}
 

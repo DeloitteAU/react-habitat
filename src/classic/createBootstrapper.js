@@ -6,8 +6,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import Logger from '../Logger';
 import Bootstrapper from '../Bootstrapper';
 import ContainerBuilder from '../builder/ContainerBuilder';
+
 
 /*
 * Mixin class used for extending the classic spec
@@ -72,6 +74,9 @@ export class _Mixin extends Bootstrapper {
 				callback();
 			}
 		});
+
+		Logger.warn('RHW03',
+			'createBootstrapper is being deprecated. Please use a plain JavaScript class that extends Bootstrapper instead.');
 	}
 
 	shouldUpdate(node) {

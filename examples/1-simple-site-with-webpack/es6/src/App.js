@@ -19,18 +19,21 @@ class App extends ReactHabitat.Bootstrapper {
 		// Set the DOM container
 		this.setContainer(containerBuilder.build());
 
-		// Bind the update method onto the window for the dynamic demo
-		// Alternatively we could have imported this file into another
-		// eg
-		//
-		// import App from './App';
-		//
-		// App.update();
-		//
-		window.updateHabitat = this.update.bind(this);
 	}
 }
 
+// Create a single instance of our app
 const instance = new App();
 
+// Bind the update method onto the window for the dynamic demo
+// Alternatively we could have imported this file into another
+// eg
+//
+// import App from './App';
+//
+// App.update();
+//
+window.updateHabitat = instance.update.bind(instance);
+
+// Export the instance
 export default instance;

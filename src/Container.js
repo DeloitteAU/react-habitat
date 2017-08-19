@@ -48,7 +48,7 @@ export default class Container {
 		 * @type {Object}
 		 * @private
 		 */
-		this._registrations = registrations;
+		this._registrations = registrations || {};
 
 		/**
 		 * The containers dom factory
@@ -136,7 +136,7 @@ export default class Container {
 			Logger.warn('RHW03', OLD_API_WARNING);
 		}
 
-		this._registrations[key] = new Registration(() => comp).as(key);
+		this._registrations[key] = new Registration(comp).as(key);
 	}
 
 	/**
@@ -155,7 +155,7 @@ export default class Container {
 		}
 
 		Object.keys(comps).forEach((key) => {
-			this._registrations[key] = new Registration(() => comps[key]).as(key);
+			this._registrations[key] = new Registration(comps[key]).as(key);
 		});
 	}
 
