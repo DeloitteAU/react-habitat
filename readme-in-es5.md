@@ -1,6 +1,4 @@
-> Read the [Full spec here](readme.md#getting-started).
-
-ReactHabitat comes with a `createBootstrapper` method for our es5 users. Please note we aim to deprecate this class soon in favour for plain javascript classes. Howver, we will make this class available in a seperate package if you need to maintain legacy support.
+ReactHabitat comes with a `createBootstrapper` method for our es5 users.
 
 ```javascript
 var ReactHabitat = require('react-habitat');
@@ -55,3 +53,5 @@ function MyApp() {
 // Always export a 'new' instance so it immediately evokes
 exports.MyApp = new MyApp();
 ```
+
+> Read the [Full spec here](readme.md#getting-started).
