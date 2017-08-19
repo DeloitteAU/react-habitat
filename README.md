@@ -388,7 +388,7 @@ container
 
 A factory is used to define how components are injected into the DOM. The [default factory](https://github.com/DeloitteDigitalAPAC/react-habitat/blob/master/src/factories/ReactDomFactory.js) is simple wrapper of ReactDOM.
 
-Where as the ReactHabitatRedux one wraps Components in a Redux Provider. You can write custom factories do what ever you want with components and control how they are added to the dom.
+Where as the [ReactHabitatRedux one](https://github.com/DeloitteDigitalAPAC/react-habitat-redux/blob/master/src/ReduxDomFactory.js) wraps Components in a React Redux Provider. You can write custom factories do what ever you want with components and control how they are added to the dom.
 
 A factory is simply a plain javascript class that must have two methods implemented `inject` and `dispose`.
 
