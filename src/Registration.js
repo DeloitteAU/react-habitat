@@ -13,12 +13,6 @@ import Logger from './Logger';
  */
 export default class Registration {
 	constructor(operator) {
-		if (typeof operator !== 'object') {
-			//TODO: ERROR CODE
-			Logger.error('RHE', 'Unexpected registration. Expects Promise', operator);
-			return;
-		}
-
 		/**
 		 * Operator reference
 		 * @type {function}
@@ -72,7 +66,7 @@ export default class Registration {
 	 */
 	as(key) {
 		if (typeof key !== 'string') {
-			Logger.error('RHE', 'Unexpected key type. Expected a string.', key);
+			Logger.error('RHE13', 'Unexpected key type. Expected a string.', key);
 			return;
 		}
 		this._key = key;

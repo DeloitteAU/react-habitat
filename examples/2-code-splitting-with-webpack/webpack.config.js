@@ -3,19 +3,7 @@ const webpack = require('webpack');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 module.exports = {
-	entry: {
-		// Our main app
-		app: ['./src/App.js'],
-
-
-		vendor: [
-			'babel-polyfill', // React Habitat requires Object.assign pollyfill for old IE support
-			'mutationobserver-shim',
-			'react',
-			'react-dom',
-			'react-habitat'
-		]
-	},
+	entry: './src/App.js',
 	output: {
 		filename: 'app.bundle.js',
 		chunkFilename: 'app.[id].bundle.js',
@@ -31,20 +19,10 @@ module.exports = {
 				test: /\.jsx?$/, // Matches .js and .jsx files
 				exclude:/node_modules/,
 				loader: 'babel-loader',
-				options: {
-					presets: ['es2015', 'react']
-				}
 			},
 		]
 	},
 	plugins: [
-
-		// Split our app code and libraries. See "Entry" config above
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "vendor",
-			filename: "vendor.bundle.js"
-		}),
-
 		new webpack.optimize.MinChunkSizePlugin({
 			minChunkSize: 1
 		}),

@@ -58,12 +58,12 @@ export default class ContainerBuilder {
 			this._factory,
 			this._registrations.reduce((acc, registration) => {
 				if (!registration.key) {
-					Logger.error('RHEXX', 'Missing key for registration.');
+					Logger.error('RHE11', 'Missing key for registration.');
 					return acc;
 				}
 
 				if (acc[registration.key]) {
-					Logger.warn('RHEXX', 'Duplicate key', registration.key);
+					Logger.warn('RHW12', 'Duplicate key', registration.key);
 				}
 
 				acc[registration.key] = registration;

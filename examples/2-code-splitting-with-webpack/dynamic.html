@@ -13,6 +13,39 @@
     <!-- jQuery used for demo menu only -->
     <script src="/dist/jquery-3.2.1.min.js"></script>
 
+    <!-- jQuery demo script -->
+    <script type="text/javascript">
+      $(document).ready(function() {
+        // On button click
+        $('#btnLoad').on('click', function() {
+
+          $(this).remove();       // hide the button
+          $('#loader').show();    // show the loading animation
+
+          // Set a timeout only so things dont happen too fast for the demo
+          window.setTimeout(function() {
+
+            // Use jquery to ajax in the demo html data
+            $.ajax('/ajaxData.html')
+              .done(function(response){
+                // Append the response
+                $('#target').append(response);
+
+                // React habitat will automatically see this type of event and wire up components
+                // NOTE: this method is configured in App.js and not out of the box
+                window.updateHabitat();
+              })
+              .always(function() {
+                // Hide the loader
+                $('#loader').hide();
+              });
+
+          }, 1200);
+
+        });
+      });
+    </script>
+
   </head>
   <body>
 
@@ -62,36 +95,6 @@
     <!-- Button to trigger the ajax load -->
     <button id="btnLoad" class="btn btn-success btn-lg">Load in 'ajaxData.html'</button>
 
-    <!-- jQuery demo script -->
-    <script>
-      // On button click
-      $('#btnLoad').on('click', function() {
-
-        $(this).remove();       // hide the button
-        $('#loader').show();    // show the loading animation
-
-        // Set a timeout only so things dont happen too fast for the demo
-        window.setTimeout(function() {
-
-          // Use jquery to ajax in the demo html data
-          $.ajax('/ajaxData.html')
-            .done(function(response){
-              // Append the response
-              // React habitat will automatically see this type of event and wire up components
-              $('#target').append(response);
-
-              // This alternative also works, it dosnt depend on jquery events
-              // window.document.getElementById('target').innerHTML = response;
-            })
-            .always(function() {
-              // Hide the loader
-              $('#loader').hide();
-            });
-
-        }, 1200);
-
-      });
-    </script>
     <!--
         =======================================================
         // END REACT HABITAT EXAMPLES
@@ -105,7 +108,6 @@
 
   </div>
 
-  <script type="text/javascript" src="dist/vendor.bundle.js"></script>
   <script type="text/javascript" src="dist/app.bundle.js"></script>
 
   <!-- Used for demo menu only -->

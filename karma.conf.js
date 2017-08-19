@@ -7,7 +7,7 @@ module.exports = function(config) {
 		// available frameworks: https://npmjs.org/browse/keyword/karma-adapter
 		frameworks: ['jasmine'],
 
-		polyfill: ['Promise', 'Object.assign', 'MutationObserver'],
+		polyfill: ['Promise', 'Object.assign'],
 
 		// list of files / patterns to load in the browser
 		files: [

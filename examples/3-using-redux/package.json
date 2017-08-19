@@ -27,6 +27,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.3.2",
     "react-redux": "^5.0.6",
+    "react-habitat": "^0.5.0",
     "redux": "^3.7.2",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"

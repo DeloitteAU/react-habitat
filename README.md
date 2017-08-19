@@ -2,7 +2,11 @@
 
 # React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master)
 
-*Looking for the older [v0.4 docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64#react-habitat-)?*
+🌟 v0.5 Released! 
+
+If you are on v0.4, Please read the 3 step [v0.4 to v0.5 migration guide](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki/v0.4-to-v0.5-Migration-Guide). While there are *zero* breaking changes in this release we are moving closer to official v1 API and we want you up to date.
+
+> *Looking for the older [v0.4 docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64#react-habitat-)?*
 
 ## React Habitat <3 Your CMS
 
@@ -94,7 +98,7 @@ We highly recommend you use something like [WebPack](https://webpack.github.io/)
 
 Install with [NPM](http://npmjs.com/)
 
-`npm install --save-dev react-habitat`
+`npm install --save react-habitat`
 
 This assumes that you’re using a package manager with a module bundler like [Webpack](http://webpack.github.io) or [Rollup](https://rollupjs.org/).
 
@@ -150,7 +154,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
         builder.register(SomeReactComponent).as('SomeReactComponent');
         
         // or Register a component to load on demand asynchronously 
-        builder.registerAsync(import('./AnotherReactComponent')).as('AnotherReactComponent');
+        builder.registerAsync(System.import('./AnotherReactComponent')).as('AnotherReactComponent');
 
         // Finally, set the container
         this.setContainer(builder.build());

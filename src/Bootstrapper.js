@@ -133,7 +133,7 @@ export default class Bootstrapper {
 		if (!container.factory ||
 			typeof container.factory.inject !== 'function' ||
 			typeof container.factory.dispose !== 'function') {
-			Logger.error('RHWXX', 'Incompatible factory');
+			Logger.error('RHE10', 'Incompatible factory');
 			return;
 		}
 
