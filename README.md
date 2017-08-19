@@ -4,7 +4,7 @@
 
 🌟 v0.5 Released! See [whats new](https://github.com/DeloitteDigitalAPAC/react-habitat/blob/master/CHANGELOG.md#050).
 
-If you are on v0.4, Please read the 3 step [v0.4 to v0.5 migration guide](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki/v0.4-to-v0.5-Migration-Guide). While there are *zero* breaking changes in this release we are moving closer to official v1 API and we want you up to date.
+If you are on v0.4, Please read [v0.4 to v0.5 migration guide](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki/v0.4-to-v0.5-Migration-Guide). While there are *zero* breaking changes in this release we are moving closer to the official v1 API and we want you up to date.
 
 > *Looking for the older [v0.4 docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64#react-habitat-)?*
 
