@@ -428,7 +428,7 @@ To define a factory, just set `factory` on the container builder before calling 
 ```javascript
 const containerBuilder = new ReactHabitat.ContainerBuilder();
 
-containerBuilder.factory = MyCustomFactory;
+containerBuilder.factory = new MyCustomFactory();
 ```
 
 > If you create a compatible factory, please let us know so we can include a link to it from this page.
