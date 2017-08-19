@@ -12,38 +12,15 @@ import Logger from './Logger';
 const DEFAULT_HABITAT_SELECTOR = 'data-component';
 
 /**
- * Parses a container and populate components
- * @param {array}     container             The container
- * @param {array}     elements              The elements to parse
- * @param {string}    componentSelector     The component selector
- * @param cb
+ * Safe callback wrapper
+ * @param {null|function}		cb			- The callback
+ * @param {object}				context		- The context of the callback
+ * @param {...object}			args		- Arguments to apply
+ * @private
  */
-function parseContainer(container, elements, componentSelector, cb = null) {
-
-	const factory = container.domFactory();
-	const id = container.id();
-
-	// Iterate over component elements in the dom
-	for (let i = 0; i < elements.length; ++i) {
-		const ele = elements[i];
-		const componentName = ele.getAttribute(componentSelector);
-		const component = container.resolve(componentName);
-
-		if (component) {
-			if (ele.querySelector(`[${componentSelector}]`)) {
-				Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
-			}
-			factory.inject(
-				component,
-				Habitat.parseProps(ele),
-				Habitat.create(ele, id));
-		} else {
-			Logger.error('RHW01', `Cannot resolve component "${componentName}" for element.`, ele);
-		}
-	}
-
+function _callback(cb, context, ...args) {
 	if (typeof cb === 'function') {
-		cb.call();
+		cb.call(context, ...args);
 	}
 }
 
@@ -61,14 +38,84 @@ export default class Bootstrapper {
 			throw new Error('React Habitat requires a window but cannot see one :(');
 		}
 
-		// Set dom component selector
+		/**
+		 * The DOM component selector
+		 * @type {string}
+		 */
 		this.componentSelector = DEFAULT_HABITAT_SELECTOR;
 
-		// The target elements
-		this._elements = null;
+		/**
+		 * The container
+		 * Slashes to avoid super collisions
+		 * @type {Container|null}
+		 * @private
+		 */
+		this.__container__ = null;
+	}
 
-		// The container
-		this._container = null;
+	/**
+	 * Apply the container to nodes
+	 * @param {array}		nodes				- The elements to parse
+	 * @param {function}	[cb=null]			- Optional callback
+	 * @private
+	 */
+	_apply(nodes, cb = null) {
+		// const factory = container.domFactory();
+		// const id = container.id();
+		const resolveQueue = [];
+
+		// Iterate over component elements in the dom
+		for (let i = 0; i < nodes.length; ++i) {
+			const ele = nodes[i];
+
+			// Ignore elements that have already been connected
+			if (Habitat.hasHabitat(ele)) {
+				continue;
+			}
+
+			// Resolve components using promises
+			const componentName = ele.getAttribute(this.componentSelector);
+			resolveQueue.push(
+				this.__container__
+					.resolve(componentName, this)
+					.then((registration) => {
+						// This is an expensive operation so only do on non prod builds
+						if (process.env.NODE_ENV !== 'production') {
+							if (ele.querySelector(`[${this.componentSelector}]`)) {
+								Logger.warn('RHW08', 'Component should not contain any nested components.', ele);
+							}
+						}
+
+						// Generate props
+						let props = Habitat.parseProps(ele);
+						if (registration.meta.defaultProps) {
+							props = Object.assign({}, registration.meta.defaultProps, props);
+						}
+
+						// Options
+						const options = registration.meta.options || {};
+
+						// Inject the component
+						this.__container__.factory.inject(
+							registration.component,
+							props,
+							Habitat.create(ele, this.__container__.id, options));
+					}).catch((err) => {
+						Logger.error('RHW01', `Cannot resolve component "${componentName}" for element.`, err, ele);
+					}),
+			);
+		}
+
+		// Trigger callback when all promises are finished
+		// regardless if some fail
+		Promise
+			.all(resolveQueue.map(p => p.catch(e => e)))
+			.then(() => {
+				_callback(cb);
+			}).catch((err) => {
+			// We should never get here.. if we do this is a bug
+				throw err;
+			});
 	}
 
 	/**
@@ -77,27 +124,81 @@ export default class Bootstrapper {
 	 * @param {function}  [cb=null]   - Optional callback
 	 */
 	setContainer(container, cb = null) {
-
-		if (this._container !== null) {
+		if (this.__container__ !== null) {
 			Logger.error('RHW02', 'A container is already set. ' +
 				'Please call dispose() before assigning a new one.');
 			return;
 		}
 
-		// Set the container
-		this._container = container;
+		if (!container.factory ||
+			typeof container.factory.inject !== 'function' ||
+			typeof container.factory.dispose !== 'function') {
+			Logger.error('RHE10', 'Incompatible factory');
+			return;
+		}
 
-		// Find all the elements in the dom with the component selector attribute
-		this._elements = window.document.body.querySelectorAll(`[${this.componentSelector}]`);
+		// Set the container
+		this.__container__ = container;
 
 		// Wire up the components from the container
-		parseContainer(
-			this._container,
-			this._elements,
-			this.componentSelector,
-			cb
-		);
+		this.update(null, () => {
+			_callback(cb, this);
+		});
+	}
 
+	/**
+	 * The container
+	 * @returns {Container}
+	 */
+	get container() {
+		return this.__container__;
+	}
+
+	/**
+	* Apply the container to an updated dom structure
+	* @param {node}		node		- Target node to parse or null for entire document body
+	* @param {function}		[cb=null]	- Optional callback
+	*/
+	update(node, cb = null) {
+		// Check if we have a container before attempting an update
+		if (!this.__container__) {
+			_callback(cb);
+			return;
+		}
+
+		const target = node || window.document.body;
+		const query = target.querySelectorAll(`[${this.componentSelector}]`);
+
+		if (!query.length) {
+			// Nothing to update
+			return;
+		}
+
+		// Lifecycle event
+		// Hook to allow developers to cancel operation
+		if (typeof this.shouldUpdate === 'function') {
+			if (this.shouldUpdate(target, query) === false) {
+				_callback(cb, this);
+				return;
+			}
+		}
+
+		// Lifecycle event
+		if (typeof this.willUpdate === 'function') {
+			this.willUpdate(target, query);
+		}
+
+		this._apply(
+			query,
+			() => {
+				// Lifecycle event
+				if (typeof this.didUpdate === 'function') {
+					this.didUpdate(target);
+				}
+
+				_callback(cb, this);
+			},
+		);
 	}
 
 	/**
@@ -106,28 +207,24 @@ export default class Bootstrapper {
 	 */
 	dispose(cb = null) {
 
-		// get the container's factory
-		const factory = this._container.domFactory();
-
-		// Look up open habitats for this container in the dom
-		const habitats = window
-			.document
-			.body
-			.querySelectorAll(`[data-habitat="${this._container.id()}"]`);
+		// Get open habitats for this container
+		const habitats = Habitat.listHabitats(this.__container__.id);
 
 		// Clean up
 		for (let i = 0; i < habitats.length; ++i) {
-			factory.dispose(habitats[i]);
+			this.__container__.factory.dispose(habitats[i]);
 			Habitat.destroy(habitats[i]);
 		}
 
 		// Reset and release
-		this._container = null;
-		this._elements = null;
+		this.__container__ = null;
+
+		// Lifecycle event
+		if (typeof this.didDispose === 'function') {
+			this.didDispose();
+		}
 
 		// Handle callback
-		if (typeof cb === 'function') {
-			cb.call();
-		}
+		_callback(cb, this);
 	}
 }

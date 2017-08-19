@@ -1,0 +1,28 @@
+{
+  "name": "react-habitat-simple-example-with-webpack-es6",
+  "version": "1.0.0",
+  "description": "Example setup with React Habitat with es5 and webpack",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --progress",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jenna Salau",
+  "license": "BSD-3-Clause",
+  "private": true,
+  "dependencies": {
+    "@types/react": "^15.0.34",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.16.0",
+    "open-browser-webpack-plugin": "0.0.2",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-habitat": "^0.5.0",
+    "ts-loader": "^2.2.2",
+    "typescript": "^2.4.1",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  }
+}

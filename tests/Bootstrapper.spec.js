@@ -8,8 +8,9 @@
 
 import Container 			from '../src/Container';
 import Bootstrapper 		from '../src/Bootstrapper';
-import MochComponent 		from './mochs/MochComponent';
-import MochComponentTwo 	from './mochs/MochComponentTwo';
+import ContainerBuilder		from '../src/builder/ContainerBuilder';
+import MockComponent 		from './mocks/MockComponent';
+import MockComponentTwo 	from './mocks/MockComponentTwo';
 
 let node = null;
 
@@ -31,184 +32,179 @@ describe('Bootstrapper', () => {
 		window.document.body.removeChild(node);
 	});
 
-	it('should log unknown component warning', () => {
+	it('should log unknown component warning', (done) => {
 		spyOn(console, 'error');
 
 		node.innerHTML = '<div data-component="aUnknownComponent"></div>';
-		const app = new App(new Container());
+		const app = new App(new Container(), () => {
+			expect(console.error).toHaveBeenCalled();
+			expect(node.innerHTML).toBe('<div data-component="aUnknownComponent"></div>');
+			done();
+		});
 
 		expect(app).toBeDefined();
-		expect(console.error).toHaveBeenCalled();
-		expect(node.innerHTML).toBe('<div data-component="aUnknownComponent"></div>');
 	});
 
-	it('should render a component', () => {
-		node.innerHTML = '<div data-component="IMochComponent"></div>';
+	it('should render a component', (done) => {
+		node.innerHTML = '<div data-component="IMockComponent"></div>';
 
 		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		container.register('IMochComponent', MochComponent);
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
-		const app = new App(container);
-		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+		const app = new App(containerBuilder.build(), () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+			expect(componentLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(1);
+
+			done();
+		});
 
 		expect(app).toBeDefined();
-		expect(componentLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(1);
 	});
 
-	it('should render a component with callback', () => {
-		node.innerHTML = '<div data-component="IMochComponent"></div>';
 
-		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		container.register('IMochComponent', MochComponent);
-		const mochCallbackHandler = jasmine.createSpy('My Method');
-		// --------------------------- //
-
-		const app = new App(container, mochCallbackHandler);
-		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
-
-		expect(app).toBeDefined();
-		expect(componentLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(1);
-		expect(mochCallbackHandler).toHaveBeenCalledTimes(1);
-	});
-
-	it('should render multiple components', () => {
+	it('should render multiple components', (done) => {
 		node.innerHTML =
-			'<div data-component="IMochComponent"></div>' +
-			'<div data-component="IMochComponent"></div>';
+			'<div data-component="IMockComponent"></div>' +
+			'<div data-component="IMockComponent"></div>';
 
 		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		container.register('IMochComponent', MochComponent);
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
-		const app = new App(container);
-		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+		const app = new App(containerBuilder.build(), () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+			expect(componentLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(2);
+			done();
+		});
 
 		expect(app).toBeDefined();
-		expect(componentLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(2);
 	});
 
 
-	it('should render two different components', () => {
+	it('should render two different components', (done) => {
 		node.innerHTML =
-			'<div data-component="IMochComponent"></div>' +
-			'<div data-component="IMochComponentTwo"></div>';
+			'<div data-component="IMockComponent"></div>' +
+			'<div data-component="IMockComponentTwo"></div>';
 
 		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		container.register('IMochComponent', MochComponent);
-		container.register('IMochComponentTwo', MochComponentTwo);
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.register(MockComponent).as('IMockComponent');
+		containerBuilder.register(MockComponentTwo).as('IMockComponentTwo');
 		// --------------------------- //
 
-		const app = new App(container);
-		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
-		const component2Lookup = node.innerHTML.match(/\[component MochComponentTwo\]/g);
+		const app = new App(containerBuilder.build(), () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+			const component2Lookup = node.innerHTML.match(/\[component MockComponentTwo\]/g);
+			expect(componentLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(1);
+			expect(component2Lookup).not.toEqual(null);
+			expect(component2Lookup.length).toEqual(1);
+			done();
+		});
 
 		expect(app).toBeDefined();
-		expect(componentLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(1);
-		expect(component2Lookup).not.toEqual(null);
-		expect(component2Lookup.length).toEqual(1);
 	});
 
-	it('should warn when rendering to elements that have components as children', () => {
-		spyOn(console, 'warn');
-
-		const html = '<div data-component="IMochComponent"><div data-component="IMochComponent"></div></div>';
+	it('should warn when rendering to elements that have components as children', (done) => {
+		const html = '<div data-component="IMockComponent"><div data-component="IMockComponent"></div></div>';
 		node.innerHTML = html;
 
 		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		container.register('IMochComponent', MochComponent);
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
-		const app = new App(container);
-
-		expect(console.warn).toHaveBeenCalled();
-
-	});
-
-	it('should not warn when rendering to elements that have children that are not components', () => {
 		spyOn(console, 'warn');
 
-		const html = '<div data-component="IMochComponent"><p>Hello world</p></div>';
+		const app = new App(containerBuilder.build(), () => {
+			expect(console.warn).toHaveBeenCalled();
+			done();
+		});
+	});
+
+	it('should not warn when rendering to elements that have children that are not components', (done) => {
+		spyOn(console, 'warn');
+
+		const html = '<div data-component="IMockComponent"><p>Hello world</p></div>';
 		node.innerHTML = html;
 
 		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		container.register('IMochComponent', MochComponent);
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
-		const app = new App(container);
-
-		expect(console.warn).not.toHaveBeenCalled();
-
+		const app = new App(containerBuilder.build(), () => {
+			expect(console.warn).not.toHaveBeenCalled();
+			done();
+		});
 	});
 
-	it('should render to elements that have children that are not components', () => {
+	it('should render to elements that have children that are not components', (done) => {
 		spyOn(console, 'warn');
 
-		const html = '<div data-component="IMochComponent"><p>Child</p></div>';
+		const html = '<div data-component="IMockComponent"><p>Child</p></div>';
 		node.innerHTML = html;
 
 		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		container.register('IMochComponent', MochComponent);
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
-		const app = new App(container);
+		const app = new App(containerBuilder.build(), () => {
+			expect(console.warn).not.toHaveBeenCalled();
 
-		expect(console.warn).not.toHaveBeenCalled();
-
-		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+			expect(componentLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(1);
+			done();
+		});
 
 		expect(app).toBeDefined();
-		expect(componentLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(1);
-
 	});
 
-	it('should render to elements with white space and line breaks', () => {
+	it('should render to elements with white space and line breaks', (done) => {
 		node.innerHTML =
-			'<div data-component="IMochComponent">  \n   \n</div>';
+			'<div data-component="IMockComponent">  \n   \n</div>';
 
 		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		container.register('IMochComponent', MochComponent);
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
-		const app = new App(container);
-		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
+		const app = new App(containerBuilder.build(), () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+			expect(componentLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(1);
+			done();
+		});
 
 		expect(app).toBeDefined();
-		expect(componentLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(1);
-
 	});
 
-	it('should pass props', () => {
-		node.innerHTML = '<div data-component="IMochComponent" data-prop-title="test"></div>';
+	it('should pass props', (done) => {
+		node.innerHTML = '<div data-component="IMockComponent" data-prop-title="test"></div>';
 
 		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		container.register('IMochComponent', MochComponent);
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
-		const app = new App(container);
-		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
-		const propLookup = node.innerHTML.match(/title='test'/g);
+		const app = new App(containerBuilder.build(), () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+			const propLookup = node.innerHTML.match(/title='test'/g);
+			expect(componentLookup).not.toEqual(null);
+			expect(propLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(1);
+			expect(propLookup.length).toEqual(1);
+			done();
+		});
 
 		expect(app).toBeDefined();
-		expect(componentLookup).not.toEqual(null);
-		expect(propLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(1);
-		expect(propLookup.length).toEqual(1);
 	});
 
 	it('should not allow direct container replacements', () => {
@@ -223,44 +219,104 @@ describe('Bootstrapper', () => {
 		app.setContainer(container2);
 
 		expect(console.error).toHaveBeenCalled();
-
 	});
 
-	it('should dispose', () => {
+	it('should dispose', (done) => {
 
-		node.innerHTML = '<div data-component="IMochComponent"></div>';
+		node.innerHTML = '<div data-component="IMockComponent"></div>';
 
 		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		container.register('IMochComponent', MochComponent);
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.register(MockComponent).as('IMockComponent');
 		// --------------------------- //
 
-		const app = new App(container);
+		const app = new App(containerBuilder.build(), () => {
+			function componentLookup() { return node.innerHTML.match(/\[component MockComponent\]/g); }
+			expect(componentLookup()).not.toEqual(null);
+			expect(componentLookup().length).toEqual(1);
 
-		function componentLookup() { return node.innerHTML.match(/\[component MochComponent\]/g); }
+			app.dispose(() => {
+				expect(componentLookup()).toEqual(null);
+				expect(node.innerHTML).toBe('<div data-component="IMockComponent"></div>');
+				done();
+			});
+		});
 
 		expect(app).toBeDefined();
-		expect(componentLookup()).not.toEqual(null);
-		expect(componentLookup().length).toEqual(1);
-
-		app.dispose();
-
-		expect(componentLookup()).toEqual(null);
-		expect(node.innerHTML).toBe('<div data-component="IMochComponent"></div>');
-
 	});
 
-	it('should dispose with callback', () => {
+
+	it('should resolve components with a Promise', (done) => {
+
+		node.innerHTML =
+			'<div data-component="IMockComponent"></div>' +
+			'<div data-component="IMockComponentTwo"></div>';
 
 		// -- MOCH CONTAINER SET UP -- //
-		const container = new Container();
-		const mochCallbackHandler = jasmine.createSpy('My Method');
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.registerAsync(new Promise((resolve) => {
+			window.setTimeout(() => {
+				resolve(MockComponent);
+			}, 200);
+		}))
+		.as('IMockComponent');
+
+		containerBuilder.registerAsync(new Promise((resolve) => {
+			window.setTimeout(() => {
+				resolve(MockComponentTwo);
+			}, 200);
+		}))
+		.as('IMockComponentTwo');
 		// --------------------------- //
 
-		const app = new App(container);
-		app.dispose(mochCallbackHandler);
+		const app = new App(containerBuilder.build(), () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+			const component2Lookup = node.innerHTML.match(/\[component MockComponentTwo\]/g);
+			expect(componentLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(1);
+			expect(component2Lookup).not.toEqual(null);
+			expect(component2Lookup.length).toEqual(1);
+			done();
+		});
 
 		expect(app).toBeDefined();
-		expect(mochCallbackHandler).toHaveBeenCalledTimes(1);
+	});
+
+	it('should resolve components with a failed Promise', (done) => {
+
+		node.innerHTML =
+			'<div data-component="IMockComponent"></div>' +
+			'<div data-component="IMockComponentTwo"></div>';
+
+		// -- MOCH CONTAINER SET UP -- //
+		const containerBuilder = new ContainerBuilder();
+		containerBuilder.registerAsync(new Promise((resolve) => {
+			window.setTimeout(() => {
+				resolve(MockComponent);
+			}, 200);
+		}))
+		.as('IMockComponent');
+
+		containerBuilder.registerAsync(new Promise((resolve, reject) => {
+			window.setTimeout(() => {
+				reject(new Error('Testing'));
+			}, 200);
+		}))
+		.as('IMockComponentTwo');
+		// --------------------------- //
+
+		spyOn(console, 'error');
+
+		const app = new App(containerBuilder.build(), () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+			const component2Lookup = node.innerHTML.match(/\[component MockComponentTwo\]/g);
+			expect(console.error).toHaveBeenCalledTimes(1);
+			expect(componentLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(1);
+			expect(component2Lookup).toEqual(null);
+			done();
+		});
+
+		expect(app).toBeDefined();
 	});
 });

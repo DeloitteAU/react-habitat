@@ -31,12 +31,14 @@ declare module "react-habitat" {
 		 * Register a new component in the container
 		 * @param {string}      name        - The key that identifies this component
 		 * @param {*}           comp        - The component class
+		 * @deprecated Use an IContainerBuilder for registrations
 		 */
 		register: (name: string, comp: any) => void;
 
 		/**
 		 * Register multiple components in the container
 		 * @param {object}      comps        - The components
+		 * @deprecated Use an IContainerBuilder for registrations
 		 */
 		registerAll: (comps: {}) => void;
 
@@ -47,14 +49,19 @@ declare module "react-habitat" {
 		resolve: (name: string) => any;
 
 		/**
+		 * Resolve a component with its meta data
+		 */
+		resolveWithMeta: (name: string) => any;
+
+		/**
 		* The container's unique id
 		*/
-		id: () => string;
+		id: string;
 
 		/**
 		 * The containers dom factory
 		 */
-		domFactory: () => IDomFactory;
+		factory: IDomFactory;
 	}
 
 	interface IBootstrapper {
@@ -66,9 +73,87 @@ declare module "react-habitat" {
 		setContainer: (container: IContainer) => void;
 
 		/**
-		  * Dispose of the container
-		  */
-		 dispose: () => void;
+		 * Apply the container to an updated dom structure
+		 */
+		update: (node?: Element) => void;
+
+		/**
+		 * Start DOM watcher for auto wire ups
+		 */
+		startWatcher: () => void;
+
+		/**
+		 * Stop the DOM watcher if running
+		 */
+		stopWatcher: () => void;
+
+		/**
+		 * Dispose of the container
+		*/
+		dispose: () => void;
+	}
+
+	interface IRegistrationOptions {
+
+		/**
+		 * The tag to render with eg 'span'
+		 */
+		tag?: string;
+
+		/**
+		 * The habitats class name
+		 */
+		className?: string;
+
+		/**
+		 * If true, the original node will remain in the dom
+		 */
+		replaceDisabled?: boolean;
+
+	}
+
+	interface IRegistration {
+
+		/**
+		 * Set the registration key, must be unique
+		 * @param {string}  key     - The key
+		 */
+		as: (key: string) => IRegistration;
+
+		/**
+		 * Set the registration default props
+		 */
+		withDefaultProps: (defaultProps: any) => IRegistration;
+
+		/**
+		 * Set the habitat options
+		 */
+		withOptions: (options: Partial<IRegistrationOptions>) => IRegistration;
+
+	}
+
+	interface IContainerBuilder {
+
+		/**
+		 * Register new component
+		 */
+		register: (component: any) => IRegistration;
+
+		/**
+		 * Register new component asycnrosly
+		 */
+		registerAsync: (operator: Promise<any>) => IRegistration;
+
+		/**
+		 * The container factory
+		 */
+		factory: IDomFactory;
+
+		/**
+		 * Build the container
+		 */
+		build: () => IContainer;
+
 	}
 
 	class Bootstrapper implements IBootstrapper {
@@ -76,7 +161,7 @@ declare module "react-habitat" {
 		/**
 		 * Sets the container
 		 */
-		setContainer: (container: IContainer) => void;
+		setContainer: (container: IContainer, callback?: Function) => void;
 
 		/**
 		 * The component selector
@@ -84,9 +169,19 @@ declare module "react-habitat" {
 		componentSelector: string;
 
 		/**
-		 * Collection of elements matching the component selector
+		 * Apply the container to an updated dom structure
 		 */
-		elements: NodeListOf<Element>;
+		update: (node?: Element) => void;
+
+		/**
+		 * Start DOM watcher for auto wire ups
+		 */
+		startWatcher: () => void;
+
+		/**
+		 * Stop the DOM watcher if running
+		 */
+		stopWatcher: () => void;
 
 		/**
 		 * Disposes the container
@@ -96,18 +191,22 @@ declare module "react-habitat" {
 
 	class Container implements IContainer {
 
+		constructor(factory: IDomFactory, registrations?: any);
+
 		/**
 		 * The containers unique id
 		 */
-		id: () => string;
+		id: string;
 
 		/**
 		 * Register a component
+		 * @deprecated Use an IContainerBuilder for registrations
 		 */
 		register: (name: string, comp: any) => void;
 
 		/**
 		 * Register a component
+		 * @deprecated Use an IContainerBuilder for registrations
 		 */
 		registerAll: (comps: {}) => void;
 
@@ -117,8 +216,45 @@ declare module "react-habitat" {
 		resolve: (name: string) => any;
 
 		/**
+		 * Resolve a component with its meta data
+		 */
+		resolveWithMeta: (name: string) => any;
+
+		/**
 		 * The containers dom factory
 		 */
-		domFactory: () => IDomFactory;
+		factory: IDomFactory;
+
+		/**
+		 * Returns the number of registrations in the container
+		 */
+		length: Number;
+	}
+
+	class ContainerBuilder implements IContainerBuilder {
+
+		constructor(defaultOptions?: Partial<IRegistrationOptions>);
+
+		/**
+		 * Register new component
+		 */
+		register: (component: any) => IRegistration;
+
+		/**
+		 * Register new component asycnrosly
+		 * @param operator
+		 */
+		registerAsync: (operator: Promise<any>) => IRegistration;
+
+		/**
+		 * The container factory
+		 */
+		factory: IDomFactory;
+
+		/**
+		 * Build the container
+		 */
+		build: () => IContainer;
+
 	}
 }

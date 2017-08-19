@@ -1,0 +1,23 @@
+{
+  "name": "react-habitat-simple-example-with-webpack-es5",
+  "version": "1.1.0",
+  "description": "Example setup with React Habitat with es5 and webpack",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --progress"
+  },
+  "author": "Jenna Salau",
+  "license": "BSD-3-Clause",
+  "private": true,
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-habitat": "^0.5.0",
+    "webpack": "^1.13.2",
+    "babel-polyfill": "^6.16.0",
+    "jsx-loader": "^0.13.2",
+    "open-browser-webpack-plugin": "0.0.2",
+    "webpack-dev-server": "^1.16.1"
+  }
+}

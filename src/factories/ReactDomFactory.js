@@ -21,7 +21,7 @@ export default class ReactDomFactory {
 		if (target) {
 			ReactDOM.render(
 				React.createElement(module, props || {}),
-				target
+				target,
 			);
 		} else {
 			Logger.warn('RHW07', 'Target element is null or undefined.');

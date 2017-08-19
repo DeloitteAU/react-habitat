@@ -1,4 +1,4 @@
-Copyright (C) 2016, Deloitte Digital. All rights reserved.
+Copyright (C) 2017, Deloitte Digital. All rights reserved.
 
 React Habitat can be downloaded from: https://github.com/DeloitteDigitalAPAC/react-habitat
 

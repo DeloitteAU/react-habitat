@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>React Habitat Demo</title>
+
+  <link rel="stylesheet" href="/dist/bootstrap.min.css" />
+  <link rel="stylesheet" href="demo.css" />
+
+  <!-- jQuery used for demo menu only -->
+  <script src="/dist/jquery-3.2.1.min.js"></script>
+
+</head>
+  <body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">React Habitat Demo</a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/index.html">Initial Load</a></li>
+          <li><a href="/dynamic.html">Dynamic/Ajax</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--
+      START REACT HABITAT EXAMPLES
+      =======================================================
+  -->
+
+  <div data-component="RBanner" data-prop-title="Hello, welcome the demo"></div>
+
+  <div class="container">
+
+    <div data-component="RFeaturette"
+         data-prop-title="First featurette heading."
+         data-prop-sub-title="It'll blow your mind."
+         data-prop-img-src="http://placehold.it/400x300/">
+    </div>
+
+    <hr class="featurette-divider" />
+
+    <div data-component="RFeaturette"
+         data-prop-layout="rtl"
+         data-prop-title="Oh yeah, it's that good."
+         data-prop-sub-title="See for yourself."
+         data-prop-img-src="http://placehold.it/400x300/">
+    </div>
+
+    <hr class="featurette-divider" />
+
+    <div data-component="RFeaturette"
+         data-prop-title="And lastly, this one."
+         data-prop-sub-title="Nice."
+         data-prop-img-src="http://placehold.it/400x300/">
+    </div>
+
+    <hr class="featurette-divider" />
+
+    <!--
+        =======================================================
+        // END REACT HABITAT EXAMPLES
+    -->
+
+    <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+      <p>© 2016 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+
+  </div>
+
+  <script type="text/javascript" src="dist/app.bundle.js"></script>
+
+  <!-- Used for demo menu only -->
+  <script type="text/javascript" src="/dist/bootstrap.min.js"></script>
+
+  </body>
+</html>

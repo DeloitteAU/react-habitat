@@ -7,8 +7,8 @@
  */
 
 import { createBootstrapper } from '../../src/classic/createBootstrapper';
-import MochComponent from '../mochs/MochComponent';
-import MochComponentTwo from '../mochs/MochComponentTwo';
+import MockComponent from '../mocks/MockComponent';
+import MockComponentTwo from '../mocks/MockComponentTwo';
 
 describe('Classic Bootstrapper', () => {
 	let node = null;
@@ -30,108 +30,136 @@ describe('Classic Bootstrapper', () => {
 		expect(console.warn).toHaveBeenCalled();
 	});
 
-	it('should log unknown component warning', () => {
+	it('should log unknown component warning', (done) => {
 		spyOn(console, 'error');
 
 		node.innerHTML = '<div data-component="aUnknownComponent"></div>';
 
 		createBootstrapper({
 			container: [],
+		}, () => {
+			expect(console.error).toHaveBeenCalled();
+			done();
 		});
-
-		expect(console.error).toHaveBeenCalled();
 	});
 
-	it('should render a component', () => {
-		node.innerHTML = '<div data-component="IMochComponent"></div>';
+	it('should render a component', (done) => {
+		node.innerHTML = '<div data-component="IMockComponent"></div>';
 
 		createBootstrapper({
 			container: [
-				{ register: 'IMochComponent', for: MochComponent },
-			],
-		});
-
-		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
-
-		expect(componentLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(1);
+				{ register: 'IMockComponent', for: MockComponent },
+			]},
+			() => {
+				const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+				expect(componentLookup).not.toEqual(null);
+				expect(componentLookup.length).toEqual(1);
+				done();
+			},
+		);
 	});
 
 
-	it('should render multiple components', () => {
+	it('should render multiple components', (done) => {
 		node.innerHTML =
-			'<div data-component="IMochComponent"></div>' +
-			'<div data-component="IMochComponent"></div>';
+			'<div data-component="IMockComponent"></div>' +
+			'<div data-component="IMockComponent"></div>';
 
 		createBootstrapper({
 			container: [
-				{ register: 'IMochComponent', for: MochComponent },
+				{ register: 'IMockComponent', for: MockComponent },
 			],
+		}, () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+
+			expect(componentLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(2);
+			done();
 		});
-
-		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
-
-		expect(componentLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(2);
 	});
 
-
-	it('should render two different components', () => {
+	it('should render multiple components async', (done) => {
 		node.innerHTML =
-		'<div data-component="IMochComponent"></div>' +
-		'<div data-component="IMochComponentTwo"></div>';
+			'<div data-component="IMockComponent"></div>' +
+			'<div data-component="IMockComponent"></div>';
 
 		createBootstrapper({
 			container: [
-				{ register: 'IMochComponent', for: MochComponent },
-				{ register: 'IMochComponentTwo', for: MochComponentTwo },
+				{ register: 'IMockComponent', forAsync: new Promise((resolve) => {
+					window.setTimeout(() => {
+						resolve(MockComponent);
+					});
+				}, 300) },
 			],
+		}, () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+
+			expect(componentLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(2);
+			done();
 		});
-
-		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
-		const component2Lookup = node.innerHTML.match(/\[component MochComponentTwo\]/g);
-
-		expect(componentLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(1);
-
-		expect(component2Lookup).not.toEqual(null);
-		expect(component2Lookup.length).toEqual(1);
 	});
 
-	it('should pass props', () => {
-		node.innerHTML = '<div data-component="IMochComponent" data-prop-title="test"></div>';
+
+	it('should render two different components', (done) => {
+		node.innerHTML =
+		'<div data-component="IMockComponent"></div>' +
+		'<div data-component="IMockComponentTwo"></div>';
 
 		createBootstrapper({
 			container: [
-				{ register: 'IMochComponent', for: MochComponent },
+				{ register: 'IMockComponent', for: MockComponent },
+				{ register: 'IMockComponentTwo', for: MockComponentTwo },
 			],
+		}, () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+			const component2Lookup = node.innerHTML.match(/\[component MockComponentTwo\]/g);
+
+			expect(componentLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(1);
+
+			expect(component2Lookup).not.toEqual(null);
+			expect(component2Lookup.length).toEqual(1);
+			done();
 		});
-
-		const componentLookup = node.innerHTML.match(/\[component MochComponent\]/g);
-		const propLookup = node.innerHTML.match(/title='test'/g);
-
-		expect(componentLookup).not.toEqual(null);
-		expect(propLookup).not.toEqual(null);
-		expect(componentLookup.length).toEqual(1);
-		expect(propLookup.length).toEqual(1);
 	});
 
-	it('should dispose', () => {
-		node.innerHTML = '<div data-component="IMochComponent" data-prop-title="test"></div>';
+	it('should pass props', (done) => {
+		node.innerHTML = '<div data-component="IMockComponent" data-prop-title="test"></div>';
+
+		createBootstrapper({
+			container: [
+				{ register: 'IMockComponent', for: MockComponent },
+			],
+		}, () => {
+			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+			const propLookup = node.innerHTML.match(/title='test'/g);
+
+			expect(componentLookup).not.toEqual(null);
+			expect(propLookup).not.toEqual(null);
+			expect(componentLookup.length).toEqual(1);
+			expect(propLookup.length).toEqual(1);
+			done();
+		});
+	});
+
+	it('should dispose', (done) => {
+		node.innerHTML = '<div data-component="IMockComponent" data-prop-title="test"></div>';
 
 		const app = createBootstrapper({
 			container: [
-				{ register: 'IMochComponent', for: MochComponent },
+				{ register: 'IMockComponent', for: MockComponent },
 			],
+		}, () => {
+			function componentLookup() { return node.innerHTML.match(/\[component MockComponent\]/g); }
+
+			expect(componentLookup()).not.toEqual(null);
+			expect(componentLookup().length).toEqual(1);
+
+			app.dispose();
+
+			expect(componentLookup()).toEqual(null);
+			done();
 		});
-
-		function componentLookup() { return node.innerHTML.match(/\[component MochComponent\]/g); }
-
-		expect(componentLookup()).not.toEqual(null);
-		expect(componentLookup().length).toEqual(1);
-
-		app.dispose();
-
-		expect(componentLookup()).toEqual(null);
 	});
 });
