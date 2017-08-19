@@ -2,7 +2,7 @@
 
 # React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master)
 
-🌟 v0.5 Released! 
+🌟 v0.5 Released! See [whats new](https://github.com/DeloitteDigitalAPAC/react-habitat/blob/master/CHANGELOG.md#050).
 
 If you are on v0.4, Please read the 3 step [v0.4 to v0.5 migration guide](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki/v0.4-to-v0.5-Migration-Guide). While there are *zero* breaking changes in this release we are moving closer to official v1 API and we want you up to date.
 
@@ -56,7 +56,7 @@ However, you are definitely invited to use it if you want to.
 
 - [Compatibility](#compatibility)
 - [Installing](#installing)
-- [Getting Started](#getting-started)
+- [Getting Started](#-getting-started)
 - [Registering components](#registering-components)
   - [Concept](#registering-components)
   - [Passing options to register](#passing-options-to-register)
