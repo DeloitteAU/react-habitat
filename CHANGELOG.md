@@ -1,5 +1,10 @@
 ## React Habitat Change log
 
+### [0.5.1]
+
+- Updated support for React and React DOM v16. Thanks @nilsml
+- Moved react and react dom into peerDependencies
+
 ### [0.5.0]
 
 - Updated npm packages in examples
