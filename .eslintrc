@@ -8,5 +8,8 @@
   },
   "plugins": [
     "jasmine"
-  ]
+  ],
+  "rules": {
+    "linebreak-style": 0
+  }
 }
