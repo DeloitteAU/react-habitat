@@ -205,7 +205,7 @@ export default class Bootstrapper {
 	 * Destroy habitat instances for the container
 	 * @param {function}	[cb=null]	- Optional callback
 	 */
-	destroyHabitats(cb = null) {
+	unmountHabitats(cb = null) {
 		// Get open habitats for this container
 		const habitats = Habitat.listHabitats(this.__container__.id);
 
@@ -229,7 +229,7 @@ export default class Bootstrapper {
 	 * @param {function}	[cb=null]	- Optional callback
 	 */
 	dispose(cb = null) {
-		this.destroyHabitats(() => {
+		this.unmountHabitats(() => {
 			// Reset and release
 			this.__container__ = null;
 	
