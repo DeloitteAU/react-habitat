@@ -67,6 +67,9 @@ export class _Mixin extends Bootstrapper {
 		this._shouldUpdateProxy = spec.shouldUpdate || null;
 		this._willUpdateProxy = spec.willUpdate || null;
 		this._didUpdateProxy = spec.didUpdate || null;
+		this._willUnmountProxy = spec.willUnmountHabitats || null;
+		this._didUnmountProxy = spec.didUnmountHabitats || null;
+		this._didDisposeProxy = spec.didDispose || null;
 
 		// Finally, set the container
 		this.setContainer(containerBuilder.build(), () => {
@@ -91,6 +94,24 @@ export class _Mixin extends Bootstrapper {
 	didUpdate() {
 		if (this._didUpdateProxy) {
 			this._didUpdateProxy();
+		}
+	}
+
+	willUnmountHabitats() {
+		if (this._willUnmountProxy) {
+			this._willUnmountProxy();
+		}
+	}
+
+	didUnmountHabitats() {
+		if (this._didUnmountProxy) {
+			this._didUnmountProxy();
+		}
+	}
+
+	didDispose() {
+		if (this._didDisposeProxy) {
+			this._didDisposeProxy();
 		}
 	}
 }

@@ -15,7 +15,7 @@ function MyApp() {
         tag: 'div',                 // (Optional)
         className: 'myHabitat',     // (Optional)
         replaceDisabled: false      // (Optional)
-    }
+    },
 
     // Create a new container (Required)
     container: [
@@ -29,7 +29,7 @@ function MyApp() {
             require.ensure(['./components/MyComponent'], () => {
                 resolve(require('./components/MyComponent'));
             });
-        }
+        })
       }
     ],
 
@@ -45,7 +45,19 @@ function MyApp() {
 
     // Did update lifecycle event (Optional)
     didUpdate: function(target) {
-    }
+    },
+    
+    // Will unmount habitats lifecycle event (Optional)
+    willUnmountHabitats: function() {
+    },
+    
+    // Did unmount habitats lifecycle event (Optional)
+    didUnmountHabitats: function() {
+    },
+
+    // Did dispose lifecycle event (Optional)
+    didDispose: function() {
+    },
 
   });
 }
