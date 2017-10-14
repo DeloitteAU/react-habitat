@@ -1,5 +1,9 @@
 ## React Habitat Change log
 
+### [0.6.0]
+
+- Added "unmountHabitats" method and lifecycle hooks. Thanks @finnfiddle
+
 ### [0.5.1]
 
 - Updated support for React and React DOM v16. Thanks @nilsml

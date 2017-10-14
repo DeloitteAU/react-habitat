@@ -200,12 +200,18 @@ export default class Bootstrapper {
 			},
 		);
 	}
-	
+
 	/**
-	 * Destroy habitat instances for the container
+	 * Unmount all habitat instances for the container
 	 * @param {function}	[cb=null]	- Optional callback
 	 */
 	unmountHabitats(cb = null) {
+
+		// Lifecycle event
+		if (typeof this.willUnmountHabitats === 'function') {
+			this.willUnmountHabitats();
+		}
+
 		// Get open habitats for this container
 		const habitats = Habitat.listHabitats(this.__container__.id);
 
@@ -216,8 +222,8 @@ export default class Bootstrapper {
 		}
 
 		// Lifecycle event
-		if (typeof this.didDestroyHabitats === 'function') {
-			this.didDestroyHabitats();
+		if (typeof this.didUnmountHabitats === 'function') {
+			this.didUnmountHabitats();
 		}
 
 		// Handle callback
@@ -232,12 +238,12 @@ export default class Bootstrapper {
 		this.unmountHabitats(() => {
 			// Reset and release
 			this.__container__ = null;
-	
+
 			// Lifecycle event
 			if (typeof this.didDispose === 'function') {
 				this.didDispose();
 			}
-	
+
 			// Handle callback
 			_callback(cb, this);
 		});

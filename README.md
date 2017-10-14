@@ -2,8 +2,6 @@
 
 # React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master)
 
-🌟 v0.5 Released! See [whats new](https://github.com/DeloitteDigitalAPAC/react-habitat/blob/master/CHANGELOG.md#050).
-
 If you are on v0.4, Please read [v0.4 to v0.5 migration guide](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki/v0.4-to-v0.5-Migration-Guide). While there are *zero* breaking changes in this release we are moving closer to the official v1 API and we want you up to date.
 
 > *Looking for the [v0.4 docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64#react-habitat-)?*
@@ -73,7 +71,8 @@ However, you are definitely invited to use it if you want to.
 - [Controlling Scope and Lifetime](#controlling-scope-and-lifetime)
   - [Changing the habitat query selector](#changing-the-habitat-query-selector)
   - [Dynamic updates](#dynamic-updates)
-  - [Update lifecycle](#update-lifecycle)
+  - [Bootstrapper lifecycle events](#bootstrapper-lifecycle-events)
+  - [Unmount react habitats](#unmount-react-habitats)
   - [Disposing the container](#disposing-the-container)
 - [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/examples)
 - [Contribute](#want-to-contribute)
@@ -765,16 +764,21 @@ window.updateHabitat();
 
 **[⬆ back to top](#table-of-contents)**
 
-### Update Lifecycle
+### Bootstrapper Lifecycle Events
 
-`ReactHabitat.Bootstrapper` has update "lifecycle methods" that you can override to run code at particular times
-in the process. An update is the event that occurs when registrations are resolved.
+`ReactHabitat.Bootstrapper` has "lifecycle methods" that you can override to run code at particular times
+in the process. 
 
 |Method|Description
 |---|---
 |`shouldUpdate(node)`|Called when an update has been requested. Return false to cancel the update.
 |`willUpdate(node)`|Called when an update is about to take place.
 |`didUpdate(node)`|Called after an update has taken place.
+|`willUnmountHabitats()`|Called when all active React Habitats are about to be unmounted.
+|`didUnmountHabitats()`|Called after all active React Habitats have been unmounted.
+|`didDispose()`|Called after all active React Habitats have been unmounted and the container released.
+
+> An "update" is the event when registrations are resolved and a React mount will/did occur.
 
 Example
 
@@ -793,6 +797,26 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
     didUpdate(node) {
         console.log('I just updated', node);
+    }
+}
+```
+
+**[⬆ back to top](#table-of-contents)**
+
+### Unmount React Habitats
+
+To unmount all React Habitat instances. Call the `unmountHabitats()` method.
+
+Example
+
+```javascript
+class MyApp extends ReactHabitat.Bootstrapper {
+    constructor(){
+        super();
+
+        //...
+
+        this.unmountHabitats();
     }
 }
 ```

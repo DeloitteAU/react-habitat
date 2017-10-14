@@ -189,4 +189,66 @@ describe('Bootstrapper Lifecycle', () => {
 		expect(app).toBeDefined();
 	});
 
+
+	it('should trigger willUnmountHabitats', (done) => {
+		node.innerHTML = '<div data-component="IMockComponent"></div>';
+
+		const willUnmountHabitats = jasmine.createSpy();
+
+		class App extends Bootstrapper {
+			constructor(cb = null) {
+				super();
+				const containerBuilder = new ContainerBuilder();
+				containerBuilder.register(MockComponent).as('IMockComponent');
+				this.setContainer(containerBuilder.build(), cb);
+			}
+
+			willUnmountHabitats() {
+				const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+				expect(componentLookup).not.toEqual(null);
+				expect(componentLookup.length).toEqual(1);
+				expect(this.__container__.length).toEqual(1);
+				willUnmountHabitats();
+			}
+		}
+
+		const app = new App(() => {
+			app.unmountHabitats();
+			expect(willUnmountHabitats).toHaveBeenCalledTimes(1);
+			done();
+		});
+
+		expect(app).toBeDefined();
+	});
+
+	it('should trigger didUnmountHabitats', (done) => {
+		node.innerHTML = '<div data-component="IMockComponent"></div>';
+
+		const didUnmountHabitats = jasmine.createSpy();
+
+		class App extends Bootstrapper {
+			constructor(cb = null) {
+				super();
+				const containerBuilder = new ContainerBuilder();
+				containerBuilder.register(MockComponent).as('IMockComponent');
+				this.setContainer(containerBuilder.build(), cb);
+			}
+
+			didUnmountHabitats() {
+				const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
+				expect(componentLookup).toEqual(null);
+				expect(this.__container__.length).toEqual(1);
+				didUnmountHabitats();
+			}
+		}
+
+		const app = new App(() => {
+			app.unmountHabitats();
+			expect(didUnmountHabitats).toHaveBeenCalledTimes(1);
+			done();
+		});
+
+		expect(app).toBeDefined();
+	});
+
 });
