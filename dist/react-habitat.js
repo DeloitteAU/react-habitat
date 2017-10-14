@@ -443,15 +443,20 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 
 			/**
-	   * Dispose the container and destroy habitat instances
+	   * Unmount all habitat instances for the container
 	   * @param {function}	[cb=null]	- Optional callback
 	   */
 
 		}, {
-			key: 'dispose',
-			value: function dispose() {
+			key: 'unmountHabitats',
+			value: function unmountHabitats() {
 				var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
+
+				// Lifecycle event
+				if (typeof this.willUnmountHabitats === 'function') {
+					this.willUnmountHabitats();
+				}
 
 				// Get open habitats for this container
 				var habitats = _Habitat2.default.listHabitats(this.__container__.id);
@@ -462,16 +467,39 @@ return /******/ (function(modules) { // webpackBootstrap
 					_Habitat2.default.destroy(habitats[i]);
 				}
 
-				// Reset and release
-				this.__container__ = null;
-
 				// Lifecycle event
-				if (typeof this.didDispose === 'function') {
-					this.didDispose();
+				if (typeof this.didUnmountHabitats === 'function') {
+					this.didUnmountHabitats();
 				}
 
 				// Handle callback
 				_callback(cb, this);
+			}
+
+			/**
+	   * Dispose the container and destroy habitat instances
+	   * @param {function}	[cb=null]	- Optional callback
+	   */
+
+		}, {
+			key: 'dispose',
+			value: function dispose() {
+				var _this4 = this;
+
+				var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+				this.unmountHabitats(function () {
+					// Reset and release
+					_this4.__container__ = null;
+
+					// Lifecycle event
+					if (typeof _this4.didDispose === 'function') {
+						_this4.didDispose();
+					}
+
+					// Handle callback
+					_callback(cb, _this4);
+				});
 			}
 		}, {
 			key: 'container',
@@ -1498,6 +1526,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			_this._shouldUpdateProxy = spec.shouldUpdate || null;
 			_this._willUpdateProxy = spec.willUpdate || null;
 			_this._didUpdateProxy = spec.didUpdate || null;
+			_this._willUnmountProxy = spec.willUnmountHabitats || null;
+			_this._didUnmountProxy = spec.didUnmountHabitats || null;
+			_this._didDisposeProxy = spec.didDispose || null;
 
 			// Finally, set the container
 			_this.setContainer(containerBuilder.build(), function () {
@@ -1527,6 +1558,27 @@ return /******/ (function(modules) { // webpackBootstrap
 			value: function didUpdate() {
 				if (this._didUpdateProxy) {
 					this._didUpdateProxy();
+				}
+			}
+		}, {
+			key: 'willUnmountHabitats',
+			value: function willUnmountHabitats() {
+				if (this._willUnmountProxy) {
+					this._willUnmountProxy();
+				}
+			}
+		}, {
+			key: 'didUnmountHabitats',
+			value: function didUnmountHabitats() {
+				if (this._didUnmountProxy) {
+					this._didUnmountProxy();
+				}
+			}
+		}, {
+			key: 'didDispose',
+			value: function didDispose() {
+				if (this._didDisposeProxy) {
+					this._didDisposeProxy();
 				}
 			}
 		}]);

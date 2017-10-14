@@ -202,10 +202,15 @@ export default class Bootstrapper {
 	}
 
 	/**
-	 * Dispose the container and destroy habitat instances
+	 * Unmount all habitat instances for the container
 	 * @param {function}	[cb=null]	- Optional callback
 	 */
-	dispose(cb = null) {
+	unmountHabitats(cb = null) {
+
+		// Lifecycle event
+		if (typeof this.willUnmountHabitats === 'function') {
+			this.willUnmountHabitats();
+		}
 
 		// Get open habitats for this container
 		const habitats = Habitat.listHabitats(this.__container__.id);
@@ -216,15 +221,31 @@ export default class Bootstrapper {
 			Habitat.destroy(habitats[i]);
 		}
 
-		// Reset and release
-		this.__container__ = null;
-
 		// Lifecycle event
-		if (typeof this.didDispose === 'function') {
-			this.didDispose();
+		if (typeof this.didUnmountHabitats === 'function') {
+			this.didUnmountHabitats();
 		}
 
 		// Handle callback
 		_callback(cb, this);
+	}
+
+	/**
+	 * Dispose the container and destroy habitat instances
+	 * @param {function}	[cb=null]	- Optional callback
+	 */
+	dispose(cb = null) {
+		this.unmountHabitats(() => {
+			// Reset and release
+			this.__container__ = null;
+
+			// Lifecycle event
+			if (typeof this.didDispose === 'function') {
+				this.didDispose();
+			}
+
+			// Handle callback
+			_callback(cb, this);
+		});
 	}
 }
