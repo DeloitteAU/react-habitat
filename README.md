@@ -139,7 +139,7 @@ So for our sample application, we need to register all of our components to be e
 We also need to build and store the container so it can be used to resolve components later
 
 ```javascript
-import ReactHabitat                 from 'react-habitat';
+import * as ReactHabitat            from 'react-habitat';
 import SomeReactComponent           from './SomeReactComponent';
 
 class MyApp extends ReactHabitat.Bootstrapper {
