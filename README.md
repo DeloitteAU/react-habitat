@@ -139,7 +139,7 @@ So for our sample application, we need to register all of our components to be e
 We also need to build and store the container so it can be used to resolve components later
 
 ```javascript
-import * as ReactHabitat            from 'react-habitat';
+import ReactHabitat                 from 'react-habitat';
 import SomeReactComponent           from './SomeReactComponent';
 
 class MyApp extends ReactHabitat.Bootstrapper {
@@ -165,6 +165,10 @@ export default new MyApp();
 ```
 
 By default ReactHabitat ships with a plain ReactDOM factory.
+
+**If you are using Typescript**
+
+You will need to import ReactHabitat using `import *` syntax in order to avoid 'module has no default export' error.
 
 **If you are using Redux**
 
