@@ -172,7 +172,7 @@ You will need to use a different factory. Please install & configure the [react-
 
 Alternatively learn how to [write and use your own custom factory](#writing-and-using-custom-factories).
 
-**If you are using Typescript**
+**If you are using TypeScript**
 
 You will need to import ReactHabitat using `import * as ReactHabitat from 'react-habitat'` syntax in order to avoid 'module has no default export' error. 
 
