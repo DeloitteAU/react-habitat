@@ -172,6 +172,10 @@ You will need to use a different factory. Please install & configure the [react-
 
 Alternatively learn how to [write and use your own custom factory](#writing-and-using-custom-factories).
 
+**If you are using TypeScript**
+
+You will need to import ReactHabitat using `import * as ReactHabitat from 'react-habitat'` syntax in order to avoid 'module has no default export' error. 
+
 #### 2. Application execution - resolve your components
 
 During the web application execution, you will want to make use of the components you registered. You do this by *resolving* them in the DOM from a scope.
