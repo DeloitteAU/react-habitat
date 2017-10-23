@@ -166,15 +166,15 @@ export default new MyApp();
 
 By default ReactHabitat ships with a plain ReactDOM factory.
 
-**If you are using Typescript**
-
-You will need to import ReactHabitat using `import * as ReactHabitat from 'react-habitat'` syntax in order to avoid 'module has no default export' error. This is as by design and you can [read more about it here](https://github.com/Microsoft/TypeScript/issues/3337).
-
 **If you are using Redux**
 
 You will need to use a different factory. Please install & configure the [react-habitat-redux library](https://github.com/DeloitteDigitalAPAC/react-habitat-redux). Then continue with step 2 below.
 
 Alternatively learn how to [write and use your own custom factory](#writing-and-using-custom-factories).
+
+**If you are using Typescript**
+
+You will need to import ReactHabitat using `import * as ReactHabitat from 'react-habitat'` syntax in order to avoid 'module has no default export' error. 
 
 #### 2. Application execution - resolve your components
 
