@@ -168,7 +168,7 @@ By default ReactHabitat ships with a plain ReactDOM factory.
 
 **If you are using Typescript**
 
-You will need to import ReactHabitat using `import *` syntax in order to avoid 'module has no default export' error.
+You will need to import ReactHabitat using `import * as ReactHabitat from 'react-habitat'` syntax in order to avoid 'module has no default export' error. This is as by design and you can [read more about it here](https://github.com/Microsoft/TypeScript/issues/3337).
 
 **If you are using Redux**
 

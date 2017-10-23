@@ -1,5 +1,9 @@
 ## React Habitat Change log
 
+### [0.6.1]
+
+- Updated docs for Typescript imports. Thanks @samuelalvin
+
 ### [0.6.0]
 
 - Added "unmountHabitats" method and lifecycle hooks. Thanks @finnfiddle
