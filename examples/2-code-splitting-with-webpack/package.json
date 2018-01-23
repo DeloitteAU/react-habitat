@@ -14,18 +14,20 @@
   "author": "Jenna Salau",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.16.0",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.16.0",
+    "mutationobserver-shim": "^0.3.2",
+    "open-browser-webpack-plugin": "0.0.2",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-habitat": "^0.5.0",
     "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1",
-    "babel-polyfill": "^6.16.0",
-    "babel-preset-react": "^6.16.0",
-    "mutationobserver-shim": "^0.3.2",
-    "open-browser-webpack-plugin": "0.0.2"
+    "webpack-dev-server": "^2.7.1"
   },
   "devDependencies": {
-    "react-habitat": "^0.5.0-beta2"
+    "react-habitat": "^0.5.0"
   }
 }
