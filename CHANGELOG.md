@@ -1,5 +1,9 @@
 ## React Habitat Change log
 
+### [UNPUBLISHED]
+
+- Fixed missing dependencies in Code Splitting Example. Thanks @ryanpcmcquen
+
 ### [0.6.1]
 
 - Updated docs for Typescript imports. Thanks @samuelalvin
