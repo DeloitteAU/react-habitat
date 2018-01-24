@@ -353,7 +353,7 @@ For example
 
 ```javascript
 container
-    .registerAsync(new Promise((resolve, reject) => {
+    .registerAsync(() => new Promise((resolve, reject) => {
         // .. do async work to get 'component', then
         resolve(component);
     }))
@@ -372,10 +372,10 @@ Webpack 2 & 3 treats `System.import()` as a [split-point](https://webpack.js.org
 So for example, we could create a split point using `System.import()` like this:
 
 ```javascript
-container.registerAsync(System.import('./components/MyComponent')).as('MyComponent');
+container.registerAsync(() => System.import('./components/MyComponent')).as('MyComponent');
 ```
 
-`registerAsync` expects a `Promise` that resolves with a React Component. Since `System.import` IS a promise that allows us to use it in directly.
+`registerAsync` expects a function that returns a`Promise`(breaking change as of 0.7.0), that resolves with a React Component. Since `System.import` IS a promise that allows us to use it in directly.
 
 Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
 
