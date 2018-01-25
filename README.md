@@ -1,15 +1,16 @@
 ![Deloitte Digital](https://raw.githubusercontent.com/DeloitteDigital/DDBreakpoints/master/docs/deloittedigital-logo-white.png)
 
-# React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master)
+# React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)
 
-If you are on v0.4, Please read [v0.4 to v0.5 migration guide](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki/v0.4-to-v0.5-Migration-Guide). While there are *zero* breaking changes in this release we are moving closer to the official v1 API and we want you up to date.
+**v1.0 Released** 🎉 - Please see [migration guides](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki).
 
 > *Looking for the [v0.4 docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64#react-habitat-)?*
 
 ## React Habitat <3 Your CMS
 
 React Habitat is designed for integrating React with your CMS using the DOM as the interface. It's based of some basic
-[container programming principles](https://en.wikipedia.org/wiki/Container_(abstract_data_type)) and brings peace and order to multi-page apps.
+[container programming principles](https://en.wikipedia.org/wiki/Container_(abstract_data_type)) and brings peace and 
+order to multi-page apps.
 
 This framework exists so you can get on with the fun stuff!
 
@@ -17,9 +18,11 @@ This framework exists so you can get on with the fun stuff!
 
 You should use React Habitat any time there is a framework or CMS rendering your HTML and you want one or multiple
 [React components](https://facebook.github.io/react/docs/component-api.html) on the page(s).
-For example, sometimes there are only sections of your page that you want to be a React Component, then this framework is perfect for that.
+For example, sometimes there are only sections of your page that you want to be a React Component, then this framework 
+is perfect for that.
 
-The idea behind this is that, rather than trying to initiate one or many React components; by either hard coding or using a Router. You switch it around so components "new up" themselves when required.
+The idea behind this is that, rather than trying to initiate one or many React components; by either hard coding or 
+using a Router. You switch it around so components "new up" themselves when required.
 
 React Habitat works great with:
 
@@ -35,8 +38,8 @@ React Habitat works great with:
 
 ### When *not* to use it
 
-Typically if you're using a react router... then this framework isn't really going to bring many benefits to you.
-However, you are definitely invited to use it if you want to.
+Typically if you're building a single page application (SPA) with only a `<div id="app">` in the body tag... then this 
+framework isn't really going to bring many benefits to you. However, you are definitely invited to use it if you want to.
 
 ## Features
 
