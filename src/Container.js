@@ -7,8 +7,6 @@
  */
 
 import ReactDomFactory  from './factories/ReactDomFactory';
-import Registration     from './Registration';
-import Logger           from './Logger';
 
 /**
  * Creates a unique id
@@ -22,9 +20,6 @@ const _assignId = (function idFactory() {
 		return `C${nextId}`;
 	};
 }());
-
-let hasOldAPIWarning = false;
-const OLD_API_WARNING = 'Direct container registrations are being deprecated. Please use a ContainerBuilder.';
 
 /**
  * The Container class
@@ -116,95 +111,4 @@ export default class Container {
 	get length() {
 		return Object.keys(this._registrations).length;
 	}
-
-	//region Deprecated
-
-	/**
-	 * Register a component in the container
-	 * @param {string}           key     - A unique component key
-	 * @param {object|Promise}   comp    - The component or Promise
-	 * @deprecated
-	 */
-	register(key, comp) {
-		if (typeof key !== 'string') {
-			throw new Error('Unexpected component key. Expects a string.', name);
-		}
-
-		if (!hasOldAPIWarning) {
-			hasOldAPIWarning = true;
-			Logger.warn('RHW03', OLD_API_WARNING);
-		}
-
-		this._registrations[key] = new Registration(comp).as(key);
-	}
-
-	/**
-	 * Register multiple components to the container
-	 * @param {object}  comps     - The components
-	 * @deprecated
-	 */
-	registerAll(comps) {
-		if (typeof comps !== 'object') {
-			throw new Error('Unexpected components type. Expects type object', comps);
-		}
-
-		if (!hasOldAPIWarning) {
-			hasOldAPIWarning = true;
-			Logger.warn('RHW03', OLD_API_WARNING);
-		}
-
-		Object.keys(comps).forEach((key) => {
-			this._registrations[key] = new Registration(comps[key]).as(key);
-		});
-	}
-
-	/**
-	 * Register a component in the container
-	 * @param {string}  name    - A unique component key
-	 * @param {object}  comp    - The component
-	 * @deprecated
-	 */
-	registerComponent(name, comp) {
-		if (!hasOldAPIWarning) {
-			hasOldAPIWarning = true;
-			Logger.warn('RHW03', OLD_API_WARNING);
-		}
-		this.register(name, comp);
-	}
-
-	/**
-	 * Register multiple components to the container
-	 * @param {object}  comps     - The components
-	 */
-	registerComponents(comps) {
-		if (!hasOldAPIWarning) {
-			hasOldAPIWarning = true;
-			Logger.warn('RHW03', OLD_API_WARNING);
-		}
-		this.registerAll(comps);
-	}
-
-	/**
-	 * Gets a component for key
-	 * @param name
-	 * @returns {Object}
-	 * @deprecated
-	 */
-	getComponent(name) {
-		Logger.warn('RHW03', 'getComponent is being deprecated. Please use "resolve" instead.');
-		return this.resolve(name);
-	}
-
-	/**
-	 * The containers dom factory
-	 * @returns {ReactDomFactory}
-	 @deprecated
-	 */
-	domFactory() {
-		Logger.warn('RHW03', 'domFactory() is being deprecated. Please use `factory`.');
-		return this.factory;
-	}
-
-	//endregion
-
 }

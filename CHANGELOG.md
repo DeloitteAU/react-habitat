@@ -6,6 +6,12 @@
 
 - Fixed missing dependencies in Code Splitting Example. Thanks @ryanpcmcquen
 - Fixed lazy loading [#28](https://github.com/DeloitteDigitalAPAC/react-habitat/issues/28). Thanks @ryanpcmcquen
+- Cleanup: removed old deprecated method 'register' from container
+- Cleanup: removed old deprecated method 'registerAll' from container
+- Cleanup: removed old deprecated method 'registerComponent' from container
+- Cleanup: removed old deprecated method 'registerComponents' from container
+- Cleanup: removed old deprecated method 'getComponent' from container
+- Cleanup: removed old deprecated method 'domFactory' from container
 
 ### [0.6.1]
 

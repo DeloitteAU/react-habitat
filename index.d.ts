@@ -26,22 +26,6 @@ declare module "react-habitat" {
 	}
 
 	interface IContainer {
-
-		/**
-		 * Register a new component in the container
-		 * @param {string}      name        - The key that identifies this component
-		 * @param {*}           comp        - The component class
-		 * @deprecated Use an IContainerBuilder for registrations
-		 */
-		register: (name: string, comp: any) => void;
-
-		/**
-		 * Register multiple components in the container
-		 * @param {object}      comps        - The components
-		 * @deprecated Use an IContainerBuilder for registrations
-		 */
-		registerAll: (comps: {}) => void;
-
 		/**
 		 * Get a registered component for a key
 		 * @param {string}      name        - The key name of the component that has been registered
@@ -197,18 +181,6 @@ declare module "react-habitat" {
 		 * The containers unique id
 		 */
 		id: string;
-
-		/**
-		 * Register a component
-		 * @deprecated Use an IContainerBuilder for registrations
-		 */
-		register: (name: string, comp: any) => void;
-
-		/**
-		 * Register a component
-		 * @deprecated Use an IContainerBuilder for registrations
-		 */
-		registerAll: (comps: {}) => void;
 
 		/**
 		 * Resolve a component
