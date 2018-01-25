@@ -18,7 +18,7 @@ This framework exists so you can get on with the fun stuff!
 
 You should use React Habitat any time there is a framework or CMS rendering your HTML and you want one or multiple
 [React components](https://facebook.github.io/react/docs/component-api.html) on the page(s).
-For example, sometimes there are only sections of your page that you want to be a React Component, then this framework 
+For example, sometimes there are only sections of your page that you want to be a React Component, this framework 
 is perfect for that.
 
 The idea behind this is that, rather than trying to initiate one or many React components; by either hard coding or 
@@ -34,12 +34,12 @@ React Habitat works great with:
 - Joomla
 - WordPress
 - Magento
-- *...etc*
+- *... etc*
 
 ### When *not* to use it
 
-Typically if you're building a single page application (SPA) with only a `<div id="app">` in the body tag... then this 
-framework isn't really going to bring many benefits to you. However, you are definitely invited to use it if you want to.
+Typically if you're building a single page application (SPA) with only a `<div id="app">` in the body tag ... then this 
+framework isn't really going to bring many benefits to you. However, you are definitely invited to use it, if you want to.
 
 ## Features
 
@@ -68,14 +68,14 @@ framework isn't really going to bring many benefits to you. However, you are def
   - [Concept](#resolving-components)
   - [Passing props/properties to your components](#passing-properties-props-to-your-components)
   - [Passing data back again](#passing-values-back-again)
-  - [Setting the habitats css class](#setting-the-habitats-css-class)
+  - [Setting the Habitat's css class](#setting-the-habitats-css-class)
   - [Replace original node](#replace-original-node)
   - [Use encoded JSON in HTML attributes](#use-encoded-json-in-html-attributes)
 - [Controlling Scope and Lifetime](#controlling-scope-and-lifetime)
-  - [Changing the habitat query selector](#changing-the-habitat-query-selector)
+  - [Changing the Habitat query selector](#changing-the-habitat-query-selector)
   - [Dynamic updates](#dynamic-updates)
   - [Bootstrapper lifecycle events](#bootstrapper-lifecycle-events)
-  - [Unmount react habitats](#unmount-react-habitats)
+  - [Unmount react Habitats](#unmount-react-habitats)
   - [Disposing the container](#disposing-the-container)
 - [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/examples)
 - [Contribute](#want-to-contribute)
@@ -115,7 +115,7 @@ The basic pattern for integrating React Habitat into your application is:
 - Create a Container Builder.
 - Register React components.
 - Set the container for later use in the DOM.
-- At application execution...
+- At application execution ...
 - Use the DOM scope to resolve instances of the components.
 
 This getting started guide walks you through these steps for a simple React application.
@@ -126,12 +126,12 @@ This document assumes you already know:
 
 #### 1. Create a bootstrapper class
 
-The class must extend `ReactHabitat.Bootstrapper` and is intended to be an *[entry](https://webpack.github.io/docs/configuration.html#entry)* point of your bundled app. So if you're using something like webpack or browserify then this is file to point it too.
+The class must extend `ReactHabitat.Bootstrapper` and is intended to be an *[entry](https://webpack.github.io/docs/configuration.html#entry)* point of your bundled app. So if you're using something like webpack or browserify then this is the file to point it too.
 
 In the *constructor()* of the class you need to register your React components with it and then set
 the container. The container is later bound to the DOM automatically so your React components self-initiate.
 
-In React Habitat, you'd register a component 'as' a unique key something like this
+In React Habitat, you'd register a component 'as' a unique key with something like this:
 
 ```javascript
 containerBuilder.register(SomeReactComponent).as('SomeReactComponent');
@@ -149,21 +149,21 @@ class MyApp extends ReactHabitat.Bootstrapper {
     constructor(){
         super();
 
-        // Create a new container builder
+        // Create a new container builder:
         const builder = new ReactHabitat.ContainerBuilder();
 
-        // Register a component
+        // Register a component:
         builder.register(SomeReactComponent).as('SomeReactComponent');
 
-        // or Register a component to load on demand asynchronously
+        // Or register a component to load on demand asynchronously:
         builder.registerAsync(() => System.import('./AnotherReactComponent')).as('AnotherReactComponent');
 
-        // Finally, set the container
+        // Finally, set the container:
         this.setContainer(builder.build());
     }
 }
 
-// Always export a 'new' instance so it immediately evokes
+// Always export a 'new' instance so it immediately evokes:
 export default new MyApp();
 ```
 
@@ -243,14 +243,14 @@ For example, the following would create a new `MyReactComponent` instance with `
 <div
     data-component="MyReactComponent"
     data-prop-title="My Title"
-    data-prop-color="#BADA55"
+    data-prop-colour="#BADA55"
 >
 </div>
 ```
 
 **Going Further**
 
-The getting start guide gives you an idea how to use React Habitat, but there's a lot more you can do.
+The getting start guide gives you an idea of how to use React Habitat, but there's a lot more you can do.
 
 Learn more about:
 
@@ -276,13 +276,13 @@ components to expose to the DOM.
 Each component is exposed to the DOM using the `as()` method on the `ContainerBuilder`.
 
 ```javascript
-// Create a new builder
+// Create a new builder:
 const builder = new ReactHabit.ContainerBuilder();
 
-// Register SomeComponent and expose it to the DOM as 'MySomeComponent'
+// Register SomeComponent and expose it to the DOM as 'MySomeComponent':
 builder.register(SomeComponent).as('MySomeComponent');
 
-// Build the container to finalise registrations
+// Build the container to finalise registrations:
 const container = builder.build();
 ```
 
@@ -292,11 +292,11 @@ You can pass render options with each registrations using the `withOptions()` me
 
 |Property|Type|Description|
 |---|---|---|
-|**tag**|string *(optional)*|The tag to use for the rendered habitat that houses the component eg 'span'
-|**className**|string *(optional)*|The habitats CSS class name
+|**tag**|string *(optional)*|The tag to use for the rendered Habitat that houses the component eg 'span'
+|**className**|string *(optional)*|The Habitat's CSS class name
 |**replaceDisabled**|boolean *(optional)*|If true, the original node will be left in the dom. False by default
 
-Example using `withOptions()`
+Example using `withOptions()`:
 
 ```javascript
 // Register SomeComponent and expose it to the DOM as 'MySomeComponent'
@@ -312,10 +312,10 @@ builder
 You can also define *default* options for *all* registrations by passing the options object in as the first argument when
 creating a new `ContainerBuilder` instance.
 
-Example setting defaults for all registrations
+Example setting defaults for all registrations:
 
 ```javascript
-// Register SomeComponent and expose it to the DOM as 'MySomeComponent'
+// Register SomeComponent and expose it to the DOM as 'MySomeComponent':
 const builder = new ContainerBuilder({
     tag: 'div',
     className: 'myHabitat',
@@ -327,10 +327,10 @@ const builder = new ContainerBuilder({
 
 ### Passing default props to register
 
-Typically you would define the default props in the React component itself. However, there may be instances where you
+Typically, you would define the default props in the React component itself. However, there may be instances where you
 would like different defaults for multiple registrations.
 
-You can pass default props with each registrations using the `withDefaultProps()` method on the `ContainerBuilder`.
+You can pass default props with each registration using the `withDefaultProps()` method on the `ContainerBuilder`.
 
 ```javascript
 // Register SomeComponent and expose it to the DOM as 'MySomeComponent'
@@ -357,7 +357,7 @@ For example
 ```javascript
 container
     .registerAsync(() => new Promise((resolve, reject) => {
-        // .. do async work to get 'component', then
+        // Do async work to get 'component', then:
         resolve(component);
     }))
     .as('AsynReactComponent');
@@ -365,7 +365,7 @@ container
 
 React Habitat has no restrictions on how you want to resolve your components however this does enable you to define code split points.
 
-**Code splitting** is one great feature that means our visitor's don't need to download the entire app before they can use it.
+**Code splitting** is one great feature that means our visitors don't need to download the entire app before they can use it.
 Think of code splitting as incrementally download your application only as its needed.
 
 While there are other methods for code splitting we will use Webpack for these examples.
@@ -378,7 +378,7 @@ So for example, we could create a split point using `System.import()` like this:
 container.registerAsync(() => System.import('./components/MyComponent')).as('MyComponent');
 ```
 
-`registerAsync` expects a function that returns a `Promise`, that resolves with a React Component. Since `System.import` IS a promise that allows us to use it in directly.
+`registerAsync` expects a function that returns a `Promise`, that resolves with a React Component. Since `System.import` IS a Promise, that allows us to use it directly.
 
 Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
 
@@ -514,9 +514,9 @@ For example
 
 > ⚠️ *JSON*, *booleans* & *null* are automatically parsed. Eg `data-prop-my-bool="true"` would expose the value of `true`, NOT the string representation `"true"`.
 
-Passing in an array of objects will require you to use HTML encoded characters for quotes etc i.e &quot;foo&quot; will replace "foo"
+Passing in an array of objects will require you to use HTML encoded characters for quotes etc i.e &quot;foo&quot; will replace "foo".
 
-Simple Example
+Simple example:
 
 ```html
 <div data-component="SomeReactComponent"
@@ -525,7 +525,7 @@ Simple Example
 </div>
 ```
 
-Would expose props as
+Would expose props as:
 
 ```javascript
 class SomeReactComponent extends React.Component {
@@ -543,7 +543,7 @@ class SomeReactComponent extends React.Component {
 }
 ```
 
-JSON Example
+JSON Example:
 
 ```html
 <div
@@ -552,7 +552,7 @@ JSON Example
 </div>
 ```
 
-Would expose as
+Would expose as:
 
 ```javascript
 class MyReactComponent extends React.Component {
@@ -581,7 +581,7 @@ This is handy if you know that a property is always going to be a number or floa
 
 Referenced a global variable in your component prop via prefixing attributes with `data-r-prop-`.
 
-For Example
+For Example:
 
 ```html
 <script>
@@ -591,7 +591,7 @@ For Example
 <div data-component="SomeReactComponent" data-r-prop-foo="foo"></div>
 ```
 
-This is handy if you need to share properties between habitats or you need to set JSON onto the page.
+This is handy if you need to share properties between Habitats or you need to set JSON onto the page.
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -619,16 +619,16 @@ Sometimes you may additionally need to call `this.props.proxy.onchange()` if you
 
 **[⬆ back to top](#table-of-contents)**
 
-### Setting the habitat's CSS class
+### Setting the Habitat's CSS class
 
-You can set a custom CSS class on the habitat element by setting the `data-habitat-class` attribute on the target element.
+You can set a custom CSS class on the Habitat element by setting the `data-habitat-class` attribute on the target element.
 Alternatively you can use the [withOptions](#passing-options-to-register) method on the registration.
 
-Example
+Example:
 
 `<div data-component="MyComponent" data-habitat-class="my-css-class"></div>`
 
-Will result in the following being rendered
+Will result in the following being rendered:
 
 `<div data-habitat="C1" class="my-css-class">...</div>`
 
@@ -682,14 +682,14 @@ example
 
 ## Controlling Scope and Lifetime
 
-- [Changing the habitat query selector](#changing-the-habitat-query-selector)
+- [Changing the Habitat query selector](#changing-the-habitat-query-selector)
 - [Dynamic updates](#dynamic-updates)
 - [Update lifecycle](#update-lifecycle)
 - [Disposing the container](#disposing-the-container)
 
 **[⬆ back to top](#table-of-contents)**
 
-### Changing the habitat query selector
+### Changing the Habitat query selector
 
 *Default: 'data-component'*
 
@@ -736,13 +736,13 @@ Example
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
     someMethod() {
-        // Will scan just the children of the element with id 'content'
+        // Will scan just the children of the element with id 'content':
         this.update(document.getElementById('content'))
     }
 }
 ```
 
-You can call this method from somewhere else in your app by importing it
+You can call this method from somewhere else in your app by importing it:
 
 ```javascript
 import MyApp from './MyApp';
@@ -792,18 +792,18 @@ Example
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
     shouldUpdate(node) {
-        // Dont allow updates on div's
+        // Dont allow updates on div's:
         if (node.tagName === 'div') {
             return false;
         }
     }
 
     willUpdate(node) {
-        console.log('Im about to update', node);
+        console.log('I am about to update.', node);
     }
 
     didUpdate(node) {
-        console.log('I just updated', node);
+        console.log('I just updated.', node);
     }
 }
 ```
@@ -821,7 +821,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
     constructor(){
         super();
 
-        //...
+        // ...
 
         this.unmountHabitats();
     }
@@ -841,7 +841,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
     constructor(){
         super();
 
-        //...
+        // ...
 
         this.dispose();
     }
