@@ -103,7 +103,7 @@ This assumes that you’re using a package manager with a module bundler like [W
 
 If you don’t use a module bundler, and would prefer a single-file [UMD](https://github.com/umdjs/umd) build that makes `ReactHabitat` available as a global object, you can grab a pre-built version from the dist folder.
 
-## 🎓 Getting Started 
+## 🎓 Getting Started
 
 **Using ES5?** Read the [ES5 spec here](readme-in-es5.md#getting-started).
 
@@ -151,8 +151,8 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
         // Register a component
         builder.register(SomeReactComponent).as('SomeReactComponent');
-        
-        // or Register a component to load on demand asynchronously 
+
+        // or Register a component to load on demand asynchronously
         builder.registerAsync(System.import('./AnotherReactComponent')).as('AnotherReactComponent');
 
         // Finally, set the container
@@ -174,7 +174,7 @@ Alternatively learn how to [write and use your own custom factory](#writing-and-
 
 **If you are using TypeScript**
 
-You will need to import ReactHabitat using `import * as ReactHabitat from 'react-habitat'` syntax in order to avoid 'module has no default export' error. 
+You will need to import ReactHabitat using `import * as ReactHabitat from 'react-habitat'` syntax in order to avoid 'module has no default export' error.
 
 #### 2. Application execution - resolve your components
 
@@ -347,13 +347,13 @@ builder
 ## Dynamic imports and code splitting
 
 React Habitat supports resolving components asynchronously by returning Promises.
-Use `registerAsync` to define asynchronous registrations, pass in a Promise that resolves to a React component.
+Use `registerAsync` to define asynchronous registrations, pass in a function that returns a Promise, that resolves to a React component.
 
 For example
 
 ```javascript
 container
-    .registerAsync(new Promise((resolve, reject) => {
+    .registerAsync(() => new Promise((resolve, reject) => {
         // .. do async work to get 'component', then
         resolve(component);
     }))
@@ -372,10 +372,10 @@ Webpack 2 & 3 treats `System.import()` as a [split-point](https://webpack.js.org
 So for example, we could create a split point using `System.import()` like this:
 
 ```javascript
-container.registerAsync(System.import('./components/MyComponent')).as('MyComponent');
+container.registerAsync(() => System.import('./components/MyComponent')).as('MyComponent');
 ```
 
-`registerAsync` expects a `Promise` that resolves with a React Component. Since `System.import` IS a promise that allows us to use it in directly.
+`registerAsync` expects a function that returns a `Promise` (breaking change as of 0.7.0), that resolves with a React Component. Since `System.import` IS a promise that allows us to use it in directly.
 
 Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
 
@@ -403,7 +403,7 @@ example
 
 ```javascript
 class MyCustomFactory {
-    
+
     inject(module, props, target) {
         // ...
     }
@@ -641,8 +641,8 @@ Alternatively you can use the [withOptions](#passing-options-to-register) method
 
 ## Use encoded JSON in HTML attributes
 
-When passing JSON to an attribute you need to remember its actually JSON inside a string, 
-you will need to encode the value so that content can be preserved and properly rendered. 
+When passing JSON to an attribute you need to remember its actually JSON inside a string,
+you will need to encode the value so that content can be preserved and properly rendered.
 
 > ⚠️ Please note using `data-r-prop` instead may be better suited for you.
 
@@ -665,7 +665,7 @@ Most backend systems are capable of doing this automatically. An alternative is 
 
 **Should I use attribute Single of Double Quotes?**
 
-Double quotes around attributes values are the most common. There is a known hack of wrapping JSON attributes 
+Double quotes around attributes values are the most common. There is a known hack of wrapping JSON attributes
 with single quotes and escaping nested single quotes.
 
 example
@@ -754,7 +754,7 @@ Or you can expose it onto the window object for legacy code.
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
     constructor() {
-        
+
         // ...
 
         window.updateHabitat = this.update.bind(this);
@@ -771,7 +771,7 @@ window.updateHabitat();
 ### Bootstrapper Lifecycle Events
 
 `ReactHabitat.Bootstrapper` has "lifecycle methods" that you can override to run code at particular times
-in the process. 
+in the process.
 
 |Method|Description
 |---|---
