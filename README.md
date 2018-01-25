@@ -352,7 +352,7 @@ builder
 React Habitat supports resolving components asynchronously by returning Promises.
 Use `registerAsync` to define asynchronous registrations, pass in a function that returns a Promise, that resolves to a React component.
 
-For example
+For example:
 
 ```javascript
 container
@@ -402,7 +402,7 @@ Where as the [ReactHabitatRedux one](https://github.com/DeloitteDigitalAPAC/reac
 
 A factory is simply a plain javascript class that must have two methods implemented `inject` and `dispose`.
 
-example
+Example:
 
 ```javascript
 class MyCustomFactory {
@@ -488,7 +488,7 @@ best for setting properties.
 With an attribute *prefix* the **\*** may be replaced by any name. This allow's you to define the property name.
 Property names must be all lower-case and hyphens will be *automatically converted* to camel case.
 
-For example
+For example:
 
 `data-prop-title` would expose `title` on the props object inside the component.
 
@@ -498,7 +498,7 @@ For example
 
 Set component props via an [encoded JSON](#use-encoded-json-in-html-attributes) string on the `data-props` attribute.
 
-For example
+For example:
 
 ```html
 <div data-component="SomeReactComponent" data-props='{"title": "A nice title"}'></div>
@@ -508,7 +508,7 @@ For example
 
 Set a component prop via prefixing attributes with `data-prop-`.
 
-For example
+For example:
 
 `data-prop-title` would expose `title` as a property inside the component.
 
@@ -543,7 +543,7 @@ class SomeReactComponent extends React.Component {
 }
 ```
 
-JSON Example:
+JSON example:
 
 ```html
 <div
@@ -581,7 +581,7 @@ This is handy if you know that a property is always going to be a number or floa
 
 Referenced a global variable in your component prop via prefixing attributes with `data-r-prop-`.
 
-For Example:
+For example:
 
 ```html
 <script>
@@ -671,7 +671,7 @@ Most backend systems are capable of doing this automatically. An alternative is 
 Double quotes around attributes values are the most common. There is a known hack of wrapping JSON attributes
 with single quotes and escaping nested single quotes.
 
-example
+Example:
 
 `<div data-props='{"restaurant": "Bob\'s bar and grill"}'></div>`
 
@@ -698,7 +698,7 @@ the `componentSelector` property in your constructor.
 
 It will accept any string containing any valid attribute name.
 
-Example
+Example:
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
@@ -718,7 +718,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 The update method will scan the DOM for any new targets that require wiring up (i.e after ajaxing in some HTML).
 
-Example
+Example:
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
@@ -731,7 +731,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
 By default *update()* will scan the entire body, however, a node can optionally be passed in for better
 performance if you know where the update has occurred.
 
-Example
+Example:
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
@@ -787,7 +787,7 @@ in the process.
 
 > An "update" is the event when registrations are resolved and a React mount will/did occur.
 
-Example
+Example:
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
@@ -814,7 +814,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 To unmount all React Habitat instances. Call the `unmountHabitats()` method.
 
-Example
+Example:
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
@@ -834,7 +834,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
 
 To unload the container and remove all React Habitat instances. Call the `dispose()` method.
 
-Example
+Example:
 
 ```javascript
 class MyApp extends ReactHabitat.Bootstrapper {
