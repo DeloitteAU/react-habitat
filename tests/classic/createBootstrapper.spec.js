@@ -85,11 +85,15 @@ describe('Classic Bootstrapper', () => {
 
 		createBootstrapper({
 			container: [
-				{ register: 'IMockComponent', forAsync: new Promise((resolve) => {
-					window.setTimeout(() => {
-						resolve(MockComponent);
-					});
-				}, 300) },
+				{
+					register: 'IMockComponent', forAsync: function() {
+						return new Promise((resolve) => {
+							window.setTimeout(() => {
+								resolve(MockComponent);
+							});
+						}, 300);
+					},
+				},
 			],
 		}, () => {
 			const componentLookup = node.innerHTML.match(/\[component MockComponent\]/g);
