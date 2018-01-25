@@ -153,7 +153,7 @@ class MyApp extends ReactHabitat.Bootstrapper {
         builder.register(SomeReactComponent).as('SomeReactComponent');
 
         // or Register a component to load on demand asynchronously
-        builder.registerAsync(System.import('./AnotherReactComponent')).as('AnotherReactComponent');
+        builder.registerAsync(() => System.import('./AnotherReactComponent')).as('AnotherReactComponent');
 
         // Finally, set the container
         this.setContainer(builder.build());
@@ -375,13 +375,13 @@ So for example, we could create a split point using `System.import()` like this:
 container.registerAsync(() => System.import('./components/MyComponent')).as('MyComponent');
 ```
 
-`registerAsync` expects a function that returns a `Promise` (breaking change as of 0.7.0), that resolves with a React Component. Since `System.import` IS a promise that allows us to use it in directly.
+`registerAsync` expects a function that returns a `Promise`, that resolves with a React Component. Since `System.import` IS a promise that allows us to use it in directly.
 
 Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
 
 ```javascript
 container
-    .registerAsync(new Promise((resolve) => {
+    .registerAsync(() => new Promise((resolve) => {
         require.ensure(['./components/MyComponent'], () => {
             resolve(require('./components/MyComponent'));
         });

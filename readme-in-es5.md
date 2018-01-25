@@ -25,11 +25,13 @@ function MyApp() {
       {register: 'AnotherReactComponent', for: AnotherReactComponent},
       
       // Register a dynamic import
-      {register: 'AsyncReactComponent', forAsync: new Promise((resolve) => {
+      {register: 'AsyncReactComponent', forAsync: function() { 
+        return new Promise((resolve) => {
             require.ensure(['./components/MyComponent'], () => {
                 resolve(require('./components/MyComponent'));
             });
-        })
+          })
+        }
       }
     ],
 
