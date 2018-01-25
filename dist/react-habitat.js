@@ -68,7 +68,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Container2 = _interopRequireDefault(_Container);
 
-	var _ContainerBuilder = __webpack_require__(5);
+	var _ContainerBuilder = __webpack_require__(4);
 
 	var _ContainerBuilder2 = _interopRequireDefault(_ContainerBuilder);
 
@@ -215,7 +215,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LICENSE file in the root directory of this source tree.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
-	var _Habitat = __webpack_require__(7);
+	var _Habitat = __webpack_require__(6);
 
 	var _Habitat2 = _interopRequireDefault(_Habitat);
 
@@ -524,8 +524,6 @@ return /******/ (function(modules) { // webpackBootstrap
 		value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016-present, Deloitte Digital.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * All rights reserved.
@@ -534,17 +532,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LICENSE file in the root directory of this source tree.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
-	var _ReactDomFactory = __webpack_require__(6);
+	var _ReactDomFactory = __webpack_require__(5);
 
 	var _ReactDomFactory2 = _interopRequireDefault(_ReactDomFactory);
-
-	var _Registration = __webpack_require__(4);
-
-	var _Registration2 = _interopRequireDefault(_Registration);
-
-	var _Logger = __webpack_require__(1);
-
-	var _Logger2 = _interopRequireDefault(_Logger);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -562,9 +552,6 @@ return /******/ (function(modules) { // webpackBootstrap
 			return 'C' + nextId;
 		};
 	}();
-
-	var hasOldAPIWarning = false;
-	var OLD_API_WARNING = 'Direct container registrations are being deprecated. Please use a ContainerBuilder.';
 
 	/**
 	 * The Container class
@@ -654,117 +641,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 
 		}, {
-			key: 'register',
-
-
-			//region Deprecated
-
-			/**
-	   * Register a component in the container
-	   * @param {string}           key     - A unique component key
-	   * @param {object|Promise}   comp    - The component or Promise
-	   * @deprecated
-	   */
-			value: function register(key, comp) {
-				if (typeof key !== 'string') {
-					throw new Error('Unexpected component key. Expects a string.', name);
-				}
-
-				if (!hasOldAPIWarning) {
-					hasOldAPIWarning = true;
-					_Logger2.default.warn('RHW03', OLD_API_WARNING);
-				}
-
-				this._registrations[key] = new _Registration2.default(comp).as(key);
-			}
-
-			/**
-	   * Register multiple components to the container
-	   * @param {object}  comps     - The components
-	   * @deprecated
-	   */
-
-		}, {
-			key: 'registerAll',
-			value: function registerAll(comps) {
-				var _this2 = this;
-
-				if ((typeof comps === 'undefined' ? 'undefined' : _typeof(comps)) !== 'object') {
-					throw new Error('Unexpected components type. Expects type object', comps);
-				}
-
-				if (!hasOldAPIWarning) {
-					hasOldAPIWarning = true;
-					_Logger2.default.warn('RHW03', OLD_API_WARNING);
-				}
-
-				Object.keys(comps).forEach(function (key) {
-					_this2._registrations[key] = new _Registration2.default(comps[key]).as(key);
-				});
-			}
-
-			/**
-	   * Register a component in the container
-	   * @param {string}  name    - A unique component key
-	   * @param {object}  comp    - The component
-	   * @deprecated
-	   */
-
-		}, {
-			key: 'registerComponent',
-			value: function registerComponent(name, comp) {
-				if (!hasOldAPIWarning) {
-					hasOldAPIWarning = true;
-					_Logger2.default.warn('RHW03', OLD_API_WARNING);
-				}
-				this.register(name, comp);
-			}
-
-			/**
-	   * Register multiple components to the container
-	   * @param {object}  comps     - The components
-	   */
-
-		}, {
-			key: 'registerComponents',
-			value: function registerComponents(comps) {
-				if (!hasOldAPIWarning) {
-					hasOldAPIWarning = true;
-					_Logger2.default.warn('RHW03', OLD_API_WARNING);
-				}
-				this.registerAll(comps);
-			}
-
-			/**
-	   * Gets a component for key
-	   * @param name
-	   * @returns {Object}
-	   * @deprecated
-	   */
-
-		}, {
-			key: 'getComponent',
-			value: function getComponent(name) {
-				_Logger2.default.warn('RHW03', 'getComponent is being deprecated. Please use "resolve" instead.');
-				return this.resolve(name);
-			}
-
-			/**
-	   * The containers dom factory
-	   * @returns {ReactDomFactory}
-	   @deprecated
-	   */
-
-		}, {
-			key: 'domFactory',
-			value: function domFactory() {
-				_Logger2.default.warn('RHW03', 'domFactory() is being deprecated. Please use `factory`.');
-				return this.factory;
-			}
-
-			//endregion
-
-		}, {
 			key: 'id',
 			get: function get() {
 				return this._id;
@@ -814,150 +690,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Logger2 = _interopRequireDefault(_Logger);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/**
-	 * Registration
-	 */
-	var Registration = function () {
-		function Registration(operator) {
-			_classCallCheck(this, Registration);
-
-			/**
-	   * Operator reference
-	   * @type {function}
-	   * @private
-	   */
-			this._operator = operator;
-
-			/**
-	   * The registration key
-	   * @type {string}
-	   * @private
-	   */
-			this._key = null;
-
-			/**
-	   * Registration meta data
-	   * @type {object}
-	   * @private
-	   */
-			this._meta = {};
-		}
-
-		/**
-	  * The registration operator
-	  * @returns {Function}
-	  */
-
-
-		_createClass(Registration, [{
-			key: 'as',
-
-
-			/**
-	   * Set the registration key, must be unique
-	   * @param {string}  key     - The key
-	   * @returns {Registration}
-	   */
-			value: function as(key) {
-				if (typeof key !== 'string') {
-					_Logger2.default.error('RHE13', 'Unexpected key type. Expected a string.', key);
-					return;
-				}
-				this._key = key;
-
-				return this;
-			}
-
-			/**
-	   * Set the registration default props
-	   * @param {object}      props       - The default props
-	   * @returns {Registration}
-	   */
-
-		}, {
-			key: 'withDefaultProps',
-			value: function withDefaultProps(props) {
-				this._meta.defaultProps = props;
-				return this;
-			}
-
-			/**
-	   * Set the habitat options
-	   * @param {object}      options                     - The habitat options
-	   * @param {string}      [options.tag]               - The tag to use eg 'span'
-	   * @param {string}      [options.className]         - The habitats class name
-	   * @param {boolean}     [options.replaceDisabled]   - If true, the original node will be left in the dom
-	   * @returns {Registration}
-	   */
-
-		}, {
-			key: 'withOptions',
-			value: function withOptions(options) {
-				this._meta.options = options;
-				return this;
-			}
-		}, {
-			key: 'operator',
-			get: function get() {
-				return this._operator;
-			}
-
-			/**
-	   * The registration key
-	   * @returns {string|*}
-	   */
-
-		}, {
-			key: 'key',
-			get: function get() {
-				return this._key;
-			}
-
-			/**
-	   * The registration meta data
-	   * @returns {Object}
-	   */
-
-		}, {
-			key: 'meta',
-			get: function get() {
-				return this._meta;
-			}
-		}]);
-
-		return Registration;
-	}();
-
-	exports.default = Registration;
-	module.exports = exports['default'];
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016-present, Deloitte Digital.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * All rights reserved.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This source code is licensed under the BSD-3-Clause license found in the
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LICENSE file in the root directory of this source tree.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-
-	var _Logger = __webpack_require__(1);
-
-	var _Logger2 = _interopRequireDefault(_Logger);
-
-	var _Registration = __webpack_require__(4);
+	var _Registration = __webpack_require__(7);
 
 	var _Registration2 = _interopRequireDefault(_Registration);
 
@@ -965,7 +698,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Container2 = _interopRequireDefault(_Container);
 
-	var _ReactDomFactory = __webpack_require__(6);
+	var _ReactDomFactory = __webpack_require__(5);
 
 	var _ReactDomFactory2 = _interopRequireDefault(_ReactDomFactory);
 
@@ -986,7 +719,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		/**
 	  * Register new component asynchronously
-	  * @param {Promise}        operator    - promise that returns a React Component
+	  * @param {Function}        operator    - function that returns a promise that resolves a React Component
 	  * @returns {Registration}
 	  */
 
@@ -1011,7 +744,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}, {
 			key: 'register',
 			value: function register(component) {
-				return this.registerAsync(Promise.resolve(component));
+				return this.registerAsync(function () {
+					return Promise.resolve(component);
+				});
 			}
 
 			/**
@@ -1056,7 +791,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1137,7 +872,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1431,6 +1166,149 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Habitat;
 
 /***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2016-present, Deloitte Digital.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * All rights reserved.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * This source code is licensed under the BSD-3-Clause license found in the
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * LICENSE file in the root directory of this source tree.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+	var _Logger = __webpack_require__(1);
+
+	var _Logger2 = _interopRequireDefault(_Logger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * Registration
+	 */
+	var Registration = function () {
+		function Registration(operator) {
+			_classCallCheck(this, Registration);
+
+			/**
+	   * Operator reference
+	   * @type {function}
+	   * @private
+	   */
+			this._operator = operator;
+
+			/**
+	   * The registration key
+	   * @type {string}
+	   * @private
+	   */
+			this._key = null;
+
+			/**
+	   * Registration meta data
+	   * @type {object}
+	   * @private
+	   */
+			this._meta = {};
+		}
+
+		/**
+	  * The registration operator
+	  * @returns {Function}
+	  */
+
+
+		_createClass(Registration, [{
+			key: 'as',
+
+
+			/**
+	   * Set the registration key, must be unique
+	   * @param {string}  key     - The key
+	   * @returns {Registration}
+	   */
+			value: function as(key) {
+				if (typeof key !== 'string') {
+					_Logger2.default.error('RHE13', 'Unexpected key type. Expected a string.', key);
+					return;
+				}
+				this._key = key;
+
+				return this;
+			}
+
+			/**
+	   * Set the registration default props
+	   * @param {object}      props       - The default props
+	   * @returns {Registration}
+	   */
+
+		}, {
+			key: 'withDefaultProps',
+			value: function withDefaultProps(props) {
+				this._meta.defaultProps = props;
+				return this;
+			}
+
+			/**
+	   * Set the habitat options
+	   * @param {object}      options                     - The habitat options
+	   * @param {string}      [options.tag]               - The tag to use eg 'span'
+	   * @param {string}      [options.className]         - The habitats class name
+	   * @param {boolean}     [options.replaceDisabled]   - If true, the original node will be left in the dom
+	   * @returns {Registration}
+	   */
+
+		}, {
+			key: 'withOptions',
+			value: function withOptions(options) {
+				this._meta.options = options;
+				return this;
+			}
+		}, {
+			key: 'operator',
+			get: function get() {
+				return this._operator;
+			}
+
+			/**
+	   * The registration key
+	   * @returns {string|*}
+	   */
+
+		}, {
+			key: 'key',
+			get: function get() {
+				return this._key;
+			}
+
+			/**
+	   * The registration meta data
+	   * @returns {Object}
+	   */
+
+		}, {
+			key: 'meta',
+			get: function get() {
+				return this._meta;
+			}
+		}]);
+
+		return Registration;
+	}();
+
+	exports.default = Registration;
+	module.exports = exports['default'];
+
+/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1445,15 +1323,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.createBootstrapper = createBootstrapper;
 
-	var _Logger = __webpack_require__(1);
-
-	var _Logger2 = _interopRequireDefault(_Logger);
-
 	var _Bootstrapper2 = __webpack_require__(2);
 
 	var _Bootstrapper3 = _interopRequireDefault(_Bootstrapper2);
 
-	var _ContainerBuilder = __webpack_require__(5);
+	var _ContainerBuilder = __webpack_require__(4);
 
 	var _ContainerBuilder2 = _interopRequireDefault(_ContainerBuilder);
 
