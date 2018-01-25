@@ -23,8 +23,8 @@ class App extends ReactHabitat.Bootstrapper {
 		containerBuilder.factory = new ReduxDomFactory(store);
 
 		// Register our components that we want to expose to the DOM
-		containerBuilder.registerAsync(System.import('./containers/AlbumCollection')).as('RAlbumCollection');
-		containerBuilder.registerAsync(System.import('./containers/AddAlbumForm')).as('RAddAlbumForm');
+		containerBuilder.registerAsync(() => System.import('./containers/AlbumCollection')).as('RAlbumCollection');
+		containerBuilder.registerAsync(() => System.import('./containers/AddAlbumForm')).as('RAddAlbumForm');
 
 		// Set the DOM container
 		this.setContainer(containerBuilder.build());

@@ -11,8 +11,8 @@ class App extends ReactHabitat.Bootstrapper {
 		const containerBuilder = new ReactHabitat.ContainerBuilder();
 
 		// Register our components that we want to expose to the DOM
-		containerBuilder.registerAsync(System.import('./components/Featurette')).as('RFeaturette');
-		containerBuilder.registerAsync(System.import('./components/Banner')).as('RBanner');
+		containerBuilder.registerAsync(() => System.import('./components/Featurette')).as('RFeaturette');
+		containerBuilder.registerAsync(() => System.import('./components/Banner')).as('RBanner');
 
 		this.setContainer(containerBuilder.build());
 	}

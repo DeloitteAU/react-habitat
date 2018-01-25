@@ -81,7 +81,7 @@ export default class Container {
 			}
 
 			registration
-				.operator
+				.operator()
 				.then((o) => {
 					// Handle any esModule's with default exports
 					// This helps developers write cleaner container code otherwise
@@ -208,4 +208,3 @@ export default class Container {
 	//endregion
 
 }
-

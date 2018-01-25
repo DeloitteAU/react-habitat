@@ -254,14 +254,14 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.registerAsync(new Promise((resolve) => {
+		containerBuilder.registerAsync(() => new Promise((resolve) => {
 			window.setTimeout(() => {
 				resolve(MockComponent);
 			}, 200);
 		}))
 		.as('IMockComponent');
 
-		containerBuilder.registerAsync(new Promise((resolve) => {
+		containerBuilder.registerAsync(() => new Promise((resolve) => {
 			window.setTimeout(() => {
 				resolve(MockComponentTwo);
 			}, 200);
@@ -290,14 +290,14 @@ describe('Bootstrapper', () => {
 
 		// -- MOCH CONTAINER SET UP -- //
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.registerAsync(new Promise((resolve) => {
+		containerBuilder.registerAsync(() => new Promise((resolve) => {
 			window.setTimeout(() => {
 				resolve(MockComponent);
 			}, 200);
 		}))
 		.as('IMockComponent');
 
-		containerBuilder.registerAsync(new Promise((resolve, reject) => {
+		containerBuilder.registerAsync(() => new Promise((resolve, reject) => {
 			window.setTimeout(() => {
 				reject(new Error('Testing'));
 			}, 200);

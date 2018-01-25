@@ -56,7 +56,7 @@ describe('ContainerBuilder', () => {
 
 	it('should build async registrations', (done) => {
 		const containerBuilder = new ContainerBuilder();
-		containerBuilder.registerAsync(new Promise((resolve) => {
+		containerBuilder.registerAsync(() => new Promise((resolve) => {
 			setTimeout(() => {
 				resolve(MockComponent);
 			}, 200);

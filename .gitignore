@@ -1,4 +1,4 @@
-# Numerous always-ignore extensions
+# Numerous always-ignore extensions:
 *.diff
 *.err
 *.log
@@ -9,7 +9,7 @@
 *~
 *.sass-cache
 
-# OS or Editor folders
+# OS or Editor folders:
 .DS_Store
 Thumbs.db
 .cache
@@ -21,11 +21,11 @@ nbproject
 *.sublime-project
 *.sublime-workspace
 
-# Dreamweaver added files
+# Dreamweaver added files:
 _notes
 dwsync.xml
 
-# Folders to ignore
+# Folders to ignore:
 .hg
 .svn
 .CVS
@@ -37,5 +37,8 @@ node_modules
 doc
 report
 
-# build script local files
+# Build script local files:
 .compass
+
+# Yarn stuff:
+yarn*
