@@ -20,7 +20,7 @@ export default class ContainerBuilder {
 
 	/**
 	 * Register new component asynchronously
-	 * @param {Promise}        operator    - promise that returns a React Component
+	 * @param {Function}        operator    - function that returns a promise that resolves a React Component
 	 * @returns {Registration}
 	 */
 	registerAsync(operator) {
@@ -38,7 +38,7 @@ export default class ContainerBuilder {
 	 * @returns {Registration}
 	 */
 	register(component) {
-		return this.registerAsync(Promise.resolve(component));
+		return this.registerAsync(() => Promise.resolve(component));
 	}
 
 	/**
