@@ -20,8 +20,8 @@ After cloning React Habitat, run `npm install` to install the dependencies. Then
 become available.
 
 - `npm run lint` checks code style.
-- `npm run test` runs the test suit.
-- `npm run test:w` runs the interactive test suit watcher. Good for development.
+- `npm run test` runs the test suite.
+- `npm run test:w` runs the interactive test suite watcher. Good for development.
 - `npm run build` creates the complete lib and dist folders with packages.
 - `npm run build:lib` creates just the lib folder with packages.
 - `npm run build:umd` creates just the dist folder with the packages.
