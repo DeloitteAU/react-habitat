@@ -2,6 +2,10 @@
 
 ### [UNPUBLISHED]
 
+- 
+
+### [1.0.0]
+
 **Breaking Change:** `registerAsync` now expects a function. Please see [migration guide](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki/v0.5---v1.0-Migration-Guide).
 
 - Fixed missing dependencies in Code Splitting Example. Thanks @ryanpcmcquen
