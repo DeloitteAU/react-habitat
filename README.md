@@ -360,7 +360,7 @@ container
         // Do async work to get 'component', then:
         resolve(component);
     }))
-    .as('AsynReactComponent');
+    .as('AsyncReactComponent');
 ```
 
 React Habitat has no restrictions on how you want to resolve your components however this does enable you to define code split points.
@@ -389,7 +389,7 @@ container
             resolve(require('./components/MyComponent'));
         });
     }))
-    .as('AsynReactComponent');
+    .as('AsyncReactComponent');
 ```
 
 **[⬆ back to top](#table-of-contents)**
