@@ -2,6 +2,10 @@
 
 ### [UNPUBLISHED]
 
+-
+
+### [1.0.1]
+
 - Typo fixes in Readme. Thanks @ryanpcmcquen 
 
 ### [1.0.0]
