@@ -2,7 +2,7 @@
 
 ### [UNPUBLISHED]
 
-- 
+- Typo fixes in Readme. Thanks @ryanpcmcquen 
 
 ### [1.0.0]
 
