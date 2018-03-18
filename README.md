@@ -1,6 +1,6 @@
 ![Deloitte Digital](https://raw.githubusercontent.com/DeloitteDigitalAPAC/react-habitat/master/dd-logo.png)
 
-# React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=develop) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+# React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 **v1.0 Released** 🎉 - Please see [migration guides](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki).
 
