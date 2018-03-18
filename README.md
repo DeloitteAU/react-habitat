@@ -1,4 +1,4 @@
-![Deloitte Digital](https://raw.githubusercontent.com/DeloitteDigital/react-habitat/master/dd-logo.png)
+![Deloitte Digital](https://raw.githubusercontent.com/DeloitteDigitalAPAC/react-habitat/master/dd-logo.png)
 
 # React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=master) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
