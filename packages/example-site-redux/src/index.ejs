@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>React Habitat Demo</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<style>
+        body {
+        min-height: 75rem; /* Can be removed; just added for demo purposes */
+        }
+
+        .navbar {
+        margin-bottom: 0;
+        }
+
+        .jumbotron {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+        margin-bottom: 0;
+        background-color: #fff;
+        }
+
+        .jumbotron p:last-child {
+        margin-bottom: 0;
+        }
+
+        .jumbotron-heading {
+        font-weight: 300;
+        }
+
+        .jumbotron .container {
+        max-width: 40rem;
+        }
+
+        .center-items {
+        display: flex;
+        justify-content: center;
+        }
+
+        .album {
+        min-height: 50rem; /* Can be removed; just added for demo purposes */
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        background-color: #f7f7f7;
+        }
+
+        .card {
+        float: left;
+        width: 33.333%;
+        padding: .75rem;
+        margin-bottom: 2rem;
+        border: 0;
+        min-width: 300px;
+        }
+
+        .card > img {
+        margin-bottom: .75rem;
+        }
+
+        .card-text {
+        font-size: 85%;
+        }
+
+        footer {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        }
+
+        footer p {
+        margin-bottom: .25rem;
+        }
+    </style>
+
+</head>
+<body>
+		<div class="navbar navbar-dark bg-dark">
+		  <div class="container d-flex justify-content-between">
+			<a href="#" class="navbar-brand">React Habitat Redux Demo</a>
+		  </div>
+		</div>
+	
+		<section class="jumbotron text-center">
+		  <div class="container">
+			<h1 class="jumbotron-heading">Album example</h1>
+			<p class="lead text-muted">This demo shows how you can use React Habitat with Redux. The <strong>form</strong> and <strong>listing</strong> containers are wired up completely seperatly. View the source of this page (index.html) to see how its done.</p>
+			<p class=text-muted>This is a good example of how two habitats can still talk to each other</p>
+			<p>&nbsp;</p>
+
+			<!--
+      ADD FORM WITH REACT HABITAT
+  		-->
+			<div 
+				data-component="RAddAlbumForm"
+				data-habitat-class="center-items">
+			</div>
+
+		  </div>
+		</section>
+	
+		<div class="album text-muted">
+		  <div class="container">
+			<div class="row">
+
+				<!--
+				ALBUM COLLECTION WITH REACT HABITAT
+				-->
+				<div data-component="RAlbumCollection" ></div>
+
+			</div>
+	
+		  </div>
+		</div>
+	
+		<footer class="text-muted">
+		  <div class="container">
+			<p class="float-right">
+			  <a href="#">Back to top</a>
+			</p>
+		  </div>
+		</footer>
+</body>
+</html>

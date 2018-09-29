@@ -1,0 +1,15 @@
+{
+  "parser": "babel-eslint",
+  "extends": "@deloitte-digital-au/eslint-config-react",
+  "env": {
+    "browser": true,
+    "jasmine": true,
+    "node": true
+  },
+  "plugins": [
+    "jasmine"
+  ],
+  "rules": {
+    "linebreak-style": 0
+  }
+}

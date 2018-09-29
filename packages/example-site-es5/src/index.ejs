@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>React Habitat Demo</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <style>
+     body{padding-top:50px;}
+     hr.featurette-divider{margin-top:80px;margin-bottom:80px;}
+    .featurette-heading{font-size:50px;margin-top:10%;font-weight: normal;}
+    p.lead{margin-bottom: 20px;font-size: 21px;font-weight: 300;line-height: 1.4;}
+    footer{padding:40px 0;}
+  </style>
+</head>
+  <body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">React Habitat Demo</a>
+      </div>
+    </div>
+  </nav>
+
+  <!--
+      START REACT HABITAT EXAMPLES
+      =======================================================
+  -->
+
+  <div data-component="RBanner" data-prop-title="Welcome to the demo"></div>
+
+  <div class="container">
+
+    <div data-component="RFeaturette"
+         data-prop-title="First React component."
+         data-prop-sub-title="It'll blow your mind."
+         data-prop-img-src="http://placehold.it/400x300/">
+    </div>
+
+    <hr class="featurette-divider" />
+
+    <div data-component="RFeaturette"
+         data-prop-layout="rtl"
+         data-prop-title="Oh yeah, it's modular."
+         data-prop-sub-title="See for yourself in the source."
+         data-prop-img-src="http://placehold.it/400x300/">
+    </div>
+
+    <hr class="featurette-divider" />
+
+    <!-- Target to append the loaded html (see ajaxData.html) -->
+    <div id="target"></div>
+
+    <!--
+        =======================================================
+        // END REACT HABITAT EXAMPLES
+    -->
+
+    <!-- Button to trigger the ajax load -->
+    <div id="dynamic-demo" style="text-align: center">
+      <p class="lead">Load some HTML and watch React Habitat wire up the new components.</p>
+      <p>View the source code of this file to see the logic.</p>
+      <button id="btnLoad" class="btn btn-success btn-lg">Load Dynamic HTML</button>
+      <hr class="featurette-divider" />
+    </div>
+
+    <!-- Ajax loader -->
+    <div id="loader" class="progress" style="display: none;">
+      <div class="progress-bar progress-bar-striped active" style="width: 100%">
+        <span class="sr-only">Loading</span>
+      </div>
+    </div>
+
+    <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+      <p>© 2018 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+
+  </div>
+
+  <!-- jQuery used for dynamic demo menu only. JQuery is NOT required for React Habitat -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script>
+      // On button click
+      $('#btnLoad').on('click', function() {
+
+          $('#dynamic-demo').remove();      // hide the button
+          $('#loader').show();              // show the loading animation
+
+          // Set a timeout only so things dont happen too fast for the demo
+          window.setTimeout(function() {
+
+              // Use jquery to ajax in the demo html data
+              $.ajax('/ajaxData.html')
+                  .done(function(response){
+                      // Append the response
+                      // React habitat will automatically see this type of event and wire up components
+                      $('#target').append(response);
+
+                      // This alternative also works, it dosnt depend on jquery events
+                      // window.document.getElementById('target').innerHTML = response;
+
+                       // Tell React Habitat to wire up any new components
+                       // This method is defined in App.js
+                       window.updateHabitat();
+                  })
+                  .always(function() {
+                      // Hide the loader
+                      $('#loader').hide();
+                  });
+
+          }, 1200);
+
+      });
+  </script>
+
+  </body>
+</html>

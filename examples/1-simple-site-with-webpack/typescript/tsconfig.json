@@ -1,8 +1,0 @@
-{
-  "compileOnSave": true,
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "jsx": "React",
-    "target": "ES5"
-  }
-}

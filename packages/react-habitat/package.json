@@ -1,0 +1,89 @@
+{
+  "name": "react-habitat",
+  "version": "1.0.1",
+  "description": "A React DOM Bootstrapper designed to harmonise a hybrid application",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DeloitteDigitalAPAC/react-habitat.git"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "bootstrapper",
+    "cms",
+    "hybrid",
+    "mix",
+    "mixed",
+    "standalone",
+    "sitecore",
+    "wordpress",
+    "drupal",
+    "umbraco",
+    "joomla",
+    "magento"
+  ],
+  "author": "Deloitte Digital Australia (http://deloittedigital.com.au)",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/DeloitteDigitalAPAC/react-habitat/issues"
+  },
+  "homepage": "https://github.com/DeloitteDigitalAPAC/react-habitat#readme",
+  "typescript": {
+    "definition": "index.d.ts"
+  },
+  "devDependencies": {
+    "@deloitte-digital-au/eslint-config": "^3.4.0",
+    "@deloitte-digital-au/eslint-config-react": "^3.4.0",
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.13.2",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-syntax-trailing-function-commas": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.11.5",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "cross-env": "^2.0.0",
+    "eslint": "^5.6.1",
+    "eslint-plugin-jasmine": "^2.10.1",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-import": "^2.14.0",
+    "jasmine-core": "^2.4.1",
+    "karma": "^1.7.0",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-firefox-launcher": "^1.0.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-polyfill": "^1.0.0",
+    "karma-webpack": "^1.8.0",
+    "prop-types": "^15.5.10",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "webpack": "^1.13.0"
+  },
+  "peerDependencies": {
+    "react": ">=15.0.0 <17.0.0",
+    "react-dom": ">=15.0.0 <17.0.0"
+  },
+  "files": [
+    "LICENCE.md",
+    "CHANGELOG.md",
+    "index.d.ts",
+    "readme.md",
+    "readme-in-es5.md",
+    "lib/",
+    "dist/"
+  ],
+  "scripts": {
+    "test": "npm run lint && karma start --single-run",
+    "test:w": "NODE_ENV=development karma start --browsers Chrome",
+    "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
+    "build:lib": "babel src --out-dir lib",
+    "build:umd": "cross-env NODE_ENV=development webpack src/index.js dist/react-habitat.js",
+    "build:umd:min": "cross-env NODE_ENV=production webpack src/index.js dist/react-habitat.min.js",
+    "lint": "eslint src",
+    "prepublishOnly": "npm run test && npm run build"
+  }
+}

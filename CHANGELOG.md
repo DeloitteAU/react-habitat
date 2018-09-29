@@ -2,7 +2,10 @@
 
 ### [UNPUBLISHED]
 
--
+- Updated repo to a mono repo with Lerna
+- Updated React and React DOM to v16 in example projects
+- Updated Typescript in example project
+- Updated example projects to use Webpack v4
 
 ### [1.0.1]
 
