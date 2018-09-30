@@ -1,11 +1,17 @@
 # Contribute to React Habitat
 
+Thank you for helping. Here are a few guidelines that will help you along the way.
+
 If you decide to fix an issue, please be sure to check the comment thread in case somebody is already working on a fix. 
 If nobody is working on it at the moment, please leave a comment stating that you intend to work on it so other 
 people don’t accidentally duplicate your effort.
 
 If somebody claims an issue but doesn’t follow up for more than two weeks, it’s fine to take over it but you should 
 still leave a comment.
+
+## Branch Structure
+
+All stable releases are to be tagged. At any given time, master represents the latest development version of the library. Patches or hotfix releases are prepared on an independent branch.
 
 ## Getting started
 
@@ -16,16 +22,24 @@ still leave a comment.
 
 ## Development Workflow
 
-After cloning React Habitat, run `npm install` to install the dependencies. Then the following commands will 
+After cloning this mono repo, run `npm install` to install the dependencies. Then run `npm run bootstrap` to install
+the packages dependencies.
+
+Then the following commands will 
 become available.
 
 - `npm run lint` checks code style.
 - `npm run test` runs the test suite.
-- `npm run test:w` runs the interactive test suite watcher. Good for development.
+- `npm run test:w` runs the interactive test suite watcher for React Habitat package. Good for development.
 - `npm run build` creates the complete lib and dist folders with packages.
-- `npm run build:lib` creates just the lib folder with packages.
-- `npm run build:umd` creates just the dist folder with the packages.
-- `npm run build:umd:min` creates just the dist folder with the minified packages.
+
+To test your work against one of the example projects.
+
+- Run a build (`npm run build`) so the example sites get your latest changes.
+- `npm run start` will start the example site.
+- `npm run start:es5` will start the es5 example site.
+- `npm run start:ts` will start the Type Script example site.
+- `npm run start:redux` will start the Redux example site.
 
 To test your work against an existing project. Use npm [link](https://docs.npmjs.com/cli/link)
 
