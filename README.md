@@ -2,9 +2,7 @@
 
 # React Habitat ![Build Status](https://travis-ci.org/DeloitteDigitalAPAC/react-habitat.svg?branch=develop) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-**v1.0 Released** 🎉 - Please see [migration guides](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki).
-
-> *Looking for the [v0.4 docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64#react-habitat-)?*
+> *Looking for the [v0.4 docs](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/4e82be35a1d9b5f2c95d7957f277dbbd1ca89b64#react-habitat-)* or [migration guides](https://github.com/DeloitteDigitalAPAC/react-habitat/wiki)?
 
 ## React Habitat <3 Your CMS
 
@@ -22,7 +20,9 @@ For example, sometimes there are only sections of your page that you want to be 
 is perfect for that.
 
 The idea behind this is that, rather than trying to initiate one or many React components; by either hard coding or 
-using a Router. You switch it around so components "new up" themselves when required.
+using a Router. You switch it around so components "new up" themselves only when required.
+
+Here is a great article that explains [a hybrid headless concept](https://medium.com/the-future-content/hybrid-headless-a280209d1e3f).
 
 React Habitat works great with:
 
@@ -34,6 +34,7 @@ React Habitat works great with:
 - Joomla
 - WordPress
 - Magento
+- Magnolia
 - *... etc*
 
 ### When *not* to use it
@@ -44,7 +45,7 @@ framework isn't really going to bring many benefits to you. However, you are def
 ## Features
 
 - Tiny code footprint (only 4.4kb)
-- **Redux** supported
+- **Redux**, **MobX** and Cerebal supported
 - Pass data (props) to your components directly from HTML attributes and back again
 - Automatic data/JSON parsing
 - All page child apps can still share the same components, stores, events etc. (Everything is connected)
@@ -77,7 +78,7 @@ framework isn't really going to bring many benefits to you. However, you are def
   - [Bootstrapper lifecycle events](#bootstrapper-lifecycle-events)
   - [Unmount react Habitats](#unmount-react-habitats)
   - [Disposing the container](#disposing-the-container)
-- [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/examples)
+- [Examples](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/packages)
 - [Contribute](#want-to-contribute)
 - [License information](#license-bsd-3-clause)
 - [Change log](https://github.com/DeloitteDigitalAPAC/react-habitat/blob/master/CHANGELOG.md)
@@ -155,8 +156,8 @@ class MyApp extends ReactHabitat.Bootstrapper {
         // Register a component:
         builder.register(SomeReactComponent).as('SomeReactComponent');
 
-        // Or register a component to load on demand asynchronously:
-        builder.registerAsync(() => System.import('./AnotherReactComponent')).as('AnotherReactComponent');
+        // Or register a component to load on demand asynchronously (note dynamic `import()` is webpack v4):
+        builder.registerAsync(() => import('./AnotherReactComponent')).as('AnotherReactComponent');
 
         // Finally, set the container:
         this.setContainer(builder.build());
@@ -171,7 +172,7 @@ By default ReactHabitat ships with a plain ReactDOM factory.
 
 **If you are using Redux**
 
-You will need to use a different factory. Please install & configure the [react-habitat-redux library](https://github.com/DeloitteDigitalAPAC/react-habitat-redux). Then continue with step 2 below.
+You will need to use a different factory. Please install & configure the [react-habitat-redux library](https://github.com/DeloitteDigitalAPAC/react-habitat/tree/master/packages/react-habitat-redux). Then continue with step 2 below.
 
 Alternatively learn how to [write and use your own custom factory](#writing-and-using-custom-factories).
 
@@ -261,8 +262,7 @@ Learn more about:
 
 **Still Need Help?**
 
-Please ask questions on [StackOverflow](https://stackoverflow.com/questions/tagged/react-habitat) tagged with `react-habitat`
-(We have notifications turned on).
+Please ask questions on [StackOverflow](https://stackoverflow.com/questions/tagged/react-habitat).
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -370,15 +370,15 @@ Think of code splitting as incrementally download your application only as its n
 
 While there are other methods for code splitting we will use Webpack for these examples.
 
-Webpack 2 & 3 treats `System.import()` as a [split-point](https://webpack.js.org/guides/code-splitting-async/) and puts the requested module into a separate chunk.
+Webpack 2 & 3 uses `System.import()` and Webpack 4 uses `import()` as a [split-point](https://webpack.js.org/guides/code-splitting/#dynamic-imports) and puts the requested module into a separate chunk.
 
-So for example, we could create a split point using `System.import()` like this:
+So for example, we could create a split point using `import()` like this:
 
 ```javascript
-container.registerAsync(() => System.import('./components/MyComponent')).as('MyComponent');
+container.registerAsync(() => import('./components/MyComponent')).as('MyComponent');
 ```
 
-`registerAsync` expects a function that returns a `Promise`, that resolves with a React Component. Since `System.import` IS a Promise, that allows us to use it directly.
+`registerAsync` expects a function that returns a `Promise`, that resolves with a React Component. Since `import` IS a Promise, that allows us to use it directly.
 
 Here is an example using `require.ensure()` to define a [split-point in webpack 1](https://webpack.github.io/docs/code-splitting.html)
 
@@ -398,7 +398,7 @@ container
 
 A factory is used to define how components are injected into the DOM. The [default factory](https://github.com/DeloitteDigitalAPAC/react-habitat/blob/master/src/factories/ReactDomFactory.js) is simple wrapper of ReactDOM.
 
-Where as the [ReactHabitatRedux one](https://github.com/DeloitteDigitalAPAC/react-habitat-redux/blob/master/src/ReduxDomFactory.js) wraps Components in a React Redux Provider. You can write custom factories do what ever you want with components and control how they are added to the dom.
+Where as the [ReactHabitatRedux one](https://github.com/DeloitteDigitalAPAC/react-habitat/blob/master/packages/react-habitat-redux/src/ReduxDomFactory.js) wraps Components in a React Redux Provider. You can write custom factories do what ever you want with components and control how they are added to the dom.
 
 A factory is simply a plain javascript class that must have two methods implemented `inject` and `dispose`.
 
