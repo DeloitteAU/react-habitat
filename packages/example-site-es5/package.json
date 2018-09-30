@@ -1,5 +1,5 @@
 {
-  "name": "react-habitat-example-es5",
+  "name": "example-site-es5",
   "version": "2.0.0",
   "description": "Example setup with React Habitat with es5 and webpack",
   "main": "index.js",

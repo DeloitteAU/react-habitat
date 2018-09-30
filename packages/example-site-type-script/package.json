@@ -1,5 +1,5 @@
 {
-  "name": "react-habitat-example-type-script",
+  "name": "example-site-type-script",
   "version": "2.0.0",
   "description": "Example setup with React Habitat with webpack",
   "main": "index.js",

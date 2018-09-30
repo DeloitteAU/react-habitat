@@ -1,5 +1,5 @@
 {
-  "name": "react-habitat-example-redux",
+  "name": "example-site-redux",
   "version": "2.0.0",
   "description": "Example setup with React Habitat with es6, webpack and Redux",
   "main": "index.js",
