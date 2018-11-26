@@ -62,16 +62,6 @@ declare module "react-habitat" {
 		update: (node?: Element) => void;
 
 		/**
-		 * Start DOM watcher for auto wire ups
-		 */
-		startWatcher: () => void;
-
-		/**
-		 * Stop the DOM watcher if running
-		 */
-		stopWatcher: () => void;
-
-		/**
 		 * Dispose of the container
 		*/
 		dispose: () => void;
