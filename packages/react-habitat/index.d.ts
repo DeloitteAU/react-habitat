@@ -62,6 +62,11 @@ declare module "react-habitat" {
 		update: (node?: Element) => void;
 
 		/**
+		 * Unmount all React Habitat instances
+		 */
+		unmountHabitats: () => void
+
+		/**
 		 * Dispose of the container
 		*/
 		dispose: () => void;
@@ -156,6 +161,11 @@ declare module "react-habitat" {
 		 * Stop the DOM watcher if running
 		 */
 		stopWatcher: () => void;
+
+		/**
+		 * Unmount all React Habitat instances
+		 */
+		unmountHabitats: () => void
 
 		/**
 		 * Disposes the container
