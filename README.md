@@ -277,7 +277,7 @@ Each component is exposed to the DOM using the `as()` method on the `ContainerBu
 
 ```javascript
 // Create a new builder:
-const builder = new ReactHabit.ContainerBuilder();
+const builder = new ReactHabitat.ContainerBuilder();
 
 // Register SomeComponent and expose it to the DOM as 'MySomeComponent':
 builder.register(SomeComponent).as('MySomeComponent');
