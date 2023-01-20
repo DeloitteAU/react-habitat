@@ -5,7 +5,7 @@ var env = process.env.NODE_ENV;
 // configuration
 var config = {
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
