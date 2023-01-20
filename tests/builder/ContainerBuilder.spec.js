@@ -72,7 +72,7 @@ describe('ContainerBuilder', () => {
 	});
 
 
-	it('does resolve distinct components', (done) => {
+	it('does resolve distinct components', (done) =>{
 
 		const containerBuilder = new ContainerBuilder();
 		containerBuilder.register(MockComponent).as('aComponent');
@@ -88,7 +88,6 @@ describe('ContainerBuilder', () => {
 			expect(r.component).toBe(MockComponentTwo);
 		});
 
-		Promise.all([t1, t2]).then(done);
+		Promise.all([t1, t2]).then(() => done());
 	});
-
 });
