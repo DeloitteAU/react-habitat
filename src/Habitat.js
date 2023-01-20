@@ -159,8 +159,8 @@ export default class Habitat {
 		let replaceDisabled = typeof options.replaceDisabled === 'boolean' ? options.replaceDisabled : false;
 		if (ele.getAttribute('data-habitat-no-replace') !== null) {
 			replaceDisabled = ele
-					.getAttribute('data-habitat-no-replace')
-					.toLocaleLowerCase() === 'true';
+				.getAttribute('data-habitat-no-replace')
+				.toLocaleLowerCase() === 'true';
 		}
 
 		// Keep references to habitats container id's

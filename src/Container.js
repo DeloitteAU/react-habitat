@@ -77,7 +77,7 @@ export default class Container {
 
 			registration
 				.operator()
-				.then((o) => {
+				.then(o => {
 					// Handle any esModule's with default exports
 					// This helps developers write cleaner container code otherwise
 					// they will need to wrap `import()`'s in Promises that return the default..

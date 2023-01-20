@@ -78,7 +78,7 @@ export default class Bootstrapper {
 			resolveQueue.push(
 				this.__container__
 					.resolve(componentName, this)
-					.then((registration) => {
+					.then(registration => {
 						// This is an expensive operation so only do on non prod builds
 						if (process.env.NODE_ENV !== 'production') {
 							if (ele.querySelector(`[${this.componentSelector}]`)) {
@@ -100,7 +100,7 @@ export default class Bootstrapper {
 							registration.component,
 							props,
 							Habitat.create(ele, this.__container__.id, options));
-					}).catch((err) => {
+					}).catch(err => {
 						Logger.error('RHW01', `Cannot resolve component "${componentName}" for element.`, err, ele);
 					}),
 			);
@@ -112,7 +112,7 @@ export default class Bootstrapper {
 			.all(resolveQueue.map(p => p.catch(e => e)))
 			.then(() => {
 				_callback(cb);
-			}).catch((err) => {
+			}).catch(err => {
 			// We should never get here.. if we do this is a bug
 				throw err;
 			});
