@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "extends": "eslint-config-deloitte-react",
   "env": {
     "browser": true,
@@ -11,5 +11,13 @@
   ],
   "rules": {
     "linebreak-style": 0
+  },
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "requireConfigFile": false
   }
 }
