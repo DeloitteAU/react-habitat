@@ -14,7 +14,7 @@
   "license": "BSD-3-Clause",
   "private": true,
   "dependencies": {
-    "babel-core": "^6.25.0",
+    "babel-core": "^6.26.3",
     "babel-loader": "^7.1.1",
     "babel-polyfill": "^6.16.0",
     "babel-preset-env": "^1.6.0",
