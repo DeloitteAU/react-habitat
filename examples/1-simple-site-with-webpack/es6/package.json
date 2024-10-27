@@ -20,7 +20,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
     "open-browser-webpack-plugin": "0.0.2",
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.8.1",
     "react": "^15.6.1",
     "react-dom": "^15.3.2",
     "react-habitat": "^0.5.0",
